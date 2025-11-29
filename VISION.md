@@ -71,12 +71,12 @@ Define the schema for completed workouts.
 - [x] Write example files (`examples/workout-logs/`)
 - [x] Basic validation script
 
-### Milestone 2 — TypeScript SDK
+### Milestone 2 — TypeScript SDK ✓
 
-- [ ] Generate or write TypeScript types from schema
-- [ ] Parse/serialize functions
-- [ ] Validation helpers (wrapping AJV or similar)
-- [ ] Publish as npm package
+- [x] Generate or write TypeScript types from schema
+- [x] Parse/serialize functions
+- [x] Validation helpers (wrapping AJV or similar)
+- [x] Publish as npm package (`@openweight/sdk`)
 
 ### Milestone 3 — Program & Template Schema
 
