@@ -1,0 +1,13 @@
+{
+  "date": "2024-01-15T09:00:00Z",
+  "exercises": [
+    {
+      "exercise": { "name": "Farmer's Walk" },
+      "sets": [
+        {
+          "distance": 40
+        }
+      ]
+    }
+  ]
+}

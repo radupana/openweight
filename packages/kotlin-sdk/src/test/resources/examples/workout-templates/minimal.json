@@ -1,0 +1,13 @@
+{
+  "name": "Push Day",
+  "exercises": [
+    {
+      "exercise": { "name": "Bench Press" },
+      "sets": [
+        { "targetReps": 5 },
+        { "targetReps": 5 },
+        { "targetReps": 5 }
+      ]
+    }
+  ]
+}

@@ -2,3 +2,9 @@ CLAUDE.md
 node_modules/
 dist/
 .idea
+
+# Gradle/Kotlin
+.gradle/
+.kotlin/
+build/
+*.class

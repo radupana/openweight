@@ -11,3 +11,9 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+
+  # Gradle dependencies (Kotlin SDK)
+  - package-ecosystem: "gradle"
+    directory: "/packages/kotlin-sdk"
+    schedule:
+      interval: "daily"

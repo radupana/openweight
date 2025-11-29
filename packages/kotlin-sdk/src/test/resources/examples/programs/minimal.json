@@ -1,0 +1,35 @@
+{
+  "name": "Simple 2-Day Split",
+  "weeks": [
+    {
+      "workouts": [
+        {
+          "name": "Workout A",
+          "exercises": [
+            {
+              "exercise": { "name": "Squat" },
+              "sets": [{ "targetReps": 5 }, { "targetReps": 5 }, { "targetReps": 5 }]
+            },
+            {
+              "exercise": { "name": "Bench Press" },
+              "sets": [{ "targetReps": 5 }, { "targetReps": 5 }, { "targetReps": 5 }]
+            }
+          ]
+        },
+        {
+          "name": "Workout B",
+          "exercises": [
+            {
+              "exercise": { "name": "Deadlift" },
+              "sets": [{ "targetReps": 5 }, { "targetReps": 5 }, { "targetReps": 5 }]
+            },
+            {
+              "exercise": { "name": "Overhead Press" },
+              "sets": [{ "targetReps": 5 }, { "targetReps": 5 }, { "targetReps": 5 }]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

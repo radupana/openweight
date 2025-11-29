@@ -1,0 +1,9 @@
+{
+  "name": "Invalid - No Date",
+  "exercises": [
+    {
+      "exercise": { "name": "Squat" },
+      "sets": [{ "reps": 5 }]
+    }
+  ]
+}
