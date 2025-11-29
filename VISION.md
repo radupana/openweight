@@ -6,7 +6,8 @@
 
 ## 1. Vision
 
-Strength training data is trapped in silos. Each app has its own export format, its own idea of what a "program", "workout", or "set" means, and no reliable way to move training history between tools.
+Strength training data is trapped in silos. Each app has its own export format, its own idea of what a "program", "
+workout", or "set" means, and no reliable way to move training history between tools.
 
 **openweight** defines an open, implementation-agnostic data format for strength training that:
 
@@ -20,9 +21,11 @@ Strength training data is trapped in silos. Each app has its own export format, 
 
 ### 2.1 Primary Goals
 
-1. **Define a clean data format** rooted in the ubiquitous language of strength training (workouts, exercises, sets, reps, weight, RPE, programs, etc.)
+1. **Define a clean data format** rooted in the ubiquitous language of strength training (workouts, exercises, sets,
+   reps, weight, RPE, programs, etc.)
 2. **Build SDKs** (TypeScript, Kotlin) that apps can use to serialize/deserialize the format
-3. **Enable [Featherweight](https://github.com/radupana/featherweight)** (the reference app) to export and import training data
+3. **Enable [Featherweight](https://github.com/radupana/featherweight)** (the reference app) to export and import
+   training data
 4. **Keep it open** — if others want to adopt the format, they can
 
 ### 2.2 Non-Goals (for now)
@@ -46,27 +49,27 @@ Strength training data is trapped in silos. Each app has its own export format, 
 
 ## 4. Artifacts
 
-| Artifact | Purpose | Location |
-|----------|---------|----------|
-| **JSON Schema** | Canonical spec with validation rules and documentation | `schemas/` |
-| **TypeScript SDK** | Parse, validate, serialize openweight JSON | `packages/ts-sdk/` |
-| **Kotlin SDK** | For Android/JVM apps ([Featherweight](https://github.com/radupana/featherweight) integration) | `packages/kotlin-sdk/` |
-| **Validation CLI** | Command-line tool to validate files | `tools/cli/` |
-| **Examples** | Sample files for testing and illustration | `examples/` |
-| **Converters** | Transform other formats (Strong CSV, etc.) into openweight | `tools/converters/` |
+| Artifact           | Purpose                                                                                       | Location               |
+|--------------------|-----------------------------------------------------------------------------------------------|------------------------|
+| **JSON Schema**    | Canonical spec with validation rules and documentation                                        | `schemas/`             |
+| **TypeScript SDK** | Parse, validate, serialize openweight JSON                                                    | `packages/ts-sdk/`     |
+| **Kotlin SDK**     | For Android/JVM apps ([Featherweight](https://github.com/radupana/featherweight) integration) | `packages/kotlin-sdk/` |
+| **Validation CLI** | Command-line tool to validate files                                                           | `tools/cli/`           |
+| **Examples**       | Sample files for testing and illustration                                                     | `examples/`            |
+| **Converters**     | Transform other formats (Strong CSV, etc.) into openweight                                    | `tools/converters/`    |
 
 ---
 
 ## 5. Milestones
 
-### Milestone 1 — Core Workout Log Schema
+### Milestone 1 — Core Workout Log Schema ✓
 
 Define the schema for completed workouts.
 
-- [ ] Design data model from first principles (Workout → Exercise → Set)
-- [ ] Create JSON Schema with full documentation (`schemas/workout-log.schema.json`)
-- [ ] Write example files (`examples/workout-logs/`)
-- [ ] Basic validation script
+- [x] Design data model from first principles (Workout → Exercise → Set)
+- [x] Create JSON Schema with full documentation (`schemas/workout-log.schema.json`)
+- [x] Write example files (`examples/workout-logs/`)
+- [x] Basic validation script
 
 ### Milestone 2 — TypeScript SDK
 
@@ -103,9 +106,11 @@ Define the schema for completed workouts.
 
 ## 6. Reference Implementation
 
-**[Featherweight](https://github.com/radupana/featherweight)** serves as the reference implementation. The openweight format is designed to support Featherweight's data model while remaining app-agnostic.
+**[Featherweight](https://github.com/radupana/featherweight)** serves as the reference implementation. The openweight
+format is designed to support Featherweight's data model while remaining app-agnostic.
 
 This means:
+
 - Featherweight's needs inform the schema design
 - But the schema uses domain terminology, not Featherweight internals
 - Other apps should be able to adopt the format without knowing anything about Featherweight
