@@ -86,4 +86,4 @@ import type { WorkoutLog, ExerciseLog, Exercise, SetLog } from '@openweight/sdk'
 
 ## License
 
-MIT
+Apache-2.0

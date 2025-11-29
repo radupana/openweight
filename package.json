@@ -21,7 +21,7 @@
     "json-schema"
   ],
   "author": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1"
