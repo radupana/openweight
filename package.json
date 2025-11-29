@@ -1,13 +1,18 @@
 {
   "name": "openweight",
   "version": "0.1.0",
+  "private": true,
   "description": "Open data format for strength training",
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "validate-examples": "node scripts/validate-examples.js",
-    "test": "node --test",
-    "lint": "eslint .",
-    "build": "echo 'No build step required yet'"
+    "test": "node --test ./test/*.test.js",
+    "test:sdk": "npm test --workspace=@openweight/sdk",
+    "build": "npm run build --workspace=@openweight/sdk",
+    "typecheck": "npm run typecheck --workspace=@openweight/sdk"
   },
   "keywords": [
     "fitness",
@@ -16,7 +21,7 @@
     "json-schema"
   ],
   "author": "",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "devDependencies": {
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1"
