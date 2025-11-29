@@ -78,12 +78,12 @@ Define the schema for completed workouts.
 - [x] Validation helpers (wrapping AJV or similar)
 - [x] Publish as npm package (`@openweight/sdk`)
 
-### Milestone 3 — Program & Template Schema
+### Milestone 3 — Program & Template Schema ✓
 
-- [ ] Design program/template data model
-- [ ] Create JSON Schema (`schemas/program.schema.json`)
-- [ ] Update TypeScript SDK
-- [ ] Example program files
+- [x] Design program/template data model
+- [x] Create JSON Schema (`schemas/workout-template.schema.json`, `schemas/program.schema.json`)
+- [x] Update TypeScript SDK
+- [x] Example program files
 
 ### Milestone 4 — Kotlin SDK
 
