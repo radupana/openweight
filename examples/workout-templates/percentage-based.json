@@ -1,0 +1,64 @@
+{
+  "name": "531 Week 1 Squat Day",
+  "notes": "Wendler 5/3/1 week 1 - 3x5 at 65/75/85%",
+  "exercises": [
+    {
+      "exercise": {
+        "name": "Barbell Back Squat",
+        "equipment": "barbell",
+        "category": "legs"
+      },
+      "order": 1,
+      "sets": [
+        { "type": "warmup", "targetReps": 5, "percentage": 40, "percentageOf": "1RM" },
+        { "type": "warmup", "targetReps": 5, "percentage": 50, "percentageOf": "1RM" },
+        { "type": "warmup", "targetReps": 3, "percentage": 60, "percentageOf": "1RM" },
+        { "type": "working", "targetReps": 5, "percentage": 65, "percentageOf": "1RM", "restSeconds": 180 },
+        { "type": "working", "targetReps": 5, "percentage": 75, "percentageOf": "1RM", "restSeconds": 180 },
+        { "type": "working", "targetReps": 5, "percentage": 85, "percentageOf": "1RM", "notes": "AMRAP on last set", "restSeconds": 180 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Barbell Back Squat",
+        "equipment": "barbell",
+        "category": "legs"
+      },
+      "order": 2,
+      "notes": "BBB supplemental - 5x10 at 50%",
+      "sets": [
+        { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+        { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+        { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+        { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+        { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Leg Curl",
+        "equipment": "machine",
+        "category": "legs"
+      },
+      "order": 3,
+      "sets": [
+        { "targetRepsMin": 10, "targetRepsMax": 15 },
+        { "targetRepsMin": 10, "targetRepsMax": 15 },
+        { "targetRepsMin": 10, "targetRepsMax": 15 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Ab Wheel Rollout",
+        "equipment": "bodyweight",
+        "category": "core"
+      },
+      "order": 4,
+      "sets": [
+        { "targetRepsMin": 10, "targetRepsMax": 20 },
+        { "targetRepsMin": 10, "targetRepsMax": 20 },
+        { "targetRepsMin": 10, "targetRepsMax": 20 }
+      ]
+    }
+  ]
+}

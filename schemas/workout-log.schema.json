@@ -34,6 +34,12 @@
       "minimum": 0,
       "examples": [3600, 5400]
     },
+    "templateId": {
+      "title": "Template ID",
+      "description": "Optional reference to the workout template this log was created from. App-defined identifier.",
+      "type": "string",
+      "maxLength": 200
+    },
     "exercises": {
       "title": "Exercises",
       "description": "The exercises performed in this workout",

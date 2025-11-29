@@ -1,21 +1,55 @@
+// Types
 export type {
-  WorkoutLog,
-  ExerciseLog,
-  Exercise,
-  SetLog,
+  // Common types
   WeightUnit,
   DistanceUnit,
+  Exercise,
+  // Workout Log types
+  WorkoutLog,
+  ExerciseLog,
+  SetLog,
+  // Workout Template types
+  WorkoutTemplate,
+  ExerciseTemplate,
+  SetTemplate,
+  // Program types
+  Program,
+  ProgramWeek,
 } from './types.js'
 
-export { parseWorkoutLog, ParseError } from './parse.js'
+// Parse functions
+export {
+  parseWorkoutLog,
+  parseWorkoutTemplate,
+  parseProgram,
+  ParseError,
+} from './parse.js'
 
-export { serializeWorkoutLog, serializeWorkoutLogPretty } from './serialize.js'
+// Serialize functions
+export {
+  serializeWorkoutLog,
+  serializeWorkoutLogPretty,
+  serializeWorkoutTemplate,
+  serializeWorkoutTemplatePretty,
+  serializeProgram,
+  serializeProgramPretty,
+} from './serialize.js'
 
+// Validate functions
 export {
   validateWorkoutLog,
   isValidWorkoutLog,
+  validateWorkoutTemplate,
+  isValidWorkoutTemplate,
+  validateProgram,
+  isValidProgram,
   type ValidationResult,
   type ValidationError,
 } from './validate.js'
 
-export { workoutLogSchema } from './schema.js'
+// Schemas
+export {
+  workoutLogSchema,
+  workoutTemplateSchema,
+  programSchema,
+} from './schema.js'

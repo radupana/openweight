@@ -1,0 +1,452 @@
+{
+  "name": "5/3/1 Boring But Big",
+  "description": "Jim Wendler's 5/3/1 program with Boring But Big supplemental work. A 4-week cycle focusing on the four main lifts with 5x10 volume work.",
+  "author": "Jim Wendler",
+  "tags": ["strength", "powerlifting", "intermediate"],
+  "weeks": [
+    {
+      "name": "Week 1 - 3x5",
+      "notes": "Working sets at 65%, 75%, 85% of training max",
+      "workouts": [
+        {
+          "name": "Squat Day",
+          "day": 1,
+          "exercises": [
+            {
+              "exercise": { "name": "Barbell Back Squat", "equipment": "barbell", "category": "legs" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 5, "percentage": 65, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 5, "percentage": 75, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 5, "percentage": 85, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Barbell Back Squat", "equipment": "barbell", "category": "legs" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            },
+            {
+              "exercise": { "name": "Leg Curl", "equipment": "machine", "category": "legs" },
+              "order": 3,
+              "sets": [
+                { "targetRepsMin": 10, "targetRepsMax": 15 },
+                { "targetRepsMin": 10, "targetRepsMax": 15 },
+                { "targetRepsMin": 10, "targetRepsMax": 15 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Bench Day",
+          "day": 2,
+          "exercises": [
+            {
+              "exercise": { "name": "Barbell Bench Press", "equipment": "barbell", "category": "chest" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 5, "percentage": 65, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 5, "percentage": 75, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 5, "percentage": 85, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Barbell Bench Press", "equipment": "barbell", "category": "chest" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            },
+            {
+              "exercise": { "name": "Dumbbell Row", "equipment": "dumbbell", "category": "back" },
+              "order": 3,
+              "sets": [
+                { "targetRepsMin": 10, "targetRepsMax": 15 },
+                { "targetRepsMin": 10, "targetRepsMax": 15 },
+                { "targetRepsMin": 10, "targetRepsMax": 15 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Deadlift Day",
+          "day": 4,
+          "exercises": [
+            {
+              "exercise": { "name": "Deadlift", "equipment": "barbell", "category": "back" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 5, "percentage": 65, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 5, "percentage": 75, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 5, "percentage": 85, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Deadlift", "equipment": "barbell", "category": "back" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            },
+            {
+              "exercise": { "name": "Hanging Leg Raise", "equipment": "bodyweight", "category": "core" },
+              "order": 3,
+              "sets": [
+                { "targetRepsMin": 10, "targetRepsMax": 15 },
+                { "targetRepsMin": 10, "targetRepsMax": 15 },
+                { "targetRepsMin": 10, "targetRepsMax": 15 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Overhead Press Day",
+          "day": 5,
+          "exercises": [
+            {
+              "exercise": { "name": "Overhead Press", "equipment": "barbell", "category": "shoulders" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 5, "percentage": 65, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 5, "percentage": 75, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 5, "percentage": 85, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Overhead Press", "equipment": "barbell", "category": "shoulders" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            },
+            {
+              "exercise": { "name": "Chin-up", "equipment": "bodyweight", "category": "back" },
+              "order": 3,
+              "sets": [
+                { "targetRepsMin": 8, "targetRepsMax": 12 },
+                { "targetRepsMin": 8, "targetRepsMax": 12 },
+                { "targetRepsMin": 8, "targetRepsMax": 12 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Week 2 - 3x3",
+      "notes": "Working sets at 70%, 80%, 90% of training max",
+      "workouts": [
+        {
+          "name": "Squat Day",
+          "day": 1,
+          "exercises": [
+            {
+              "exercise": { "name": "Barbell Back Squat", "equipment": "barbell", "category": "legs" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 3, "percentage": 70, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 80, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 90, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Barbell Back Squat", "equipment": "barbell", "category": "legs" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Bench Day",
+          "day": 2,
+          "exercises": [
+            {
+              "exercise": { "name": "Barbell Bench Press", "equipment": "barbell", "category": "chest" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 3, "percentage": 70, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 80, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 90, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Barbell Bench Press", "equipment": "barbell", "category": "chest" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Deadlift Day",
+          "day": 4,
+          "exercises": [
+            {
+              "exercise": { "name": "Deadlift", "equipment": "barbell", "category": "back" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 3, "percentage": 70, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 80, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 90, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Deadlift", "equipment": "barbell", "category": "back" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Overhead Press Day",
+          "day": 5,
+          "exercises": [
+            {
+              "exercise": { "name": "Overhead Press", "equipment": "barbell", "category": "shoulders" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 3, "percentage": 70, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 80, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 90, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Overhead Press", "equipment": "barbell", "category": "shoulders" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Week 3 - 5/3/1",
+      "notes": "Working sets at 75%, 85%, 95% of training max",
+      "workouts": [
+        {
+          "name": "Squat Day",
+          "day": 1,
+          "exercises": [
+            {
+              "exercise": { "name": "Barbell Back Squat", "equipment": "barbell", "category": "legs" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 5, "percentage": 75, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 85, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 1, "percentage": 95, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Barbell Back Squat", "equipment": "barbell", "category": "legs" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Bench Day",
+          "day": 2,
+          "exercises": [
+            {
+              "exercise": { "name": "Barbell Bench Press", "equipment": "barbell", "category": "chest" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 5, "percentage": 75, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 85, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 1, "percentage": 95, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Barbell Bench Press", "equipment": "barbell", "category": "chest" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Deadlift Day",
+          "day": 4,
+          "exercises": [
+            {
+              "exercise": { "name": "Deadlift", "equipment": "barbell", "category": "back" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 5, "percentage": 75, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 85, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 1, "percentage": 95, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Deadlift", "equipment": "barbell", "category": "back" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Overhead Press Day",
+          "day": 5,
+          "exercises": [
+            {
+              "exercise": { "name": "Overhead Press", "equipment": "barbell", "category": "shoulders" },
+              "order": 1,
+              "sets": [
+                { "type": "working", "targetReps": 5, "percentage": 75, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 3, "percentage": 85, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 1, "percentage": 95, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
+              ]
+            },
+            {
+              "exercise": { "name": "Overhead Press", "equipment": "barbell", "category": "shoulders" },
+              "order": 2,
+              "notes": "BBB sets",
+              "sets": [
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Week 4 - Deload",
+      "notes": "Recovery week at 40%, 50%, 60% of training max",
+      "workouts": [
+        {
+          "name": "Squat Day",
+          "day": 1,
+          "exercises": [
+            {
+              "exercise": { "name": "Barbell Back Squat", "equipment": "barbell", "category": "legs" },
+              "order": 1,
+              "sets": [
+                { "targetReps": 5, "percentage": 40, "percentageOf": "1RM", "restSeconds": 120 },
+                { "targetReps": 5, "percentage": 50, "percentageOf": "1RM", "restSeconds": 120 },
+                { "targetReps": 5, "percentage": 60, "percentageOf": "1RM", "restSeconds": 120 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Bench Day",
+          "day": 2,
+          "exercises": [
+            {
+              "exercise": { "name": "Barbell Bench Press", "equipment": "barbell", "category": "chest" },
+              "order": 1,
+              "sets": [
+                { "targetReps": 5, "percentage": 40, "percentageOf": "1RM", "restSeconds": 120 },
+                { "targetReps": 5, "percentage": 50, "percentageOf": "1RM", "restSeconds": 120 },
+                { "targetReps": 5, "percentage": 60, "percentageOf": "1RM", "restSeconds": 120 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Deadlift Day",
+          "day": 4,
+          "exercises": [
+            {
+              "exercise": { "name": "Deadlift", "equipment": "barbell", "category": "back" },
+              "order": 1,
+              "sets": [
+                { "targetReps": 5, "percentage": 40, "percentageOf": "1RM", "restSeconds": 120 },
+                { "targetReps": 5, "percentage": 50, "percentageOf": "1RM", "restSeconds": 120 },
+                { "targetReps": 5, "percentage": 60, "percentageOf": "1RM", "restSeconds": 120 }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "Overhead Press Day",
+          "day": 5,
+          "exercises": [
+            {
+              "exercise": { "name": "Overhead Press", "equipment": "barbell", "category": "shoulders" },
+              "order": 1,
+              "sets": [
+                { "targetReps": 5, "percentage": 40, "percentageOf": "1RM", "restSeconds": 120 },
+                { "targetReps": 5, "percentage": 50, "percentageOf": "1RM", "restSeconds": 120 },
+                { "targetReps": 5, "percentage": 60, "percentageOf": "1RM", "restSeconds": 120 }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "exercises": [
+    {
+      "exercise": { "name": "Bench Press" },
+      "sets": [{ "targetReps": 5 }]
+    }
+  ]
+}
