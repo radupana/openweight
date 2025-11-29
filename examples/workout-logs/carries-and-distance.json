@@ -1,0 +1,53 @@
+{
+  "date": "2024-01-21T09:00:00Z",
+  "name": "Strongman Conditioning",
+  "durationSeconds": 3000,
+  "exercises": [
+    {
+      "exercise": {
+        "name": "Farmer Walk",
+        "equipment": "dumbbell",
+        "category": "full-body"
+      },
+      "sets": [
+        { "weight": 40, "unit": "kg", "distance": 40, "distanceUnit": "m", "durationSeconds": 35 },
+        { "weight": 40, "unit": "kg", "distance": 40, "distanceUnit": "m", "durationSeconds": 38 },
+        { "weight": 45, "unit": "kg", "distance": 30, "distanceUnit": "m", "durationSeconds": 32 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Sled Push",
+        "equipment": "machine",
+        "category": "legs"
+      },
+      "sets": [
+        { "weight": 100, "unit": "kg", "distance": 25, "distanceUnit": "m" },
+        { "weight": 100, "unit": "kg", "distance": 25, "distanceUnit": "m" },
+        { "weight": 120, "unit": "kg", "distance": 20, "distanceUnit": "m" }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Yoke Carry",
+        "equipment": "barbell",
+        "category": "full-body"
+      },
+      "sets": [
+        { "weight": 150, "unit": "kg", "distance": 20, "distanceUnit": "m", "durationSeconds": 25 },
+        { "weight": 150, "unit": "kg", "distance": 20, "distanceUnit": "m", "durationSeconds": 28 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Walking Lunges",
+        "equipment": "dumbbell",
+        "category": "legs"
+      },
+      "sets": [
+        { "weight": 20, "unit": "kg", "distance": 30, "distanceUnit": "m" },
+        { "weight": 20, "unit": "kg", "distance": 30, "distanceUnit": "m" }
+      ]
+    }
+  ]
+}

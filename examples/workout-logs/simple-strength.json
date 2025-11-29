@@ -1,0 +1,45 @@
+{
+  "date": "2024-01-16T08:00:00Z",
+  "name": "Squat Day",
+  "durationSeconds": 4200,
+  "exercises": [
+    {
+      "exercise": {
+        "name": "Barbell Back Squat",
+        "equipment": "barbell",
+        "category": "legs"
+      },
+      "sets": [
+        { "reps": 5, "weight": 60, "unit": "kg", "type": "warmup" },
+        { "reps": 5, "weight": 80, "unit": "kg", "type": "warmup" },
+        { "reps": 5, "weight": 100, "unit": "kg", "rpe": 7 },
+        { "reps": 5, "weight": 100, "unit": "kg", "rpe": 7.5 },
+        { "reps": 5, "weight": 100, "unit": "kg", "rpe": 8 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Romanian Deadlift",
+        "equipment": "barbell",
+        "category": "legs"
+      },
+      "sets": [
+        { "reps": 8, "weight": 80, "unit": "kg", "rpe": 7 },
+        { "reps": 8, "weight": 80, "unit": "kg", "rpe": 7.5 },
+        { "reps": 8, "weight": 80, "unit": "kg", "rpe": 8 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Leg Press",
+        "equipment": "machine",
+        "category": "legs"
+      },
+      "sets": [
+        { "reps": 10, "weight": 180, "unit": "kg", "rpe": 8 },
+        { "reps": 10, "weight": 180, "unit": "kg", "rpe": 8.5 },
+        { "reps": 10, "weight": 180, "unit": "kg", "rpe": 9 }
+      ]
+    }
+  ]
+}

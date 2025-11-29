@@ -1,0 +1,57 @@
+{
+  "date": "2024-01-22T16:00:00Z",
+  "name": "Tempo Strength",
+  "durationSeconds": 3600,
+  "notes": "Focus on time under tension",
+  "exercises": [
+    {
+      "exercise": {
+        "name": "Tempo Squat",
+        "equipment": "barbell",
+        "category": "legs"
+      },
+      "sets": [
+        { "reps": 6, "weight": 80, "unit": "kg", "tempo": "3-1-2-0", "rpe": 7 },
+        { "reps": 6, "weight": 80, "unit": "kg", "tempo": "3-1-2-0", "rpe": 7.5 },
+        { "reps": 6, "weight": 80, "unit": "kg", "tempo": "3-1-2-0", "rpe": 8 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Tempo Bench Press",
+        "equipment": "barbell",
+        "category": "chest"
+      },
+      "sets": [
+        { "reps": 8, "weight": 60, "unit": "kg", "tempo": "4-0-1-0" },
+        { "reps": 8, "weight": 60, "unit": "kg", "tempo": "4-0-1-0" },
+        { "reps": 8, "weight": 60, "unit": "kg", "tempo": "4-0-1-0" }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Explosive Pull-up",
+        "equipment": "bodyweight",
+        "category": "back"
+      },
+      "notes": "Explosive concentric, controlled eccentric",
+      "sets": [
+        { "reps": 5, "tempo": "2-0-X-0" },
+        { "reps": 5, "tempo": "2-0-X-0" },
+        { "reps": 4, "tempo": "2-0-X-0" }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Tempo Romanian Deadlift",
+        "equipment": "barbell",
+        "category": "legs"
+      },
+      "sets": [
+        { "reps": 8, "weight": 70, "unit": "kg", "tempo": "3-0-1-1" },
+        { "reps": 8, "weight": 70, "unit": "kg", "tempo": "3-0-1-1" },
+        { "reps": 8, "weight": 70, "unit": "kg", "tempo": "3-0-1-1" }
+      ]
+    }
+  ]
+}

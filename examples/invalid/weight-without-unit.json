@@ -1,0 +1,14 @@
+{
+  "date": "2024-01-15T09:00:00Z",
+  "exercises": [
+    {
+      "exercise": { "name": "Bench Press" },
+      "sets": [
+        {
+          "reps": 5,
+          "weight": 100
+        }
+      ]
+    }
+  ]
+}

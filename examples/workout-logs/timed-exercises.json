@@ -1,0 +1,69 @@
+{
+  "date": "2024-01-20T06:30:00Z",
+  "name": "Core & Stability",
+  "durationSeconds": 1800,
+  "exercises": [
+    {
+      "exercise": {
+        "name": "Plank",
+        "equipment": "bodyweight",
+        "category": "core"
+      },
+      "sets": [
+        { "durationSeconds": 60 },
+        { "durationSeconds": 45 },
+        { "durationSeconds": 30 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Wall Sit",
+        "equipment": "bodyweight",
+        "category": "legs"
+      },
+      "sets": [
+        { "durationSeconds": 60 },
+        { "durationSeconds": 45 },
+        { "durationSeconds": 40 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Dead Hang",
+        "equipment": "bodyweight",
+        "category": "back"
+      },
+      "sets": [
+        { "durationSeconds": 45 },
+        { "durationSeconds": 40 },
+        { "durationSeconds": 35 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "L-Sit",
+        "equipment": "bodyweight",
+        "category": "core"
+      },
+      "sets": [
+        { "durationSeconds": 15 },
+        { "durationSeconds": 12 },
+        { "durationSeconds": 10 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Side Plank",
+        "equipment": "bodyweight",
+        "category": "core"
+      },
+      "notes": "Each side",
+      "sets": [
+        { "durationSeconds": 30 },
+        { "durationSeconds": 30 },
+        { "durationSeconds": 25 },
+        { "durationSeconds": 25 }
+      ]
+    }
+  ]
+}
