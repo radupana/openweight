@@ -1,0 +1,9 @@
+{
+  "name": "Template Without Unit",
+  "exercises": [
+    {
+      "exercise": { "name": "Bench Press" },
+      "sets": [{ "targetWeight": 100 }]
+    }
+  ]
+}

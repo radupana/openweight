@@ -1,5 +1,12 @@
 import { describe, it, expect } from 'vitest'
-import { validateWorkoutLog, isValidWorkoutLog } from './validate.js'
+import {
+  validateWorkoutLog,
+  isValidWorkoutLog,
+  validateWorkoutTemplate,
+  isValidWorkoutTemplate,
+  validateProgram,
+  isValidProgram,
+} from './validate.js'
 
 const validWorkout = {
   date: '2024-01-15T09:00:00Z',
@@ -116,5 +123,209 @@ describe('isValidWorkoutLog', () => {
     expect(isValidWorkoutLog('string')).toBe(false)
     expect(isValidWorkoutLog(null)).toBe(false)
     expect(isValidWorkoutLog(123)).toBe(false)
+  })
+})
+
+// ============================================
+// Workout Template Validation Tests
+// ============================================
+
+const validTemplate = {
+  name: 'Push Day',
+  exercises: [
+    {
+      exercise: { name: 'Bench Press' },
+      sets: [{ targetReps: 5 }],
+    },
+  ],
+}
+
+describe('validateWorkoutTemplate', () => {
+  it('returns valid for a correct template', () => {
+    const result = validateWorkoutTemplate(validTemplate)
+    expect(result.valid).toBe(true)
+    expect(result.errors).toHaveLength(0)
+  })
+
+  it('returns invalid when name is missing', () => {
+    const result = validateWorkoutTemplate({
+      exercises: [{ exercise: { name: 'Squat' }, sets: [{ targetReps: 5 }] }],
+    })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns invalid when exercises is missing', () => {
+    const result = validateWorkoutTemplate({ name: 'Test' })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns invalid when targetWeight is provided without unit', () => {
+    const result = validateWorkoutTemplate({
+      name: 'Test',
+      exercises: [
+        {
+          exercise: { name: 'Squat' },
+          sets: [{ targetWeight: 100 }],
+        },
+      ],
+    })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns invalid when percentage is provided without percentageOf', () => {
+    const result = validateWorkoutTemplate({
+      name: 'Test',
+      exercises: [
+        {
+          exercise: { name: 'Squat' },
+          sets: [{ percentage: 85 }],
+        },
+      ],
+    })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns valid for percentage with percentageOf', () => {
+    const result = validateWorkoutTemplate({
+      name: 'Test',
+      exercises: [
+        {
+          exercise: { name: 'Squat' },
+          sets: [{ percentage: 85, percentageOf: '1RM' }],
+        },
+      ],
+    })
+    expect(result.valid).toBe(true)
+  })
+
+  it('validates day field range', () => {
+    const validDayResult = validateWorkoutTemplate({
+      ...validTemplate,
+      day: 1,
+    })
+    expect(validDayResult.valid).toBe(true)
+
+    const invalidDayResult = validateWorkoutTemplate({
+      ...validTemplate,
+      day: 8,
+    })
+    expect(invalidDayResult.valid).toBe(false)
+  })
+})
+
+describe('isValidWorkoutTemplate', () => {
+  it('returns true for valid template', () => {
+    expect(isValidWorkoutTemplate(validTemplate)).toBe(true)
+  })
+
+  it('returns false for invalid template', () => {
+    expect(isValidWorkoutTemplate({})).toBe(false)
+  })
+})
+
+// ============================================
+// Program Validation Tests
+// ============================================
+
+const validProgram = {
+  name: 'Simple Program',
+  weeks: [
+    {
+      workouts: [
+        {
+          name: 'Day 1',
+          exercises: [
+            {
+              exercise: { name: 'Squat' },
+              sets: [{ targetReps: 5 }],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
+
+describe('validateProgram', () => {
+  it('returns valid for a correct program', () => {
+    const result = validateProgram(validProgram)
+    expect(result.valid).toBe(true)
+    expect(result.errors).toHaveLength(0)
+  })
+
+  it('returns invalid when name is missing', () => {
+    const result = validateProgram({
+      weeks: [
+        {
+          workouts: [
+            {
+              name: 'Day 1',
+              exercises: [{ exercise: { name: 'Squat' }, sets: [{ targetReps: 5 }] }],
+            },
+          ],
+        },
+      ],
+    })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns invalid when weeks is missing', () => {
+    const result = validateProgram({ name: 'Test Program' })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns invalid when weeks is empty', () => {
+    const result = validateProgram({ name: 'Test Program', weeks: [] })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns invalid when week.workouts is empty', () => {
+    const result = validateProgram({
+      name: 'Test Program',
+      weeks: [{ workouts: [] }],
+    })
+    expect(result.valid).toBe(false)
+  })
+
+  it('validates nested workout templates', () => {
+    const result = validateProgram({
+      name: 'Test Program',
+      weeks: [
+        {
+          workouts: [
+            {
+              name: 'Day 1',
+              exercises: [
+                {
+                  exercise: { name: 'Squat' },
+                  sets: [{ targetWeight: 100 }], // Missing unit
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    })
+    expect(result.valid).toBe(false)
+  })
+
+  it('allows optional fields', () => {
+    const result = validateProgram({
+      ...validProgram,
+      description: 'A great program',
+      author: 'John Doe',
+      tags: ['strength', 'beginner'],
+    })
+    expect(result.valid).toBe(true)
+  })
+})
+
+describe('isValidProgram', () => {
+  it('returns true for valid program', () => {
+    expect(isValidProgram(validProgram)).toBe(true)
+  })
+
+  it('returns false for invalid program', () => {
+    expect(isValidProgram({})).toBe(false)
   })
 })

@@ -1,5 +1,5 @@
-import { validateWorkoutLog } from './validate.js'
-import type { WorkoutLog } from './types.js'
+import { validateWorkoutLog, validateWorkoutTemplate, validateProgram } from './validate.js'
+import type { WorkoutLog, WorkoutTemplate, Program } from './types.js'
 
 export class ParseError extends Error {
   constructor(
@@ -10,6 +10,10 @@ export class ParseError extends Error {
     this.name = 'ParseError'
   }
 }
+
+// ============================================
+// Workout Log Parsing
+// ============================================
 
 export function parseWorkoutLog(json: string): WorkoutLog {
   let data: unknown
@@ -25,4 +29,44 @@ export function parseWorkoutLog(json: string): WorkoutLog {
   }
 
   return data as WorkoutLog
+}
+
+// ============================================
+// Workout Template Parsing
+// ============================================
+
+export function parseWorkoutTemplate(json: string): WorkoutTemplate {
+  let data: unknown
+  try {
+    data = JSON.parse(json)
+  } catch {
+    throw new ParseError('Invalid JSON')
+  }
+
+  const result = validateWorkoutTemplate(data)
+  if (!result.valid) {
+    throw new ParseError('Schema validation failed', result.errors)
+  }
+
+  return data as WorkoutTemplate
+}
+
+// ============================================
+// Program Parsing
+// ============================================
+
+export function parseProgram(json: string): Program {
+  let data: unknown
+  try {
+    data = JSON.parse(json)
+  } catch {
+    throw new ParseError('Invalid JSON')
+  }
+
+  const result = validateProgram(data)
+  if (!result.valid) {
+    throw new ParseError('Schema validation failed', result.errors)
+  }
+
+  return data as Program
 }
