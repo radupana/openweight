@@ -19,6 +19,18 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.3")
 }
 
+// Copy schemas from root schemas/ directory to resources at build time
+// This ensures the Kotlin SDK uses the canonical schema definitions
+val copySchemas by tasks.registering(Copy::class) {
+    from("${projectDir}/../../schemas")
+    into("${layout.buildDirectory.get()}/resources/main/schemas")
+    include("*.schema.json")
+}
+
+tasks.processResources {
+    dependsOn(copySchemas)
+}
+
 tasks.test {
     useJUnitPlatform()
 }

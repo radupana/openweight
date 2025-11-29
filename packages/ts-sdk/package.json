@@ -22,7 +22,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsup",
+    "generate:schemas": "node scripts/generate-schemas.js",
+    "build": "npm run generate:schemas && tsup",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
