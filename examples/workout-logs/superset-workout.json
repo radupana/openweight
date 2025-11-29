@@ -1,0 +1,71 @@
+{
+  "date": "2024-01-18T12:00:00Z",
+  "name": "Full Body Supersets",
+  "durationSeconds": 3600,
+  "exercises": [
+    {
+      "exercise": {
+        "name": "Barbell Bench Press",
+        "equipment": "barbell",
+        "category": "chest"
+      },
+      "supersetId": 1,
+      "sets": [
+        { "reps": 8, "weight": 80, "unit": "kg", "rpe": 7 },
+        { "reps": 8, "weight": 80, "unit": "kg", "rpe": 7.5 },
+        { "reps": 8, "weight": 80, "unit": "kg", "rpe": 8 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Barbell Row",
+        "equipment": "barbell",
+        "category": "back"
+      },
+      "supersetId": 1,
+      "sets": [
+        { "reps": 8, "weight": 70, "unit": "kg", "rpe": 7 },
+        { "reps": 8, "weight": 70, "unit": "kg", "rpe": 7.5 },
+        { "reps": 8, "weight": 70, "unit": "kg", "rpe": 8 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Barbell Back Squat",
+        "equipment": "barbell",
+        "category": "legs"
+      },
+      "sets": [
+        { "reps": 6, "weight": 100, "unit": "kg", "rpe": 8 },
+        { "reps": 6, "weight": 100, "unit": "kg", "rpe": 8.5 },
+        { "reps": 6, "weight": 100, "unit": "kg", "rpe": 9 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Leg Curl",
+        "equipment": "machine",
+        "category": "legs"
+      },
+      "supersetId": 2,
+      "sets": [
+        { "reps": 12, "weight": 40, "unit": "kg" },
+        { "reps": 12, "weight": 40, "unit": "kg" },
+        { "reps": 12, "weight": 40, "unit": "kg" }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Leg Extension",
+        "equipment": "machine",
+        "category": "legs"
+      },
+      "supersetId": 2,
+      "sets": [
+        { "reps": 12, "weight": 50, "unit": "kg" },
+        { "reps": 12, "weight": 50, "unit": "kg" },
+        { "reps": 12, "weight": 50, "unit": "kg" }
+      ]
+    }
+  ]
+}

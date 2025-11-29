@@ -1,0 +1,68 @@
+{
+  "date": "2024-01-19T07:00:00Z",
+  "name": "Bodyweight Session",
+  "durationSeconds": 2700,
+  "exercises": [
+    {
+      "exercise": {
+        "name": "Pull-up",
+        "equipment": "bodyweight",
+        "category": "back"
+      },
+      "sets": [
+        { "reps": 10 },
+        { "reps": 8 },
+        { "reps": 7 },
+        { "reps": 6, "toFailure": true }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Weighted Pull-up",
+        "equipment": "bodyweight",
+        "category": "back"
+      },
+      "sets": [
+        { "reps": 5, "weight": 10, "unit": "kg" },
+        { "reps": 5, "weight": 10, "unit": "kg" },
+        { "reps": 4, "weight": 10, "unit": "kg" }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Push-up",
+        "equipment": "bodyweight",
+        "category": "chest"
+      },
+      "sets": [
+        { "reps": 20 },
+        { "reps": 18 },
+        { "reps": 15, "toFailure": true }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Dips",
+        "equipment": "bodyweight",
+        "category": "chest"
+      },
+      "sets": [
+        { "reps": 15 },
+        { "reps": 12 },
+        { "reps": 10, "toFailure": true }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Bodyweight Squat",
+        "equipment": "bodyweight",
+        "category": "legs"
+      },
+      "sets": [
+        { "reps": 25 },
+        { "reps": 25 },
+        { "reps": 25 }
+      ]
+    }
+  ]
+}
