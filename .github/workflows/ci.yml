@@ -21,8 +21,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Run tests
+      - name: Build SDK
+        run: npm run build
+
+      - name: Type check SDK
+        run: npm run typecheck
+
+      - name: Run schema tests
         run: npm test
+
+      - name: Run SDK tests
+        run: npm run test:sdk
 
       - name: Validate examples
         run: npm run validate-examples
