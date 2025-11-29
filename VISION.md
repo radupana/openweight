@@ -1,5 +1,3 @@
-# VISION.md
-
 # openweight — Open Strength Training Data Standard
 
 > A vendor-neutral, JSON-based format for representing strength training programs, workouts, and logs.
@@ -24,7 +22,7 @@ Strength training data is trapped in silos. Each app has its own export format, 
 
 1. **Define a clean data format** rooted in the ubiquitous language of strength training (workouts, exercises, sets, reps, weight, RPE, programs, etc.)
 2. **Build SDKs** (TypeScript, Kotlin) that apps can use to serialize/deserialize the format
-3. **Enable Featherweight** (the reference app) to export and import training data
+3. **Enable [Featherweight](https://github.com/radupana/featherweight)** (the reference app) to export and import training data
 4. **Keep it open** — if others want to adopt the format, they can
 
 ### 2.2 Non-Goals (for now)
@@ -52,7 +50,7 @@ Strength training data is trapped in silos. Each app has its own export format, 
 |----------|---------|----------|
 | **JSON Schema** | Canonical spec with validation rules and documentation | `schemas/` |
 | **TypeScript SDK** | Parse, validate, serialize openweight JSON | `packages/ts-sdk/` |
-| **Kotlin SDK** | For Android/JVM apps (Featherweight integration) | `packages/kotlin-sdk/` |
+| **Kotlin SDK** | For Android/JVM apps ([Featherweight](https://github.com/radupana/featherweight) integration) | `packages/kotlin-sdk/` |
 | **Validation CLI** | Command-line tool to validate files | `tools/cli/` |
 | **Examples** | Sample files for testing and illustration | `examples/` |
 | **Converters** | Transform other formats (Strong CSV, etc.) into openweight | `tools/converters/` |
@@ -88,7 +86,7 @@ Define the schema for completed workouts.
 
 - [ ] Generate or write Kotlin data classes from schema
 - [ ] Parse/serialize functions (kotlinx.serialization)
-- [ ] Integrate into Featherweight for export/import
+- [ ] Integrate into [Featherweight](https://github.com/radupana/featherweight) for export/import
 
 ### Milestone 5 — Converters
 
@@ -105,7 +103,7 @@ Define the schema for completed workouts.
 
 ## 6. Reference Implementation
 
-**Featherweight** (https://github.com/radupana/featherweight) serves as the reference implementation. The openweight format is designed to support Featherweight's data model while remaining app-agnostic.
+**[Featherweight](https://github.com/radupana/featherweight)** serves as the reference implementation. The openweight format is designed to support Featherweight's data model while remaining app-agnostic.
 
 This means:
 - Featherweight's needs inform the schema design
