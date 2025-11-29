@@ -1,0 +1,78 @@
+{
+  "name": "Upper Body A",
+  "notes": "Focus on compound pushing movements with accessory work",
+  "day": 1,
+  "exercises": [
+    {
+      "exercise": {
+        "name": "Barbell Bench Press",
+        "equipment": "barbell",
+        "category": "chest",
+        "musclesWorked": ["pectoralis major", "anterior deltoid", "triceps"]
+      },
+      "order": 1,
+      "notes": "Pause at chest, drive feet into floor",
+      "sets": [
+        { "type": "warmup", "targetReps": 10, "percentage": 50, "percentageOf": "1RM" },
+        { "type": "warmup", "targetReps": 5, "percentage": 70, "percentageOf": "1RM" },
+        { "type": "working", "targetReps": 5, "percentage": 85, "percentageOf": "1RM", "targetRPE": 8, "restSeconds": 180 },
+        { "type": "working", "targetReps": 5, "percentage": 85, "percentageOf": "1RM", "targetRPE": 8, "restSeconds": 180 },
+        { "type": "working", "targetReps": 5, "percentage": 85, "percentageOf": "1RM", "targetRPE": 8, "restSeconds": 180 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Overhead Press",
+        "equipment": "barbell",
+        "category": "shoulders"
+      },
+      "order": 2,
+      "sets": [
+        { "targetReps": 8, "targetWeight": 60, "unit": "kg", "targetRPE": 7, "restSeconds": 120 },
+        { "targetReps": 8, "targetWeight": 60, "unit": "kg", "targetRPE": 7, "restSeconds": 120 },
+        { "targetReps": 8, "targetWeight": 60, "unit": "kg", "targetRPE": 7, "restSeconds": 120 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Dumbbell Row",
+        "equipment": "dumbbell",
+        "category": "back"
+      },
+      "order": 3,
+      "supersetId": 1,
+      "sets": [
+        { "targetRepsMin": 8, "targetRepsMax": 12, "targetRIR": 2 },
+        { "targetRepsMin": 8, "targetRepsMax": 12, "targetRIR": 2 },
+        { "targetRepsMin": 8, "targetRepsMax": 12, "targetRIR": 2 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Dumbbell Lateral Raise",
+        "equipment": "dumbbell",
+        "category": "shoulders"
+      },
+      "order": 4,
+      "supersetId": 1,
+      "sets": [
+        { "targetRepsMin": 12, "targetRepsMax": 15, "tempo": "2-0-2-1" },
+        { "targetRepsMin": 12, "targetRepsMax": 15, "tempo": "2-0-2-1" },
+        { "targetRepsMin": 12, "targetRepsMax": 15, "tempo": "2-0-2-1" }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Tricep Pushdown",
+        "equipment": "cable",
+        "category": "arms"
+      },
+      "order": 5,
+      "sets": [
+        { "targetRepsMin": 10, "targetRepsMax": 15, "targetRIR": 1 },
+        { "targetRepsMin": 10, "targetRepsMax": 15, "targetRIR": 1 },
+        { "type": "dropset", "targetReps": 10, "notes": "Drop weight 20%, continue to failure" }
+      ]
+    }
+  ]
+}

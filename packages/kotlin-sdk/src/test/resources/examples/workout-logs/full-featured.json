@@ -1,0 +1,93 @@
+{
+  "date": "2024-01-23T10:00:00+01:00",
+  "name": "Complete Feature Demo",
+  "notes": "This file exercises all optional fields in the schema",
+  "durationSeconds": 5400,
+  "exercises": [
+    {
+      "exercise": {
+        "name": "Barbell Back Squat",
+        "equipment": "barbell",
+        "category": "legs",
+        "musclesWorked": ["quadriceps", "glutes", "hamstrings", "core"]
+      },
+      "order": 1,
+      "notes": "Focus on depth and control",
+      "sets": [
+        { "reps": 5, "weight": 60, "unit": "kg", "type": "warmup", "restSeconds": 60 },
+        { "reps": 5, "weight": 80, "unit": "kg", "type": "warmup", "restSeconds": 90 },
+        { "reps": 5, "weight": 100, "unit": "kg", "rpe": 7, "restSeconds": 180, "notes": "Felt light" },
+        { "reps": 5, "weight": 105, "unit": "kg", "rpe": 8, "tempo": "2-0-1-0", "restSeconds": 180 },
+        { "reps": 5, "weight": 105, "unit": "kg", "rpe": 8.5, "rir": 2, "restSeconds": 180 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Dumbbell Bench Press",
+        "equipment": "dumbbell",
+        "category": "chest",
+        "musclesWorked": ["pectoralis major", "anterior deltoid", "triceps"]
+      },
+      "order": 2,
+      "supersetId": 1,
+      "sets": [
+        { "reps": 10, "weight": 32, "unit": "kg", "rpe": 7 },
+        { "reps": 10, "weight": 32, "unit": "kg", "rpe": 7.5 },
+        { "reps": 8, "weight": 32, "unit": "kg", "rpe": 8, "toFailure": false }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Cable Row",
+        "equipment": "cable",
+        "category": "back",
+        "musclesWorked": ["latissimus dorsi", "rhomboids", "biceps"]
+      },
+      "order": 3,
+      "supersetId": 1,
+      "sets": [
+        { "reps": 10, "weight": 60, "unit": "kg" },
+        { "reps": 10, "weight": 60, "unit": "kg" },
+        { "reps": 10, "weight": 60, "unit": "kg" }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Plank",
+        "equipment": "bodyweight",
+        "category": "core",
+        "musclesWorked": ["rectus abdominis", "transverse abdominis", "obliques"]
+      },
+      "order": 4,
+      "sets": [
+        { "durationSeconds": 60, "rpe": 6 },
+        { "durationSeconds": 45, "rpe": 7 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Farmer Walk",
+        "equipment": "dumbbell",
+        "category": "full-body",
+        "musclesWorked": ["forearms", "trapezius", "core"]
+      },
+      "order": 5,
+      "sets": [
+        { "weight": 40, "unit": "kg", "distance": 40, "distanceUnit": "m", "durationSeconds": 35 },
+        { "weight": 45, "unit": "kg", "distance": 30, "distanceUnit": "m", "durationSeconds": 30 }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Leg Press AMRAP",
+        "equipment": "machine",
+        "category": "legs"
+      },
+      "order": 6,
+      "notes": "Final burnout set",
+      "sets": [
+        { "reps": 20, "weight": 150, "unit": "kg", "type": "amrap", "toFailure": true, "notes": "Complete failure" }
+      ]
+    }
+  ]
+}
