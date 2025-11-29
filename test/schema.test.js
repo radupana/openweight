@@ -196,6 +196,50 @@ describe('workout-log schema', () => {
       };
       assert.strictEqual(validate(data), false);
     });
+
+    test('weight requires unit', () => {
+      const data = {
+        date: '2024-01-15T10:00:00Z',
+        exercises: [{
+          exercise: { name: 'Squat' },
+          sets: [{ reps: 5, weight: 100 }]
+        }]
+      };
+      assert.strictEqual(validate(data), false);
+    });
+
+    test('weight with unit is valid', () => {
+      const data = {
+        date: '2024-01-15T10:00:00Z',
+        exercises: [{
+          exercise: { name: 'Squat' },
+          sets: [{ reps: 5, weight: 100, unit: 'kg' }]
+        }]
+      };
+      assert.strictEqual(validate(data), true);
+    });
+
+    test('distance requires distanceUnit', () => {
+      const data = {
+        date: '2024-01-15T10:00:00Z',
+        exercises: [{
+          exercise: { name: 'Farmer Walk' },
+          sets: [{ distance: 40 }]
+        }]
+      };
+      assert.strictEqual(validate(data), false);
+    });
+
+    test('distance with distanceUnit is valid', () => {
+      const data = {
+        date: '2024-01-15T10:00:00Z',
+        exercises: [{
+          exercise: { name: 'Farmer Walk' },
+          sets: [{ distance: 40, distanceUnit: 'm' }]
+        }]
+      };
+      assert.strictEqual(validate(data), true);
+    });
   });
 
   describe('extensibility', () => {

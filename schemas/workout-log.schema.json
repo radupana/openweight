@@ -130,6 +130,16 @@
       "description": "A single set within an exercise",
       "type": "object",
       "additionalProperties": true,
+      "allOf": [
+        {
+          "if": { "required": ["weight"] },
+          "then": { "required": ["unit"] }
+        },
+        {
+          "if": { "required": ["distance"] },
+          "then": { "required": ["distanceUnit"] }
+        }
+      ],
       "properties": {
         "reps": {
           "title": "Reps",
