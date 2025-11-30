@@ -36,8 +36,12 @@
     "json-schema",
     "typescript"
   ],
-  "author": "",
+  "author": "openweight contributors",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/radupana/openweight.git",

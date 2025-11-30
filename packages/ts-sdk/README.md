@@ -84,6 +84,14 @@ import type { WorkoutLog, ExerciseLog, Exercise, SetLog } from '@openweight/sdk'
 | `WeightUnit` | `'kg' \| 'lb'` |
 | `DistanceUnit` | `'m' \| 'km' \| 'ft' \| 'mi' \| 'yd'` |
 
+## Releasing
+
+1. Update version: `npm run version:patch` (or `version:minor` / `version:major`)
+2. Commit: `git commit -am "chore: release @openweight/sdk vX.Y.Z"`
+3. Push to main
+4. Create a GitHub Release with a tag matching the version (e.g., `v0.2.0`)
+5. The publish workflow will automatically publish to npm with provenance
+
 ## License
 
 Apache-2.0
