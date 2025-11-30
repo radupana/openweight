@@ -7,13 +7,14 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  typescript:
+    name: TypeScript SDK
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v6
 
-      - name: Use Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '20.x'
@@ -21,10 +22,10 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build TypeScript SDK
+      - name: Build
         run: npm run build
 
-      - name: Type check TypeScript SDK
+      - name: Type check
         run: npm run typecheck
 
       - name: Run schema tests
@@ -33,11 +34,18 @@ jobs:
       - name: Run script tests
         run: npm run test:scripts
 
-      - name: Run TypeScript SDK tests
+      - name: Run SDK tests
         run: npm run test:sdk
 
       - name: Validate examples
         run: npm run validate-examples
+
+  kotlin:
+    name: Kotlin SDK
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v6
 
       - name: Setup JDK
         uses: actions/setup-java@v5
@@ -48,10 +56,10 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
 
-      - name: Build Kotlin SDK
+      - name: Build
         run: ./gradlew build
         working-directory: packages/kotlin-sdk
 
-      - name: Test Kotlin SDK
+      - name: Test
         run: ./gradlew test
         working-directory: packages/kotlin-sdk
