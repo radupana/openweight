@@ -89,6 +89,7 @@ Define the schema for completed workouts.
 
 - [x] Generate or write Kotlin data classes from schema
 - [x] Parse/serialize functions (kotlinx.serialization)
+- [x] Publish to Maven Central (`io.github.radupana:openweight-sdk`)
 - [ ] Integrate into [Featherweight](https://github.com/radupana/featherweight) for export/import
 
 ### Milestone 5 — Converters
