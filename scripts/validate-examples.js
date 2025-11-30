@@ -16,20 +16,18 @@ function createValidators() {
   const ajv = new Ajv({ allErrors: true });
   addFormats(ajv);
 
-  // Load workout-template schema first (referenced by program)
   const templateSchema = loadSchema('workout-template');
   ajv.addSchema(templateSchema);
 
-  // Load workout-log schema
   const workoutLogSchema = loadSchema('workout-log');
-
-  // Load program schema
   const programSchema = loadSchema('program');
+  const personalRecordsSchema = loadSchema('personal-records');
 
   return {
     'workout-log': ajv.compile(workoutLogSchema),
     'workout-template': ajv.compile(templateSchema),
-    'program': ajv.compile(programSchema)
+    'program': ajv.compile(programSchema),
+    'personal-records': ajv.compile(personalRecordsSchema)
   };
 }
 
@@ -98,6 +96,27 @@ if (existsSync(programsDir)) {
   }
 }
 
+// Validate personal-records
+const personalRecordsDir = join(rootDir, 'examples', 'personal-records');
+if (existsSync(personalRecordsDir)) {
+  console.log('\nValidating personal-records...\n');
+
+  const prFiles = readdirSync(personalRecordsDir).filter(f => f.endsWith('.json'));
+  for (const file of prFiles) {
+    const filePath = join(personalRecordsDir, file);
+    const data = JSON.parse(readFileSync(filePath, 'utf-8'));
+    const valid = validators['personal-records'](data);
+
+    if (valid) {
+      console.log(`✓ ${file}`);
+    } else {
+      console.log(`✗ ${file} - SHOULD BE VALID`);
+      console.log(`  Errors: ${JSON.stringify(validators['personal-records'].errors, null, 2)}`);
+      exitCode = 1;
+    }
+  }
+}
+
 // Validate invalid examples
 const invalidDir = join(rootDir, 'examples', 'invalid');
 console.log('\nValidating invalid examples (should fail)...\n');
@@ -107,7 +126,6 @@ for (const file of invalidFiles) {
   const filePath = join(invalidDir, file);
   const data = JSON.parse(readFileSync(filePath, 'utf-8'));
 
-  // Determine which validator to use based on filename
   let validator;
   let schemaName;
   if (file.startsWith('template-')) {
@@ -116,6 +134,9 @@ for (const file of invalidFiles) {
   } else if (file.startsWith('program-')) {
     validator = validators['program'];
     schemaName = 'program';
+  } else if (file.startsWith('pr-')) {
+    validator = validators['personal-records'];
+    schemaName = 'personal-records';
   } else {
     validator = validators['workout-log'];
     schemaName = 'workout-log';

@@ -1,0 +1,17 @@
+{
+  "exportedAt": "2024-01-15T10:00:00Z",
+  "records": [
+    {
+      "exercise": {
+        "name": "Squat"
+      },
+      "estimated1RM": {
+        "value": 185,
+        "unit": "kg",
+        "formula": "invalid-formula",
+        "basedOnReps": 3,
+        "basedOnWeight": 165
+      }
+    }
+  ]
+}

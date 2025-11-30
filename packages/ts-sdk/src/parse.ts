@@ -1,5 +1,10 @@
-import { validateWorkoutLog, validateWorkoutTemplate, validateProgram } from './validate.js'
-import type { WorkoutLog, WorkoutTemplate, Program } from './types.js'
+import {
+  validateWorkoutLog,
+  validateWorkoutTemplate,
+  validateProgram,
+  validatePersonalRecords,
+} from './validate.js'
+import type { WorkoutLog, WorkoutTemplate, Program, PersonalRecords } from './types.js'
 
 export class ParseError extends Error {
   constructor(
@@ -69,4 +74,24 @@ export function parseProgram(json: string): Program {
   }
 
   return data as Program
+}
+
+// ============================================
+// Personal Records Parsing
+// ============================================
+
+export function parsePersonalRecords(json: string): PersonalRecords {
+  let data: unknown
+  try {
+    data = JSON.parse(json)
+  } catch {
+    throw new ParseError('Invalid JSON')
+  }
+
+  const result = validatePersonalRecords(data)
+  if (!result.valid) {
+    throw new ParseError('Schema validation failed', result.errors)
+  }
+
+  return data as PersonalRecords
 }

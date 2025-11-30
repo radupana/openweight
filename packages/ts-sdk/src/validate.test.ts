@@ -6,6 +6,8 @@ import {
   isValidWorkoutTemplate,
   validateProgram,
   isValidProgram,
+  validatePersonalRecords,
+  isValidPersonalRecords,
 } from './validate.js'
 
 const validWorkout = {
@@ -327,5 +329,196 @@ describe('isValidProgram', () => {
 
   it('returns false for invalid program', () => {
     expect(isValidProgram({})).toBe(false)
+  })
+})
+
+// ============================================
+// Personal Records Validation Tests
+// ============================================
+
+const validPersonalRecords = {
+  exportedAt: '2024-01-15T10:00:00Z',
+  records: [
+    {
+      exercise: { name: 'Squat' },
+      repMaxes: [{ reps: 1, weight: 180, unit: 'kg', date: '2024-01-15' }],
+    },
+  ],
+}
+
+describe('validatePersonalRecords', () => {
+  it('returns valid for a correct personal records', () => {
+    const result = validatePersonalRecords(validPersonalRecords)
+    expect(result.valid).toBe(true)
+    expect(result.errors).toHaveLength(0)
+  })
+
+  it('returns invalid when exportedAt is missing', () => {
+    const result = validatePersonalRecords({
+      records: [],
+    })
+    expect(result.valid).toBe(false)
+    expect(result.errors.some((e) => e.message?.includes('exportedAt'))).toBe(true)
+  })
+
+  it('returns invalid when records is missing', () => {
+    const result = validatePersonalRecords({
+      exportedAt: '2024-01-15T10:00:00Z',
+    })
+    expect(result.valid).toBe(false)
+    expect(result.errors.some((e) => e.message?.includes('records'))).toBe(true)
+  })
+
+  it('returns valid with empty records array', () => {
+    const result = validatePersonalRecords({
+      exportedAt: '2024-01-15T10:00:00Z',
+      records: [],
+    })
+    expect(result.valid).toBe(true)
+  })
+
+  it('returns invalid when repMax is missing required fields', () => {
+    const result = validatePersonalRecords({
+      exportedAt: '2024-01-15T10:00:00Z',
+      records: [
+        {
+          exercise: { name: 'Squat' },
+          repMaxes: [{ reps: 1, weight: 180 }],
+        },
+      ],
+    })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns invalid when estimated1RM is missing required fields', () => {
+    const result = validatePersonalRecords({
+      exportedAt: '2024-01-15T10:00:00Z',
+      records: [
+        {
+          exercise: { name: 'Squat' },
+          estimated1RM: { value: 185, unit: 'kg' },
+        },
+      ],
+    })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns valid for full estimated1RM', () => {
+    const result = validatePersonalRecords({
+      exportedAt: '2024-01-15T10:00:00Z',
+      records: [
+        {
+          exercise: { name: 'Squat' },
+          estimated1RM: {
+            value: 185,
+            unit: 'kg',
+            formula: 'brzycki',
+            basedOnReps: 5,
+            basedOnWeight: 160,
+          },
+        },
+      ],
+    })
+    expect(result.valid).toBe(true)
+  })
+
+  it('returns invalid for invalid formula enum', () => {
+    const result = validatePersonalRecords({
+      exportedAt: '2024-01-15T10:00:00Z',
+      records: [
+        {
+          exercise: { name: 'Squat' },
+          estimated1RM: {
+            value: 185,
+            unit: 'kg',
+            formula: 'invalid',
+            basedOnReps: 5,
+            basedOnWeight: 160,
+          },
+        },
+      ],
+    })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns invalid for invalid sex enum', () => {
+    const result = validatePersonalRecords({
+      exportedAt: '2024-01-15T10:00:00Z',
+      athlete: { sex: 'other' },
+      records: [],
+    })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns valid for all sex values', () => {
+    for (const sex of ['male', 'female', 'mx']) {
+      const result = validatePersonalRecords({
+        exportedAt: '2024-01-15T10:00:00Z',
+        athlete: { sex },
+        records: [],
+      })
+      expect(result.valid).toBe(true)
+    }
+  })
+
+  it('returns valid for volumePR', () => {
+    const result = validatePersonalRecords({
+      exportedAt: '2024-01-15T10:00:00Z',
+      records: [
+        {
+          exercise: { name: 'Squat' },
+          volumePR: { value: 8500, unit: 'kg', date: '2024-01-15' },
+        },
+      ],
+    })
+    expect(result.valid).toBe(true)
+  })
+
+  it('returns valid for durationPR', () => {
+    const result = validatePersonalRecords({
+      exportedAt: '2024-01-15T10:00:00Z',
+      records: [
+        {
+          exercise: { name: 'Plank' },
+          durationPR: { seconds: 180, date: '2024-01-15' },
+        },
+      ],
+    })
+    expect(result.valid).toBe(true)
+  })
+
+  it('returns valid for normalized scores', () => {
+    const result = validatePersonalRecords({
+      exportedAt: '2024-01-15T10:00:00Z',
+      records: [],
+      normalizedScores: {
+        squat: { wilks: 145.2, dots: 148.5 },
+        total: { wilks: 406.2, dots: 414.6, ipfGl: 420 },
+      },
+    })
+    expect(result.valid).toBe(true)
+  })
+
+  it('allows additional properties', () => {
+    const result = validatePersonalRecords({
+      ...validPersonalRecords,
+      'app:customField': 'value',
+    })
+    expect(result.valid).toBe(true)
+  })
+})
+
+describe('isValidPersonalRecords', () => {
+  it('returns true for valid personal records', () => {
+    expect(isValidPersonalRecords(validPersonalRecords)).toBe(true)
+  })
+
+  it('returns false for invalid personal records', () => {
+    expect(isValidPersonalRecords({})).toBe(false)
+  })
+
+  it('returns false for non-object', () => {
+    expect(isValidPersonalRecords('string')).toBe(false)
+    expect(isValidPersonalRecords(null)).toBe(false)
   })
 })

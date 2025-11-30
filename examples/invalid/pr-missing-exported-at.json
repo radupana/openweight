@@ -1,0 +1,17 @@
+{
+  "records": [
+    {
+      "exercise": {
+        "name": "Squat"
+      },
+      "repMaxes": [
+        {
+          "reps": 1,
+          "weight": 180,
+          "unit": "kg",
+          "date": "2024-01-10"
+        }
+      ]
+    }
+  ]
+}

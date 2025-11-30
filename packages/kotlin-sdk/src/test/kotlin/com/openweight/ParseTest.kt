@@ -125,4 +125,44 @@ class ParseTest {
         }
         assertTrue(exception.errors.isNotEmpty())
     }
+
+    @Test
+    fun `parsePersonalRecords parses valid JSON`() {
+        val json = """
+        {
+            "exportedAt": "2024-01-15T10:00:00Z",
+            "records": [{
+                "exercise": { "name": "Squat" },
+                "repMaxes": [{
+                    "reps": 1,
+                    "weight": 180,
+                    "unit": "kg",
+                    "date": "2024-01-15"
+                }]
+            }]
+        }
+        """.trimIndent()
+
+        val result = parsePersonalRecords(json)
+        assertEquals("2024-01-15T10:00:00Z", result.exportedAt)
+        assertEquals(1, result.records.size)
+        assertEquals("Squat", result.records[0].exercise.name)
+    }
+
+    @Test
+    fun `parsePersonalRecords throws ParseException for invalid JSON`() {
+        val exception = assertFailsWith<ParseException> {
+            parsePersonalRecords("not json")
+        }
+        assertTrue(exception.message!!.contains("Invalid JSON"))
+    }
+
+    @Test
+    fun `parsePersonalRecords throws ParseException for schema validation failures`() {
+        val json = """{"exportedAt": "2024-01-15T10:00:00Z"}"""
+        val exception = assertFailsWith<ParseException> {
+            parsePersonalRecords(json)
+        }
+        assertTrue(exception.errors.isNotEmpty())
+    }
 }

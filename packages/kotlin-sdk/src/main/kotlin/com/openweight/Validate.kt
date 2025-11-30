@@ -23,6 +23,10 @@ private val programSchema: JsonSchema by lazy {
         .fromDefinition(Schemas.program)
 }
 
+private val personalRecordsSchema: JsonSchema by lazy {
+    JsonSchema.fromDefinition(Schemas.personalRecords)
+}
+
 private fun SchemaValidationError.toValidationError(): ValidationError {
     return ValidationError(
         path = objectPath.toString(),
@@ -136,4 +140,40 @@ fun validateProgram(json: String): ValidationResult {
  */
 fun isValidProgram(data: JsonElement): Boolean {
     return programSchema.validate(data) { }
+}
+
+/**
+ * Validates a [JsonElement] against the personal records schema.
+ *
+ * @param data The JSON element to validate
+ * @return A [ValidationResult] containing validity status and any errors
+ */
+fun validatePersonalRecords(data: JsonElement): ValidationResult {
+    val errors = mutableListOf<SchemaValidationError>()
+    val valid = personalRecordsSchema.validate(data, errors::add)
+    return ValidationResult(
+        valid = valid,
+        errors = errors.map { it.toValidationError() }
+    )
+}
+
+/**
+ * Validates a JSON string against the personal records schema.
+ *
+ * @param json The JSON string to validate
+ * @return A [ValidationResult] containing validity status and any errors
+ */
+fun validatePersonalRecords(json: String): ValidationResult {
+    val element = Json.parseToJsonElement(json)
+    return validatePersonalRecords(element)
+}
+
+/**
+ * Checks if a [JsonElement] is a valid personal records document.
+ *
+ * @param data The JSON element to check
+ * @return true if valid, false otherwise
+ */
+fun isValidPersonalRecords(data: JsonElement): Boolean {
+    return personalRecordsSchema.validate(data) { }
 }

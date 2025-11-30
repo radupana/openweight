@@ -1,4 +1,4 @@
-import type { WorkoutLog, WorkoutTemplate, Program } from './types.js'
+import type { WorkoutLog, WorkoutTemplate, Program, PersonalRecords } from './types.js'
 
 // ============================================
 // Workout Log Serialization
@@ -34,4 +34,16 @@ export function serializeProgram(program: Program): string {
 
 export function serializeProgramPretty(program: Program): string {
   return JSON.stringify(program, null, 2)
+}
+
+// ============================================
+// Personal Records Serialization
+// ============================================
+
+export function serializePersonalRecords(records: PersonalRecords): string {
+  return JSON.stringify(records)
+}
+
+export function serializePersonalRecordsPretty(records: PersonalRecords): string {
+  return JSON.stringify(records, null, 2)
 }

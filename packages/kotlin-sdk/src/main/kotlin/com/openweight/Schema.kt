@@ -4,6 +4,7 @@ internal object Schemas {
     val workoutLog: String by lazy { loadSchema("workout-log.schema.json") }
     val workoutTemplate: String by lazy { loadSchema("workout-template.schema.json") }
     val program: String by lazy { loadSchema("program.schema.json") }
+    val personalRecords: String by lazy { loadSchema("personal-records.schema.json") }
 
     private fun loadSchema(filename: String): String {
         return Schemas::class.java.getResourceAsStream("/schemas/$filename")

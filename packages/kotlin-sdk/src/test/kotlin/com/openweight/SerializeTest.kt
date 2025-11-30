@@ -3,6 +3,7 @@ package com.openweight
 import com.openweight.model.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class SerializeTest {
@@ -217,5 +218,101 @@ class SerializeTest {
         assertEquals(original.description, parsed.description)
         assertEquals(original.author, parsed.author)
         assertEquals(original.weeks[0].name, parsed.weeks[0].name)
+    }
+
+    @Test
+    fun `serializePersonalRecords produces valid JSON`() {
+        val records = PersonalRecords(
+            exportedAt = "2024-01-15T10:00:00Z",
+            records = listOf(
+                ExerciseRecord(
+                    exercise = Exercise(name = "Squat"),
+                    repMaxes = listOf(
+                        RepMax(reps = 1, weight = 180.0, unit = WeightUnit.KG, date = "2024-01-15")
+                    )
+                )
+            )
+        )
+
+        val json = serializePersonalRecords(records)
+        assertTrue(json.contains("2024-01-15T10:00:00Z"))
+        assertTrue(json.contains("Squat"))
+        assertTrue(json.contains("180"))
+    }
+
+    @Test
+    fun `serializePersonalRecordsPretty produces formatted JSON`() {
+        val records = PersonalRecords(
+            exportedAt = "2024-01-15T10:00:00Z",
+            records = listOf(
+                ExerciseRecord(
+                    exercise = Exercise(name = "Squat"),
+                    repMaxes = listOf(
+                        RepMax(reps = 1, weight = 180.0, unit = WeightUnit.KG, date = "2024-01-15")
+                    )
+                )
+            )
+        )
+
+        val json = serializePersonalRecordsPretty(records)
+        assertTrue(json.contains("\n"))
+        assertTrue(json.contains("  "))
+    }
+
+    @Test
+    fun `serializePersonalRecords omits null fields`() {
+        val records = PersonalRecords(
+            exportedAt = "2024-01-15T10:00:00Z",
+            records = listOf(
+                ExerciseRecord(
+                    exercise = Exercise(name = "Squat")
+                )
+            )
+        )
+
+        val json = serializePersonalRecords(records)
+        assertFalse(json.contains("repMaxes"))
+        assertFalse(json.contains("estimated1RM"))
+        assertFalse(json.contains("athlete"))
+    }
+
+    @Test
+    fun `roundtrip personal records preserves data`() {
+        val original = PersonalRecords(
+            exportedAt = "2024-01-15T10:00:00Z",
+            athlete = Athlete(bodyweightKg = 82.5, sex = Sex.MALE),
+            records = listOf(
+                ExerciseRecord(
+                    exercise = Exercise(name = "Squat", equipment = "Barbell"),
+                    repMaxes = listOf(
+                        RepMax(
+                            reps = 1,
+                            weight = 180.0,
+                            unit = WeightUnit.KG,
+                            date = "2024-01-15",
+                            type = RepMaxType.ACTUAL
+                        )
+                    ),
+                    estimated1RM = Estimated1RM(
+                        value = 185.0,
+                        unit = WeightUnit.KG,
+                        formula = E1RMFormula.BRZYCKI,
+                        basedOnReps = 5,
+                        basedOnWeight = 155.0
+                    )
+                )
+            )
+        )
+
+        val json = serializePersonalRecords(original)
+        val parsed = parsePersonalRecords(json)
+
+        assertEquals(original.exportedAt, parsed.exportedAt)
+        assertEquals(original.athlete?.bodyweightKg, parsed.athlete?.bodyweightKg)
+        assertEquals(original.athlete?.sex, parsed.athlete?.sex)
+        assertEquals(original.records.size, parsed.records.size)
+        assertEquals(original.records[0].exercise.name, parsed.records[0].exercise.name)
+        assertEquals(original.records[0].repMaxes?.get(0)?.weight, parsed.records[0].repMaxes?.get(0)?.weight)
+        assertEquals(original.records[0].estimated1RM?.formula, parsed.records[0].estimated1RM?.formula)
     }
 }

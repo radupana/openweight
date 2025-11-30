@@ -107,3 +107,92 @@ export interface Program {
   tags?: string[]
   [key: string]: unknown
 }
+
+// ============================================
+// Personal Records Types
+// ============================================
+
+export type Sex = 'male' | 'female' | 'mx'
+
+export type E1RMFormula = 'brzycki' | 'epley' | 'lombardi' | 'mayhew' | 'oconner' | 'wathan'
+
+export type RepMaxType = 'actual' | 'estimated'
+
+export interface Athlete {
+  bodyweightKg?: number
+  sex?: Sex
+  [key: string]: unknown
+}
+
+export interface RepMax {
+  reps: number
+  weight: number
+  unit: WeightUnit
+  date: string
+  type?: RepMaxType
+  bodyweightKg?: number
+  workoutId?: string
+  rpe?: number
+  notes?: string
+  [key: string]: unknown
+}
+
+export interface Estimated1RM {
+  value: number
+  unit: WeightUnit
+  formula: E1RMFormula
+  basedOnReps: number
+  basedOnWeight: number
+  date?: string
+  [key: string]: unknown
+}
+
+export interface VolumePR {
+  value: number
+  unit: WeightUnit
+  date: string
+  notes?: string
+  [key: string]: unknown
+}
+
+export interface DurationPR {
+  seconds: number
+  date: string
+  weight?: number
+  unit?: WeightUnit
+  notes?: string
+  [key: string]: unknown
+}
+
+export interface ExerciseRecord {
+  exercise: Exercise
+  repMaxes?: RepMax[]
+  estimated1RM?: Estimated1RM
+  volumePR?: VolumePR
+  durationPR?: DurationPR
+  [key: string]: unknown
+}
+
+export interface LiftScores {
+  wilks?: number
+  dots?: number
+  ipfGl?: number
+  glossbrenner?: number
+  [key: string]: unknown
+}
+
+export interface NormalizedScores {
+  squat?: LiftScores
+  bench?: LiftScores
+  deadlift?: LiftScores
+  total?: LiftScores
+  [key: string]: unknown
+}
+
+export interface PersonalRecords {
+  exportedAt: string
+  records: ExerciseRecord[]
+  athlete?: Athlete
+  normalizedScores?: NormalizedScores
+  [key: string]: unknown
+}
