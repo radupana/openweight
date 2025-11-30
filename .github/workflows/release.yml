@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.RELEASE_PAT }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -44,15 +44,16 @@ jobs:
       - name: Determine version bump type
         id: bump-type
         run: |
-          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          # Only check the FIRST LINE of the commit message
+          COMMIT_TITLE=$(echo "${{ github.event.head_commit.message }}" | head -1)
+          echo "Commit title: $COMMIT_TITLE"
 
-          # Check for breaking change (major)
-          if echo "$COMMIT_MSG" | grep -qE '^(feat|fix|refactor|perf)(\(.+\))?!:' || \
-             echo "$COMMIT_MSG" | grep -q 'BREAKING CHANGE:'; then
+          # Check for breaking change (major) - only in title
+          if echo "$COMMIT_TITLE" | grep -qE '^(feat|fix|refactor|perf)(\(.+\))?!:'; then
             echo "type=major" >> $GITHUB_OUTPUT
             echo "Detected: MAJOR (breaking change)"
           # Check for feature (minor)
-          elif echo "$COMMIT_MSG" | grep -qE '^feat(\(.+\))?:'; then
+          elif echo "$COMMIT_TITLE" | grep -qE '^feat(\(.+\))?:'; then
             echo "type=minor" >> $GITHUB_OUTPUT
             echo "Detected: MINOR (new feature)"
           # Default to patch for fixes, refactors, perf
