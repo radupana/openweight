@@ -15,9 +15,10 @@ const outputFile = join(__dirname, '../src/schema.ts')
 
 // Map schema filenames to export names
 const schemaMap = {
+  'personal-records.schema.json': 'personalRecordsSchema',
+  'program.schema.json': 'programSchema',
   'workout-log.schema.json': 'workoutLogSchema',
   'workout-template.schema.json': 'workoutTemplateSchema',
-  'program.schema.json': 'programSchema',
 }
 
 function generate() {

@@ -422,4 +422,142 @@ class ValidateTest {
         val element = Json.parseToJsonElement("{}")
         assertFalse(isValidProgram(element))
     }
+
+    @Test
+    fun `validatePersonalRecords returns valid for correct personal records`() {
+        val json = """
+        {
+            "exportedAt": "2024-01-15T10:00:00Z",
+            "records": [{
+                "exercise": { "name": "Squat" },
+                "repMaxes": [{
+                    "reps": 1,
+                    "weight": 180,
+                    "unit": "kg",
+                    "date": "2024-01-15"
+                }]
+            }]
+        }
+        """.trimIndent()
+
+        val result = validatePersonalRecords(json)
+        assertTrue(result.valid)
+        assertTrue(result.errors.isEmpty())
+    }
+
+    @Test
+    fun `validatePersonalRecords returns invalid when exportedAt is missing`() {
+        val json = """
+        {
+            "records": [{
+                "exercise": { "name": "Squat" },
+                "repMaxes": [{ "reps": 1, "weight": 180, "unit": "kg", "date": "2024-01-15" }]
+            }]
+        }
+        """.trimIndent()
+
+        val result = validatePersonalRecords(json)
+        assertFalse(result.valid)
+    }
+
+    @Test
+    fun `validatePersonalRecords returns invalid when records is missing`() {
+        val json = """{"exportedAt": "2024-01-15T10:00:00Z"}"""
+
+        val result = validatePersonalRecords(json)
+        assertFalse(result.valid)
+    }
+
+    @Test
+    fun `validatePersonalRecords returns invalid for invalid rep max`() {
+        val json = """
+        {
+            "exportedAt": "2024-01-15T10:00:00Z",
+            "records": [{
+                "exercise": { "name": "Squat" },
+                "repMaxes": [{ "reps": 1 }]
+            }]
+        }
+        """.trimIndent()
+
+        val result = validatePersonalRecords(json)
+        assertFalse(result.valid)
+    }
+
+    @Test
+    fun `validatePersonalRecords returns invalid for invalid formula`() {
+        val json = """
+        {
+            "exportedAt": "2024-01-15T10:00:00Z",
+            "records": [{
+                "exercise": { "name": "Squat" },
+                "estimated1RM": {
+                    "value": 180,
+                    "unit": "kg",
+                    "formula": "invalid_formula",
+                    "basedOnReps": 5,
+                    "basedOnWeight": 155
+                }
+            }]
+        }
+        """.trimIndent()
+
+        val result = validatePersonalRecords(json)
+        assertFalse(result.valid)
+    }
+
+    @Test
+    fun `validatePersonalRecords returns valid with athlete data`() {
+        val json = """
+        {
+            "exportedAt": "2024-01-15T10:00:00Z",
+            "athlete": { "bodyweightKg": 82.5, "sex": "male" },
+            "records": [{
+                "exercise": { "name": "Squat" },
+                "repMaxes": [{ "reps": 1, "weight": 180, "unit": "kg", "date": "2024-01-15" }]
+            }]
+        }
+        """.trimIndent()
+
+        val result = validatePersonalRecords(json)
+        assertTrue(result.valid)
+    }
+
+    @Test
+    fun `validatePersonalRecords returns invalid for invalid sex`() {
+        val json = """
+        {
+            "exportedAt": "2024-01-15T10:00:00Z",
+            "athlete": { "sex": "invalid" },
+            "records": [{
+                "exercise": { "name": "Squat" },
+                "repMaxes": [{ "reps": 1, "weight": 180, "unit": "kg", "date": "2024-01-15" }]
+            }]
+        }
+        """.trimIndent()
+
+        val result = validatePersonalRecords(json)
+        assertFalse(result.valid)
+    }
+
+    @Test
+    fun `isValidPersonalRecords returns true for valid personal records`() {
+        val element = Json.parseToJsonElement("""
+        {
+            "exportedAt": "2024-01-15T10:00:00Z",
+            "records": [{
+                "exercise": { "name": "Squat" },
+                "repMaxes": [{ "reps": 1, "weight": 180, "unit": "kg", "date": "2024-01-15" }]
+            }]
+        }
+        """.trimIndent())
+
+        assertTrue(isValidPersonalRecords(element))
+    }
+
+    @Test
+    fun `isValidPersonalRecords returns false for invalid personal records`() {
+        val element = Json.parseToJsonElement("{}")
+        assertFalse(isValidPersonalRecords(element))
+    }
 }

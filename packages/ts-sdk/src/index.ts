@@ -15,6 +15,19 @@ export type {
   // Program types
   Program,
   ProgramWeek,
+  // Personal Records types
+  PersonalRecords,
+  ExerciseRecord,
+  RepMax,
+  Estimated1RM,
+  VolumePR,
+  DurationPR,
+  Athlete,
+  NormalizedScores,
+  LiftScores,
+  Sex,
+  E1RMFormula,
+  RepMaxType,
 } from './types.js'
 
 // Parse functions
@@ -22,6 +35,7 @@ export {
   parseWorkoutLog,
   parseWorkoutTemplate,
   parseProgram,
+  parsePersonalRecords,
   ParseError,
 } from './parse.js'
 
@@ -33,6 +47,8 @@ export {
   serializeWorkoutTemplatePretty,
   serializeProgram,
   serializeProgramPretty,
+  serializePersonalRecords,
+  serializePersonalRecordsPretty,
 } from './serialize.js'
 
 // Validate functions
@@ -43,6 +59,8 @@ export {
   isValidWorkoutTemplate,
   validateProgram,
   isValidProgram,
+  validatePersonalRecords,
+  isValidPersonalRecords,
   type ValidationResult,
   type ValidationError,
 } from './validate.js'
@@ -52,4 +70,5 @@ export {
   workoutLogSchema,
   workoutTemplateSchema,
   programSchema,
+  personalRecordsSchema,
 } from './schema.js'

@@ -31,17 +31,33 @@ The SDK exports TypeScript interfaces for all schema types:
 
 ```typescript
 import type {
+  // Workout Log
   WorkoutLog,
   ExerciseLog,
   Exercise,
   SetLog,
+  // Templates & Programs
   WorkoutTemplate,
   ExerciseTemplate,
   SetTemplate,
   Program,
   ProgramWeek,
+  // Personal Records
+  PersonalRecords,
+  ExerciseRecord,
+  RepMax,
+  Estimated1RM,
+  VolumePR,
+  DurationPR,
+  Athlete,
+  NormalizedScores,
+  LiftScores,
+  // Enums
   WeightUnit,
   DistanceUnit,
+  Sex,
+  E1RMFormula,
+  RepMaxType,
 } from '@openweight/sdk'
 ```
 
@@ -62,11 +78,17 @@ type DistanceUnit = 'm' | 'km' | 'ft' | 'mi' | 'yd'
 Parse JSON strings into typed objects:
 
 ```typescript
-import { parseWorkoutLog, parseWorkoutTemplate, parseProgram } from '@openweight/sdk'
+import {
+  parseWorkoutLog,
+  parseWorkoutTemplate,
+  parseProgram,
+  parsePersonalRecords
+} from '@openweight/sdk'
 
 const workout = parseWorkoutLog(jsonString)
 const template = parseWorkoutTemplate(jsonString)
 const program = parseProgram(jsonString)
+const records = parsePersonalRecords(jsonString)
 ```
 
 ### Error Handling
@@ -97,11 +119,21 @@ The `ParseError` includes:
 Use type guards for simple validation:
 
 ```typescript
-import { isValidWorkoutLog, isValidWorkoutTemplate, isValidProgram } from '@openweight/sdk'
+import {
+  isValidWorkoutLog,
+  isValidWorkoutTemplate,
+  isValidProgram,
+  isValidPersonalRecords
+} from '@openweight/sdk'
 
 if (isValidWorkoutLog(data)) {
   // TypeScript knows data is WorkoutLog
   console.log(data.date)
+}
+
+if (isValidPersonalRecords(data)) {
+  // TypeScript knows data is PersonalRecords
+  console.log(data.exportedAt)
 }
 ```
 
@@ -110,7 +142,12 @@ if (isValidWorkoutLog(data)) {
 Get detailed error information:
 
 ```typescript
-import { validateWorkoutLog, validateWorkoutTemplate, validateProgram } from '@openweight/sdk'
+import {
+  validateWorkoutLog,
+  validateWorkoutTemplate,
+  validateProgram,
+  validatePersonalRecords
+} from '@openweight/sdk'
 import type { ValidationResult, ValidationError } from '@openweight/sdk'
 
 const result: ValidationResult = validateWorkoutLog(data)
@@ -122,6 +159,9 @@ if (result.valid) {
     console.log(`${error.path}: ${error.message}`)
   }
 }
+
+// Same pattern for personal records
+const prResult = validatePersonalRecords(data)
 ```
 
 ## Serialization
@@ -136,6 +176,8 @@ import {
   serializeWorkoutTemplatePretty,
   serializeProgram,
   serializeProgramPretty,
+  serializePersonalRecords,
+  serializePersonalRecordsPretty,
 } from '@openweight/sdk'
 
 const workout: WorkoutLog = {
@@ -165,7 +207,12 @@ const pretty = serializeWorkoutLogPretty(workout)
 Access the raw JSON Schema objects:
 
 ```typescript
-import { workoutLogSchema, workoutTemplateSchema, programSchema } from '@openweight/sdk'
+import {
+  workoutLogSchema,
+  workoutTemplateSchema,
+  programSchema,
+  personalRecordsSchema
+} from '@openweight/sdk'
 
 // Use with your own AJV instance
 import Ajv from 'ajv'

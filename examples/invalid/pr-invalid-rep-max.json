@@ -1,0 +1,17 @@
+{
+  "exportedAt": "2024-01-15T10:00:00Z",
+  "records": [
+    {
+      "exercise": {
+        "name": "Squat"
+      },
+      "repMaxes": [
+        {
+          "reps": 1,
+          "weight": 180,
+          "date": "2024-01-10"
+        }
+      ]
+    }
+  ]
+}

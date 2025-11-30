@@ -1,0 +1,63 @@
+{
+  "exportedAt": "2024-01-15T10:00:00Z",
+  "athlete": {
+    "bodyweightKg": 90.7,
+    "sex": "male"
+  },
+  "records": [
+    {
+      "exercise": {
+        "name": "Squat",
+        "equipment": "barbell"
+      },
+      "repMaxes": [
+        {
+          "reps": 1,
+          "weight": 405,
+          "unit": "lb",
+          "date": "2024-01-10"
+        },
+        {
+          "reps": 5,
+          "weight": 345,
+          "unit": "lb",
+          "date": "2024-01-05"
+        }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Bench Press",
+        "equipment": "barbell"
+      },
+      "repMaxes": [
+        {
+          "reps": 1,
+          "weight": 275,
+          "unit": "lb",
+          "date": "2024-01-08"
+        }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Deadlift",
+        "equipment": "barbell"
+      },
+      "repMaxes": [
+        {
+          "reps": 1,
+          "weight": 500,
+          "unit": "lb",
+          "date": "2024-01-12"
+        }
+      ],
+      "volumePR": {
+        "value": 15000,
+        "unit": "lb",
+        "date": "2024-01-10",
+        "notes": "5x5 at 400lb + 5x3 at 450lb"
+      }
+    }
+  ]
+}
