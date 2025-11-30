@@ -12,8 +12,8 @@ dependencies {
 }
 ```
 
-::: warning Note
-The Kotlin SDK is not yet published to Maven Central. For now, include the source directly from the [openweight repository](https://github.com/radupana/openweight/tree/main/packages/kotlin-sdk).
+::: warning Not Yet Published
+The Kotlin SDK is not yet published to Maven Central. For now, you must include the source directly from the [openweight repository](https://github.com/radupana/openweight/tree/main/packages/kotlin-sdk).
 :::
 
 ## Requirements

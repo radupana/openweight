@@ -35,10 +35,11 @@ onMounted(async () => {
     ajvInstance = new Ajv({ allErrors: true, strict: false })
     addFormats(ajvInstance)
 
+    const base = import.meta.env.BASE_URL || '/openweight/'
     const [workoutLogSchema, workoutTemplateSchema, programSchema] = await Promise.all([
-      fetch('https://raw.githubusercontent.com/radupana/openweight/main/schemas/workout-log.schema.json').then(r => r.json()),
-      fetch('https://raw.githubusercontent.com/radupana/openweight/main/schemas/workout-template.schema.json').then(r => r.json()),
-      fetch('https://raw.githubusercontent.com/radupana/openweight/main/schemas/program.schema.json').then(r => r.json())
+      fetch(`${base}schemas/workout-log.schema.json`).then(r => r.json()),
+      fetch(`${base}schemas/workout-template.schema.json`).then(r => r.json()),
+      fetch(`${base}schemas/program.schema.json`).then(r => r.json())
     ])
 
     ajvInstance.addSchema(workoutTemplateSchema, 'workout-template.schema.json')
