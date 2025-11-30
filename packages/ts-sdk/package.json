@@ -1,6 +1,6 @@
 {
   "name": "@openweight/sdk",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "TypeScript SDK for openweight - parse, validate, and serialize workout data",
   "type": "module",
   "main": "./dist/index.cjs",
