@@ -114,7 +114,7 @@ jobs:
         working-directory: packages/kotlin-sdk
 
       - name: Publish to Maven Central
-        run: ./gradlew publishToMavenCentral --no-configuration-cache
+        run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
         working-directory: packages/kotlin-sdk
         env:
           ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
