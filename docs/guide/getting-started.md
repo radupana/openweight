@@ -92,7 +92,15 @@ const pretty = serializeWorkoutLogPretty(workout)
 
 ## Kotlin SDK
 
-For Android/JVM projects, see the [Kotlin SDK documentation](/sdk/kotlin).
+For Android/JVM projects, add the Maven Central dependency:
+
+```kotlin
+dependencies {
+    implementation("io.github.radupana:openweight-sdk:0.2.0")
+}
+```
+
+See the full [Kotlin SDK documentation](/sdk/kotlin) for parsing, validation, and serialization examples.
 
 ## Next Steps
 

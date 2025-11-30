@@ -7,14 +7,20 @@ The Kotlin SDK provides type-safe parsing, validation, and serialization for ope
 Add the dependency to your `build.gradle.kts`:
 
 ```kotlin
+repositories {
+    mavenCentral()
+}
+
 dependencies {
-    implementation("com.openweight:openweight-sdk:0.1.0")
+    implementation("io.github.radupana:openweight-sdk:0.2.0")
 }
 ```
 
-::: warning Not Yet Published
-The Kotlin SDK is not yet published to Maven Central. For now, you must include the source directly from the [openweight repository](https://github.com/radupana/openweight/tree/main/packages/kotlin-sdk).
-:::
+For Gradle (Groovy):
+
+```groovy
+implementation 'io.github.radupana:openweight-sdk:0.2.0'
+```
 
 ## Requirements
 

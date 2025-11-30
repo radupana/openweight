@@ -16,10 +16,10 @@ hero:
 features:
   - icon: 📋
     title: JSON Schema Spec
-    details: A clean, well-documented schema for workouts, templates, and programs. Human-readable and machine-validatable.
+    details: A clean, well-documented schema for workouts, templates, programs, and personal records. Human-readable and machine-validatable.
   - icon: 🔧
     title: Ready-to-Use SDKs
-    details: TypeScript and Kotlin SDKs for parsing, validating, and serializing workout data. Integrate in minutes.
+    details: TypeScript (npm) and Kotlin (Maven Central) SDKs for parsing, validating, and serializing workout data. Integrate in minutes.
   - icon: 🔄
     title: Data Portability
     details: Export from one app, import to another. No vendor lock-in, no proprietary formats.
