@@ -85,7 +85,9 @@ jobs:
           npm run test:sdk
 
       - name: Publish to npm
-        run: npm publish --workspace=@openweight/sdk --provenance
+        run: npm publish --workspace=@openweight/sdk --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-maven:
     name: Publish Kotlin SDK to Maven Central
