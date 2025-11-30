@@ -1,10 +1,45 @@
 plugins {
     kotlin("jvm") version "2.2.0"
     kotlin("plugin.serialization") version "2.2.21"
+    id("com.vanniktech.maven.publish") version "0.30.0"
 }
 
-group = "com.openweight"
+group = "io.github.radupana"
 version = "0.1.0"
+
+mavenPublishing {
+    publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
+    signAllPublications()
+
+    coordinates("io.github.radupana", "openweight-sdk", version.toString())
+
+    pom {
+        name.set("openweight-sdk")
+        description.set("Kotlin SDK for openweight - parse, validate, and serialize workout data")
+        url.set("https://github.com/radupana/openweight")
+
+        licenses {
+            license {
+                name.set("Apache-2.0")
+                url.set("https://www.apache.org/licenses/LICENSE-2.0")
+            }
+        }
+
+        developers {
+            developer {
+                id.set("radupana")
+                name.set("Radu Pana")
+                url.set("https://github.com/radupana")
+            }
+        }
+
+        scm {
+            url.set("https://github.com/radupana/openweight")
+            connection.set("scm:git:git://github.com/radupana/openweight.git")
+            developerConnection.set("scm:git:ssh://github.com/radupana/openweight.git")
+        }
+    }
+}
 
 repositories {
     mavenCentral()

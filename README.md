@@ -7,7 +7,7 @@ Open standard for exchanging strength-training programs, workouts, and logs betw
 | SDK | Package | Status |
 |-----|---------|--------|
 | TypeScript | [@openweight/sdk](https://www.npmjs.com/package/@openweight/sdk) | Published |
-| Kotlin | `com.openweight:sdk` | Not yet published |
+| Kotlin | `io.github.radupana:openweight-sdk` | Published |
 
 ## Releasing
 
@@ -47,7 +47,35 @@ The workflow automatically builds, tests, and publishes to npm via OIDC.
 
 ### Kotlin SDK (Maven Central)
 
-Not yet automated. See [issue #7](https://github.com/radupana/openweight/issues/7) for status.
+#### Steps
+
+```bash
+# 1. Make sure you're on main and up to date
+git checkout main && git pull
+
+# 2. Update version in packages/kotlin-sdk/build.gradle.kts
+# Edit: version = "X.Y.Z"
+
+# 3. Commit the version change
+git commit -am "chore: release openweight-sdk vX.Y.Z (Kotlin)"
+
+# 4. Push to main
+git push
+```
+
+Then on GitHub:
+1. Go to [Releases](https://github.com/radupana/openweight/releases) → **Draft a new release**
+2. Click **Choose a tag** → type the version (e.g., `v0.1.1`) → **Create new tag**
+3. Set the **Release title** to the same version (e.g., `v0.1.1`)
+4. Click **Publish release**
+
+The workflow automatically builds, tests, signs, and publishes to Maven Central.
+
+#### Usage in Gradle
+
+```kotlin
+implementation("io.github.radupana:openweight-sdk:0.1.0")
+```
 
 ## License
 
