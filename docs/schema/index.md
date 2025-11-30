@@ -1,14 +1,15 @@
 # Schema Overview
 
-openweight defines three JSON Schemas that together describe the full lifecycle of strength training data.
+openweight defines four JSON Schemas that together describe the full lifecycle of strength training data.
 
 ## Schemas
 
-| Schema                                      | Purpose                       | Status |
-|---------------------------------------------|-------------------------------|--------|
-| [WorkoutLog](/schema/workout-log)           | Completed workout sessions    | Stable |
-| [WorkoutTemplate](/schema/workout-template) | Planned workout prescriptions | Stable |
-| [Program](/schema/program)                  | Multi-week training programs  | Stable |
+| Schema                                          | Purpose                          | Status |
+|-------------------------------------------------|----------------------------------|--------|
+| [WorkoutLog](/schema/workout-log)               | Completed workout sessions       | Stable |
+| [WorkoutTemplate](/schema/workout-template)     | Planned workout prescriptions    | Stable |
+| [Program](/schema/program)                      | Multi-week training programs     | Stable |
+| [PersonalRecords](/schema/personal-records)     | Personal records and 1RM exports | Stable |
 
 ## JSON Schema Version
 
@@ -18,11 +19,12 @@ All schemas use **JSON Schema draft-07** for maximum compatibility with validati
 
 Each schema has a canonical `$id` for reference resolution:
 
-| Schema          | $id                                                           |
-|-----------------|---------------------------------------------------------------|
-| WorkoutLog      | `https://openweight.org/schemas/workout-log.schema.json`      |
-| WorkoutTemplate | `https://openweight.org/schemas/workout-template.schema.json` |
-| Program         | `https://openweight.org/schemas/program.schema.json`          |
+| Schema          | $id                                                              |
+|-----------------|------------------------------------------------------------------|
+| WorkoutLog      | `https://openweight.org/schemas/workout-log.schema.json`         |
+| WorkoutTemplate | `https://openweight.org/schemas/workout-template.schema.json`    |
+| Program         | `https://openweight.org/schemas/program.schema.json`             |
+| PersonalRecords | `https://openweight.org/schemas/personal-records.schema.json`    |
 
 ## Relationships
 
@@ -86,3 +88,4 @@ The canonical schema files are available in the repository:
 - [workout-log.schema.json](https://github.com/radupana/openweight/blob/main/schemas/workout-log.schema.json)
 - [workout-template.schema.json](https://github.com/radupana/openweight/blob/main/schemas/workout-template.schema.json)
 - [program.schema.json](https://github.com/radupana/openweight/blob/main/schemas/program.schema.json)
+- [personal-records.schema.json](https://github.com/radupana/openweight/blob/main/schemas/personal-records.schema.json)

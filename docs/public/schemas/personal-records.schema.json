@@ -1,0 +1,367 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://openweight.org/schemas/personal-records.schema.json",
+  "title": "PersonalRecords",
+  "description": "A collection of personal records (PRs) and one-rep maxes for strength training exercises",
+  "type": "object",
+  "required": ["exportedAt", "records"],
+  "additionalProperties": true,
+  "properties": {
+    "exportedAt": {
+      "title": "Exported At",
+      "description": "When this PR snapshot was exported in ISO 8601 format",
+      "type": "string",
+      "format": "date-time",
+      "examples": ["2024-01-15T10:00:00Z"]
+    },
+    "athlete": {
+      "$ref": "#/definitions/Athlete"
+    },
+    "records": {
+      "title": "Records",
+      "description": "Array of exercise PR records",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/ExerciseRecord"
+      }
+    },
+    "normalizedScores": {
+      "$ref": "#/definitions/NormalizedScores"
+    }
+  },
+  "definitions": {
+    "Athlete": {
+      "title": "Athlete",
+      "description": "Athlete info for normalization calculations (no PII)",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "bodyweightKg": {
+          "title": "Bodyweight (kg)",
+          "description": "Current/reference bodyweight in kilograms for coefficient calculation",
+          "type": "number",
+          "minimum": 0,
+          "examples": [82.5, 75, 100]
+        },
+        "sex": {
+          "title": "Sex",
+          "description": "Biological sex for coefficient calculation",
+          "type": "string",
+          "enum": ["male", "female", "mx"]
+        }
+      }
+    },
+    "ExerciseRecord": {
+      "title": "ExerciseRecord",
+      "description": "Personal records for a single exercise",
+      "type": "object",
+      "required": ["exercise"],
+      "additionalProperties": true,
+      "properties": {
+        "exercise": {
+          "$ref": "#/definitions/Exercise"
+        },
+        "repMaxes": {
+          "title": "Rep Maxes",
+          "description": "Best weight lifted at each rep count (1RM, 2RM, etc.)",
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/RepMax"
+          }
+        },
+        "estimated1RM": {
+          "$ref": "#/definitions/Estimated1RM"
+        },
+        "volumePR": {
+          "$ref": "#/definitions/VolumePR"
+        },
+        "durationPR": {
+          "$ref": "#/definitions/DurationPR"
+        }
+      }
+    },
+    "Exercise": {
+      "title": "Exercise",
+      "description": "Describes which exercise the records are for",
+      "type": "object",
+      "required": ["name"],
+      "additionalProperties": true,
+      "properties": {
+        "name": {
+          "title": "Name",
+          "description": "Human-readable exercise name",
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200,
+          "examples": ["Barbell Back Squat", "Bench Press", "Pull-up"]
+        },
+        "equipment": {
+          "title": "Equipment",
+          "description": "Equipment used. Use variants for different gear (e.g., 'barbell-wraps' vs 'barbell-raw')",
+          "type": "string",
+          "maxLength": 50,
+          "examples": ["barbell", "dumbbell", "bodyweight", "barbell-wraps"]
+        },
+        "category": {
+          "title": "Category",
+          "description": "Body part or category",
+          "type": "string",
+          "maxLength": 50,
+          "examples": ["chest", "back", "legs"]
+        }
+      }
+    },
+    "RepMax": {
+      "title": "RepMax",
+      "description": "Best weight lifted for a specific rep count",
+      "type": "object",
+      "required": ["reps", "weight", "unit", "date"],
+      "additionalProperties": true,
+      "properties": {
+        "reps": {
+          "title": "Reps",
+          "description": "Number of repetitions (1 for 1RM, 5 for 5RM, etc.)",
+          "type": "integer",
+          "minimum": 1,
+          "examples": [1, 3, 5, 10]
+        },
+        "weight": {
+          "title": "Weight",
+          "description": "Weight lifted",
+          "type": "number",
+          "minimum": 0,
+          "examples": [180, 100, 225]
+        },
+        "unit": {
+          "title": "Unit",
+          "description": "Weight unit",
+          "type": "string",
+          "enum": ["kg", "lb"]
+        },
+        "date": {
+          "title": "Date",
+          "description": "When the PR was achieved (date only for privacy)",
+          "type": "string",
+          "format": "date",
+          "examples": ["2024-01-15", "2023-12-20"]
+        },
+        "type": {
+          "title": "Type",
+          "description": "Whether this was actually tested or estimated from other lifts",
+          "type": "string",
+          "enum": ["actual", "estimated"],
+          "default": "actual"
+        },
+        "bodyweightKg": {
+          "title": "Bodyweight (kg)",
+          "description": "Bodyweight at time of PR for normalized scoring",
+          "type": "number",
+          "minimum": 0,
+          "examples": [82.5, 75]
+        },
+        "workoutId": {
+          "title": "Workout ID",
+          "description": "Reference to the source workout log",
+          "type": "string",
+          "maxLength": 200
+        },
+        "rpe": {
+          "title": "RPE",
+          "description": "Rate of Perceived Exertion if recorded",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "examples": [9, 10, 9.5]
+        },
+        "notes": {
+          "title": "Notes",
+          "description": "Context for the PR (competition, gym PR, etc.)",
+          "type": "string",
+          "maxLength": 1000
+        }
+      }
+    },
+    "Estimated1RM": {
+      "title": "Estimated1RM",
+      "description": "Calculated one-rep max from submaximal work",
+      "type": "object",
+      "required": ["value", "unit", "formula", "basedOnReps", "basedOnWeight"],
+      "additionalProperties": true,
+      "properties": {
+        "value": {
+          "title": "Value",
+          "description": "Estimated 1RM value",
+          "type": "number",
+          "minimum": 0,
+          "examples": [185, 200, 150]
+        },
+        "unit": {
+          "title": "Unit",
+          "description": "Weight unit",
+          "type": "string",
+          "enum": ["kg", "lb"]
+        },
+        "formula": {
+          "title": "Formula",
+          "description": "Formula used for calculation",
+          "type": "string",
+          "enum": ["brzycki", "epley", "lombardi", "mayhew", "oconner", "wathan"],
+          "examples": ["brzycki", "epley"]
+        },
+        "basedOnReps": {
+          "title": "Based On Reps",
+          "description": "Reps from the set used for calculation",
+          "type": "integer",
+          "minimum": 1,
+          "examples": [3, 5, 8]
+        },
+        "basedOnWeight": {
+          "title": "Based On Weight",
+          "description": "Weight from the set used for calculation",
+          "type": "number",
+          "minimum": 0,
+          "examples": [165, 140, 200]
+        },
+        "date": {
+          "title": "Date",
+          "description": "When the estimate was calculated",
+          "type": "string",
+          "format": "date",
+          "examples": ["2024-01-15"]
+        }
+      }
+    },
+    "VolumePR": {
+      "title": "VolumePR",
+      "description": "Best session volume (total weight moved) for an exercise",
+      "type": "object",
+      "required": ["value", "unit", "date"],
+      "additionalProperties": true,
+      "properties": {
+        "value": {
+          "title": "Value",
+          "description": "Total volume (sets × reps × weight)",
+          "type": "number",
+          "minimum": 0,
+          "examples": [8500, 12000, 5000]
+        },
+        "unit": {
+          "title": "Unit",
+          "description": "Weight unit",
+          "type": "string",
+          "enum": ["kg", "lb"]
+        },
+        "date": {
+          "title": "Date",
+          "description": "When the volume PR was achieved",
+          "type": "string",
+          "format": "date",
+          "examples": ["2024-01-12"]
+        },
+        "notes": {
+          "title": "Notes",
+          "description": "Details about the session",
+          "type": "string",
+          "maxLength": 1000,
+          "examples": ["10x5 at 170kg", "5x10 at 100kg"]
+        }
+      }
+    },
+    "DurationPR": {
+      "title": "DurationPR",
+      "description": "Best time for timed exercises (planks, carries, holds)",
+      "type": "object",
+      "required": ["seconds", "date"],
+      "additionalProperties": true,
+      "properties": {
+        "seconds": {
+          "title": "Seconds",
+          "description": "Duration in seconds",
+          "type": "integer",
+          "minimum": 0,
+          "examples": [180, 60, 300]
+        },
+        "date": {
+          "title": "Date",
+          "description": "When the duration PR was achieved",
+          "type": "string",
+          "format": "date",
+          "examples": ["2024-01-08"]
+        },
+        "weight": {
+          "title": "Weight",
+          "description": "Weight used if applicable (weighted plank, loaded carry)",
+          "type": "number",
+          "minimum": 0,
+          "examples": [20, 50]
+        },
+        "unit": {
+          "title": "Unit",
+          "description": "Weight unit if weight is provided",
+          "type": "string",
+          "enum": ["kg", "lb"]
+        },
+        "notes": {
+          "title": "Notes",
+          "description": "Details about the PR",
+          "type": "string",
+          "maxLength": 1000
+        }
+      }
+    },
+    "NormalizedScores": {
+      "title": "NormalizedScores",
+      "description": "Pre-calculated bodyweight-normalized scores for powerlifts",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "squat": {
+          "$ref": "#/definitions/LiftScores"
+        },
+        "bench": {
+          "$ref": "#/definitions/LiftScores"
+        },
+        "deadlift": {
+          "$ref": "#/definitions/LiftScores"
+        },
+        "total": {
+          "$ref": "#/definitions/LiftScores"
+        }
+      }
+    },
+    "LiftScores": {
+      "title": "LiftScores",
+      "description": "Normalized scores for a single lift or total",
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "wilks": {
+          "title": "Wilks Score",
+          "description": "Wilks coefficient score",
+          "type": "number",
+          "minimum": 0,
+          "examples": [145.2, 406.2]
+        },
+        "dots": {
+          "title": "DOTS Score",
+          "description": "DOTS coefficient score",
+          "type": "number",
+          "minimum": 0,
+          "examples": [148.5, 414.6]
+        },
+        "ipfGl": {
+          "title": "IPF GL Score",
+          "description": "IPF Goodlift score",
+          "type": "number",
+          "minimum": 0
+        },
+        "glossbrenner": {
+          "title": "Glossbrenner Score",
+          "description": "Glossbrenner coefficient score",
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

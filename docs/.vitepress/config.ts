@@ -43,6 +43,7 @@ export default defineConfig({
             { text: 'WorkoutLog', link: '/schema/workout-log' },
             { text: 'WorkoutTemplate', link: '/schema/workout-template' },
             { text: 'Program', link: '/schema/program' },
+            { text: 'PersonalRecords', link: '/schema/personal-records' },
           ]
         }
       ],
@@ -64,6 +65,7 @@ export default defineConfig({
             { text: 'Workout Logs', link: '/examples/workout-logs' },
             { text: 'Templates', link: '/examples/workout-templates' },
             { text: 'Programs', link: '/examples/programs' },
+            { text: 'Personal Records', link: '/examples/personal-records' },
           ]
         }
       ],
