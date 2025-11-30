@@ -3,7 +3,7 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: 'openweight',
   description: 'Open data format for strength training',
-  base: '/openweight/',
+  base: '/',
 
   head: [
     ['meta', { property: 'og:title', content: 'openweight' }],
@@ -12,7 +12,7 @@ export default defineConfig({
   ],
 
   sitemap: {
-    hostname: 'https://radupana.github.io/openweight'
+    hostname: 'https://openweight.dev'
   },
 
   themeConfig: {
