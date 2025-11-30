@@ -76,6 +76,13 @@ jobs:
       - name: Update npm for OIDC support
         run: npm install -g npm@latest
 
+      - name: Set version from tag
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "Publishing version: $VERSION"
+          cd packages/ts-sdk
+          npm version $VERSION --no-git-tag-version
+
       - name: Install dependencies
         run: npm ci
 
@@ -108,6 +115,12 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
+
+      - name: Set version from tag
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "Publishing version: $VERSION"
+          sed -i "s/version = \".*\"/version = \"$VERSION\"/" packages/kotlin-sdk/build.gradle.kts
 
       - name: Run tests
         run: ./gradlew test
