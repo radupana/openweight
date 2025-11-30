@@ -10,12 +10,17 @@
   "scripts": {
     "validate-examples": "node scripts/validate-examples.js",
     "test": "node --test ./test/*.test.js",
+    "test:scripts": "node --test ./scripts/*.test.js",
     "test:sdk": "npm test --workspace=@openweight/sdk",
+    "test:all": "npm run test && npm run test:scripts && npm run test:sdk",
     "build": "npm run build --workspace=@openweight/sdk",
     "typecheck": "npm run typecheck --workspace=@openweight/sdk",
     "docs:dev": "npm run docs:dev --prefix docs",
     "docs:build": "npm run docs:build --prefix docs",
-    "docs:preview": "npm run docs:preview --prefix docs"
+    "docs:preview": "npm run docs:preview --prefix docs",
+    "version:patch": "node scripts/bump-version.js patch",
+    "version:minor": "node scripts/bump-version.js minor",
+    "version:major": "node scripts/bump-version.js major"
   },
   "keywords": [
     "fitness",

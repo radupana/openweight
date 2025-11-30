@@ -1,6 +1,6 @@
 {
   "name": "@openweight/sdk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TypeScript SDK for openweight - parse, validate, and serialize workout data",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -36,8 +36,12 @@
     "json-schema",
     "typescript"
   ],
-  "author": "",
+  "author": "openweight contributors",
   "license": "Apache-2.0",
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/radupana/openweight.git",
