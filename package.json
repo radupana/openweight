@@ -12,7 +12,10 @@
     "test": "node --test ./test/*.test.js",
     "test:sdk": "npm test --workspace=@openweight/sdk",
     "build": "npm run build --workspace=@openweight/sdk",
-    "typecheck": "npm run typecheck --workspace=@openweight/sdk"
+    "typecheck": "npm run typecheck --workspace=@openweight/sdk",
+    "docs:dev": "npm run docs:dev --prefix docs",
+    "docs:build": "npm run docs:build --prefix docs",
+    "docs:preview": "npm run docs:preview --prefix docs"
   },
   "keywords": [
     "fitness",
