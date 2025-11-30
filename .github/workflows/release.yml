@@ -1,0 +1,189 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    # Only run if the commit message looks like a conventional commit
+    # (skip for version bumps, merges without conventional format, etc.)
+    if: |
+      startsWith(github.event.head_commit.message, 'feat') ||
+      startsWith(github.event.head_commit.message, 'fix') ||
+      startsWith(github.event.head_commit.message, 'perf') ||
+      startsWith(github.event.head_commit.message, 'refactor')
+
+    outputs:
+      released: ${{ steps.release.outputs.released }}
+      version: ${{ steps.release.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Setup JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Determine version bump type
+        id: bump-type
+        run: |
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+
+          # Check for breaking change (major)
+          if echo "$COMMIT_MSG" | grep -qE '^(feat|fix|refactor|perf)(\(.+\))?!:' || \
+             echo "$COMMIT_MSG" | grep -q 'BREAKING CHANGE:'; then
+            echo "type=major" >> $GITHUB_OUTPUT
+            echo "Detected: MAJOR (breaking change)"
+          # Check for feature (minor)
+          elif echo "$COMMIT_MSG" | grep -qE '^feat(\(.+\))?:'; then
+            echo "type=minor" >> $GITHUB_OUTPUT
+            echo "Detected: MINOR (new feature)"
+          # Default to patch for fixes, refactors, perf
+          else
+            echo "type=patch" >> $GITHUB_OUTPUT
+            echo "Detected: PATCH (fix/refactor/perf)"
+          fi
+
+      - name: Get current version
+        id: current-version
+        run: |
+          VERSION=$(node -p "require('./version.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Current version: $VERSION"
+
+      - name: Calculate next version
+        id: next-version
+        run: |
+          CURRENT="${{ steps.current-version.outputs.version }}"
+          BUMP_TYPE="${{ steps.bump-type.outputs.type }}"
+
+          IFS='.' read -r MAJOR MINOR PATCH <<< "$CURRENT"
+
+          case $BUMP_TYPE in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              PATCH=0
+              ;;
+            patch)
+              PATCH=$((PATCH + 1))
+              ;;
+          esac
+
+          NEXT_VERSION="$MAJOR.$MINOR.$PATCH"
+          echo "version=$NEXT_VERSION" >> $GITHUB_OUTPUT
+          echo "Next version: $NEXT_VERSION"
+
+      - name: Check if release needed
+        id: check-release
+        run: |
+          NEXT_VERSION="${{ steps.next-version.outputs.version }}"
+
+          # Check if tag already exists
+          if git rev-parse "v$NEXT_VERSION" >/dev/null 2>&1; then
+            echo "Tag v$NEXT_VERSION already exists, skipping release"
+            echo "needed=false" >> $GITHUB_OUTPUT
+          else
+            echo "needed=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Update version files
+        if: steps.check-release.outputs.needed == 'true'
+        run: |
+          NEXT_VERSION="${{ steps.next-version.outputs.version }}"
+
+          # Update version.json
+          echo "{\"version\": \"$NEXT_VERSION\"}" > version.json
+
+          # Update TypeScript SDK
+          cd packages/ts-sdk
+          npm version $NEXT_VERSION --no-git-tag-version
+          cd ../..
+
+          # Update Kotlin SDK
+          sed -i "s/version = \".*\"/version = \"$NEXT_VERSION\"/" packages/kotlin-sdk/build.gradle.kts
+
+      - name: Commit version bump
+        if: steps.check-release.outputs.needed == 'true'
+        run: |
+          NEXT_VERSION="${{ steps.next-version.outputs.version }}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add version.json packages/ts-sdk/package.json packages/kotlin-sdk/build.gradle.kts
+          git commit -m "chore: release v$NEXT_VERSION [skip ci]"
+          git push
+
+      - name: Create and push tag
+        if: steps.check-release.outputs.needed == 'true'
+        run: |
+          NEXT_VERSION="${{ steps.next-version.outputs.version }}"
+
+          git tag "v$NEXT_VERSION"
+          git push origin "v$NEXT_VERSION"
+
+      - name: Generate release notes
+        if: steps.check-release.outputs.needed == 'true'
+        id: release-notes
+        run: |
+          COMMIT_MSG="${{ github.event.head_commit.message }}"
+          NEXT_VERSION="${{ steps.next-version.outputs.version }}"
+
+          # Extract the first line (title) and body
+          TITLE=$(echo "$COMMIT_MSG" | head -1)
+          BODY=$(echo "$COMMIT_MSG" | tail -n +3)
+
+          # Create release notes
+          cat << EOF > release_notes.md
+          ## What's Changed
+
+          $TITLE
+
+          $BODY
+
+          **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.current-version.outputs.version }}...v$NEXT_VERSION
+          EOF
+
+      - name: Create GitHub Release
+        if: steps.check-release.outputs.needed == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.next-version.outputs.version }}
+          name: v${{ steps.next-version.outputs.version }}
+          body_path: release_notes.md
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set outputs
+        id: release
+        run: |
+          if [ "${{ steps.check-release.outputs.needed }}" == "true" ]; then
+            echo "released=true" >> $GITHUB_OUTPUT
+            echo "version=${{ steps.next-version.outputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "released=false" >> $GITHUB_OUTPUT
+          fi
