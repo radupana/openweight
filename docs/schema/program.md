@@ -2,6 +2,14 @@
 
 A **Program** represents a multi-week training program containing workout templates organized by week.
 
+## Interactive Explorer
+
+<SchemaExplorer
+  schema-url="schemas/program.schema.json"
+  title="Program Schema"
+  :initial-expansion-level="2"
+/>
+
 ## Top-Level Properties
 
 | Field | Type | Required | Description |

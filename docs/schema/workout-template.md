@@ -2,6 +2,14 @@
 
 A **WorkoutTemplate** represents a planned workout with target reps, weights, and intensity prescriptions.
 
+## Interactive Explorer
+
+<SchemaExplorer
+  schema-url="schemas/workout-template.schema.json"
+  title="WorkoutTemplate Schema"
+  :initial-expansion-level="2"
+/>
+
 ## Top-Level Properties
 
 | Field | Type | Required | Description |

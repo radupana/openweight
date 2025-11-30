@@ -2,6 +2,14 @@
 
 A **WorkoutLog** represents a completed strength training session with actual performance data.
 
+## Interactive Explorer
+
+<SchemaExplorer
+  schema-url="schemas/workout-log.schema.json"
+  title="WorkoutLog Schema"
+  :initial-expansion-level="2"
+/>
+
 ## Top-Level Properties
 
 | Field             | Type               | Required | Description                                         |
