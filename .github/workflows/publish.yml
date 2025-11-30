@@ -13,9 +13,55 @@ permissions:
   id-token: write
 
 jobs:
+  detect-changes:
+    name: Detect SDK changes
+    runs-on: ubuntu-latest
+    outputs:
+      ts-changed: ${{ steps.check.outputs.ts-changed }}
+      kotlin-changed: ${{ steps.check.outputs.kotlin-changed }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check for changes since last release
+        id: check
+        run: |
+          PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+
+          if [ -z "$PREV_TAG" ]; then
+            echo "No previous tag found, publishing both SDKs"
+            echo "ts-changed=true" >> $GITHUB_OUTPUT
+            echo "kotlin-changed=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
+          echo "Comparing against previous tag: $PREV_TAG"
+
+          TS_CHANGES=$(git diff --name-only $PREV_TAG HEAD -- packages/ts-sdk/ schemas/ | head -1)
+          if [ -n "$TS_CHANGES" ]; then
+            echo "TypeScript SDK has changes"
+            echo "ts-changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "TypeScript SDK has no changes"
+            echo "ts-changed=false" >> $GITHUB_OUTPUT
+          fi
+
+          KOTLIN_CHANGES=$(git diff --name-only $PREV_TAG HEAD -- packages/kotlin-sdk/ schemas/ | head -1)
+          if [ -n "$KOTLIN_CHANGES" ]; then
+            echo "Kotlin SDK has changes"
+            echo "kotlin-changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "Kotlin SDK has no changes"
+            echo "kotlin-changed=false" >> $GITHUB_OUTPUT
+          fi
+
   publish-npm:
     name: Publish TypeScript SDK to npm
     runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.ts-changed == 'true'
 
     steps:
       - name: Checkout
@@ -44,6 +90,8 @@ jobs:
   publish-maven:
     name: Publish Kotlin SDK to Maven Central
     runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.kotlin-changed == 'true'
 
     steps:
       - name: Checkout

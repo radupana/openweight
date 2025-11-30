@@ -16,9 +16,9 @@
     "docs:dev": "npm run docs:dev --prefix docs",
     "docs:build": "npm run docs:build --prefix docs",
     "docs:preview": "npm run docs:preview --prefix docs",
-    "version:patch": "npm version patch --workspace=@openweight/sdk --no-git-tag-version",
-    "version:minor": "npm version minor --workspace=@openweight/sdk --no-git-tag-version",
-    "version:major": "npm version major --workspace=@openweight/sdk --no-git-tag-version"
+    "version:patch": "node scripts/bump-version.js patch",
+    "version:minor": "node scripts/bump-version.js minor",
+    "version:major": "node scripts/bump-version.js major"
   },
   "keywords": [
     "fitness",

@@ -4,75 +4,61 @@ Open standard for exchanging strength-training programs, workouts, and logs betw
 
 ## SDKs
 
-| SDK | Package | Status |
-|-----|---------|--------|
+| SDK        | Package                                                          | Status    |
+|------------|------------------------------------------------------------------|-----------|
 | TypeScript | [@openweight/sdk](https://www.npmjs.com/package/@openweight/sdk) | Published |
-| Kotlin | `io.github.radupana:openweight-sdk` | Published |
+| Kotlin     | `io.github.radupana:openweight-sdk`                              | Published |
 
 ## Releasing
 
-### TypeScript SDK (npm)
+Both SDKs share the same version number. The version bump script updates all locations.
 
-#### Version Types
+### Version Types
 
-| Command | When to use | Example |
-|---------|-------------|---------|
-| `npm run version:patch` | Bug fixes, docs, internal changes | 0.1.0 → 0.1.1 |
+| Command                 | When to use                        | Example       |
+|-------------------------|------------------------------------|---------------|
+| `npm run version:patch` | Bug fixes, docs, internal changes  | 0.1.0 → 0.1.1 |
 | `npm run version:minor` | New features (backward-compatible) | 0.1.0 → 0.2.0 |
-| `npm run version:major` | Breaking changes | 0.1.0 → 1.0.0 |
+| `npm run version:major` | Breaking changes                   | 0.1.0 → 1.0.0 |
 
-#### Steps
+### Steps
 
 ```bash
-# 1. Make sure you're on main and up to date
+# 1. Create a release branch
 git checkout main && git pull
+git checkout -b release/vX.Y.Z
 
-# 2. Bump version (pick one)
+# 2. Bump version (updates version.json, ts-sdk, and kotlin-sdk)
 npm run version:patch   # or version:minor or version:major
 
 # 3. Commit the version change
-git commit -am "chore: release @openweight/sdk vX.Y.Z"
+git commit -am "chore: release vX.Y.Z"
 
-# 4. Push to main
-git push
+# 4. Push and create PR
+git push -u origin release/vX.Y.Z
 ```
 
-Then on GitHub:
-1. Go to [Releases](https://github.com/radupana/openweight/releases) → **Draft a new release**
-2. Click **Choose a tag** → type the version (e.g., `v0.1.1`) → **Create new tag**
-3. Set the **Release title** to the same version (e.g., `v0.1.1`)
-4. Click **Publish release**
+Then:
+1. Create and merge the PR to main
+2. Go to [Releases](https://github.com/radupana/openweight/releases) → **Draft a new release**
+3. Click **Choose a tag** → type the version (e.g., `v0.1.1`) → **Create new tag on: main**
+4. Set the **Release title** to the same version
+5. Click **Publish release**
 
-The workflow automatically builds, tests, and publishes to npm via OIDC.
+The workflow automatically:
+- Detects which SDKs have changes since the last release
+- Only publishes SDKs that changed (avoids duplicate version errors)
+- TypeScript → npm (via OIDC, no tokens)
+- Kotlin → Maven Central (via GPG signing)
 
-### Kotlin SDK (Maven Central)
+### SDK Usage
 
-#### Steps
-
+**TypeScript/JavaScript:**
 ```bash
-# 1. Make sure you're on main and up to date
-git checkout main && git pull
-
-# 2. Update version in packages/kotlin-sdk/build.gradle.kts
-# Edit: version = "X.Y.Z"
-
-# 3. Commit the version change
-git commit -am "chore: release openweight-sdk vX.Y.Z (Kotlin)"
-
-# 4. Push to main
-git push
+npm install @openweight/sdk
 ```
 
-Then on GitHub:
-1. Go to [Releases](https://github.com/radupana/openweight/releases) → **Draft a new release**
-2. Click **Choose a tag** → type the version (e.g., `v0.1.1`) → **Create new tag**
-3. Set the **Release title** to the same version (e.g., `v0.1.1`)
-4. Click **Publish release**
-
-The workflow automatically builds, tests, signs, and publishes to Maven Central.
-
-#### Usage in Gradle
-
+**Kotlin/JVM:**
 ```kotlin
 implementation("io.github.radupana:openweight-sdk:0.1.0")
 ```
