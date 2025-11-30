@@ -29,13 +29,14 @@ openweight provides:
 4. **SDK-driven** — Apps integrate via SDKs, not by hand-rolling JSON
 5. **Extensible** — Optional fields and extension namespaces for app-specific data
 
-## Three Core Schemas
+## Four Core Schemas
 
 | Schema              | Purpose                                                  |
 |---------------------|----------------------------------------------------------|
 | **WorkoutLog**      | A completed workout session with actual performance data |
 | **WorkoutTemplate** | A planned workout with target reps, weights, and RPE     |
 | **Program**         | A multi-week training program containing templates       |
+| **PersonalRecords** | Personal records and one-rep maxes for data portability  |
 
 ## Next Steps
 

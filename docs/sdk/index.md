@@ -5,10 +5,10 @@ applications.
 
 ## Available SDKs
 
-| SDK                           | Package           | Platform          |
-|-------------------------------|-------------------|-------------------|
-| [TypeScript](/sdk/typescript) | `@openweight/sdk` | Node.js, Browsers |
-| [Kotlin](/sdk/kotlin)         | `com.openweight`  | Android, JVM      |
+| SDK                           | Package                              | Platform          |
+|-------------------------------|--------------------------------------|-------------------|
+| [TypeScript](/sdk/typescript) | `@openweight/sdk`                    | Node.js, Browsers |
+| [Kotlin](/sdk/kotlin)         | `io.github.radupana:openweight-sdk`  | Android, JVM      |
 
 ## Shared Patterns
 
@@ -131,10 +131,11 @@ try {
 
 ## Supported Types
 
-Both SDKs support all three schema types:
+Both SDKs support all four schema types:
 
-| Type            | Parse                  | Validate                  | Serialize                  |
-|-----------------|------------------------|---------------------------|----------------------------|
-| WorkoutLog      | `parseWorkoutLog`      | `validateWorkoutLog`      | `serializeWorkoutLog`      |
-| WorkoutTemplate | `parseWorkoutTemplate` | `validateWorkoutTemplate` | `serializeWorkoutTemplate` |
-| Program         | `parseProgram`         | `validateProgram`         | `serializeProgram`         |
+| Type            | Parse                   | Validate                   | Serialize                   |
+|-----------------|-------------------------|----------------------------|-----------------------------|
+| WorkoutLog      | `parseWorkoutLog`       | `validateWorkoutLog`       | `serializeWorkoutLog`       |
+| WorkoutTemplate | `parseWorkoutTemplate`  | `validateWorkoutTemplate`  | `serializeWorkoutTemplate`  |
+| Program         | `parseProgram`          | `validateProgram`          | `serializeProgram`          |
+| PersonalRecords | `parsePersonalRecords`  | `validatePersonalRecords`  | `serializePersonalRecords`  |
