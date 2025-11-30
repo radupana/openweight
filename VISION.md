@@ -85,10 +85,10 @@ Define the schema for completed workouts.
 - [x] Update TypeScript SDK
 - [x] Example program files
 
-### Milestone 4 — Kotlin SDK
+### Milestone 4 — Kotlin SDK ✓
 
-- [ ] Generate or write Kotlin data classes from schema
-- [ ] Parse/serialize functions (kotlinx.serialization)
+- [x] Generate or write Kotlin data classes from schema
+- [x] Parse/serialize functions (kotlinx.serialization)
 - [ ] Integrate into [Featherweight](https://github.com/radupana/featherweight) for export/import
 
 ### Milestone 5 — Converters
@@ -99,7 +99,7 @@ Define the schema for completed workouts.
 ### Milestone 6 — Polish & Documentation
 
 - [ ] CLI tool (`openweight validate`, `openweight convert`)
-- [ ] Documentation site or comprehensive README
+- [x] Documentation site or comprehensive README
 - [ ] v1.0 release
 
 ---
