@@ -10,7 +10,9 @@
   "scripts": {
     "validate-examples": "node scripts/validate-examples.js",
     "test": "node --test ./test/*.test.js",
+    "test:scripts": "node --test ./scripts/*.test.js",
     "test:sdk": "npm test --workspace=@openweight/sdk",
+    "test:all": "npm run test && npm run test:scripts && npm run test:sdk",
     "build": "npm run build --workspace=@openweight/sdk",
     "typecheck": "npm run typecheck --workspace=@openweight/sdk",
     "docs:dev": "npm run docs:dev --prefix docs",

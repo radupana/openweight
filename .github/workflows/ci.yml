@@ -30,6 +30,9 @@ jobs:
       - name: Run schema tests
         run: npm test
 
+      - name: Run script tests
+        run: npm run test:scripts
+
       - name: Run TypeScript SDK tests
         run: npm run test:sdk
 
