@@ -148,24 +148,26 @@ jobs:
       - name: Generate release notes
         if: steps.check-release.outputs.needed == 'true'
         id: release-notes
+        env:
+          COMMIT_MSG: ${{ github.event.head_commit.message }}
+          NEXT_VERSION: ${{ steps.next-version.outputs.version }}
+          CURRENT_VERSION: ${{ steps.current-version.outputs.version }}
+          REPO: ${{ github.repository }}
         run: |
-          COMMIT_MSG="${{ github.event.head_commit.message }}"
-          NEXT_VERSION="${{ steps.next-version.outputs.version }}"
-
           # Extract the first line (title) and body
           TITLE=$(echo "$COMMIT_MSG" | head -1)
           BODY=$(echo "$COMMIT_MSG" | tail -n +3)
 
-          # Create release notes
-          cat << EOF > release_notes.md
-          ## What's Changed
-
-          $TITLE
-
-          $BODY
-
-          **Full Changelog**: https://github.com/${{ github.repository }}/compare/v${{ steps.current-version.outputs.version }}...v$NEXT_VERSION
-          EOF
+          # Create release notes using printf to avoid heredoc issues
+          {
+            echo "## What's Changed"
+            echo ""
+            echo "$TITLE"
+            echo ""
+            echo "$BODY"
+            echo ""
+            echo "**Full Changelog**: https://github.com/$REPO/compare/v$CURRENT_VERSION...v$NEXT_VERSION"
+          } > release_notes.md
 
       - name: Create GitHub Release
         if: steps.check-release.outputs.needed == 'true'
