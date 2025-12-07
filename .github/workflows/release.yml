@@ -179,7 +179,9 @@ jobs:
           draft: false
           prerelease: false
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Use RELEASE_PAT instead of GITHUB_TOKEN so the release event
+          # triggers the Publish workflow (GITHUB_TOKEN doesn't trigger workflows)
+          GITHUB_TOKEN: ${{ secrets.RELEASE_PAT }}
 
       - name: Set outputs
         id: release
