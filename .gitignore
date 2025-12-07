@@ -1,6 +1,7 @@
 *.md
 !README.md
 !VISION.md
+!docs/**/*.md
 node_modules/
 dist/
 .idea
