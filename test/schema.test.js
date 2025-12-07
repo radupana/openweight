@@ -276,11 +276,11 @@ describe('workout-log schema', () => {
   });
 });
 
-describe('personal-records schema', () => {
-  const validate = createValidator('personal-records');
+describe('lifter-profile schema', () => {
+  const validate = createValidator('lifter-profile');
 
   describe('valid examples', () => {
-    const validDir = join(rootDir, 'examples', 'personal-records');
+    const validDir = join(rootDir, 'examples', 'lifter-profiles');
     const validFiles = readdirSync(validDir).filter(f => f.endsWith('.json'));
 
     for (const file of validFiles) {
@@ -295,7 +295,7 @@ describe('personal-records schema', () => {
 
   describe('invalid examples', () => {
     const invalidDir = join(rootDir, 'examples', 'invalid');
-    const invalidFiles = readdirSync(invalidDir).filter(f => f.startsWith('pr-') && f.endsWith('.json'));
+    const invalidFiles = readdirSync(invalidDir).filter(f => f.startsWith('profile-') && f.endsWith('.json'));
 
     for (const file of invalidFiles) {
       test(`${file} should be invalid`, () => {
@@ -314,10 +314,9 @@ describe('personal-records schema', () => {
       assert.ok(validate.errors.some(e => e.params?.missingProperty === 'exportedAt'));
     });
 
-    test('records array is required', () => {
+    test('records array is optional', () => {
       const data = { exportedAt: '2024-01-15T10:00:00Z' };
-      assert.strictEqual(validate(data), false);
-      assert.ok(validate.errors.some(e => e.params?.missingProperty === 'records'));
+      assert.strictEqual(validate(data), true);
     });
 
     test('exercise.name is required in records', () => {
@@ -326,6 +325,79 @@ describe('personal-records schema', () => {
         records: [{ exercise: {} }]
       };
       assert.strictEqual(validate(data), false);
+    });
+  });
+
+  describe('height validation', () => {
+    test('height requires value and unit', () => {
+      const data = {
+        exportedAt: '2024-01-15T10:00:00Z',
+        height: { value: 180 }
+      };
+      assert.strictEqual(validate(data), false);
+    });
+
+    test('valid height passes', () => {
+      const data = {
+        exportedAt: '2024-01-15T10:00:00Z',
+        height: { value: 180, unit: 'cm' }
+      };
+      assert.strictEqual(validate(data), true);
+    });
+
+    test('height unit must be cm or in', () => {
+      const data = {
+        exportedAt: '2024-01-15T10:00:00Z',
+        height: { value: 180, unit: 'meters' }
+      };
+      assert.strictEqual(validate(data), false);
+    });
+  });
+
+  describe('bodyweight validation', () => {
+    test('bodyweight requires value and unit', () => {
+      const data = {
+        exportedAt: '2024-01-15T10:00:00Z',
+        bodyweight: { value: 82.5 }
+      };
+      assert.strictEqual(validate(data), false);
+    });
+
+    test('valid bodyweight passes', () => {
+      const data = {
+        exportedAt: '2024-01-15T10:00:00Z',
+        bodyweight: { value: 82.5, unit: 'kg' }
+      };
+      assert.strictEqual(validate(data), true);
+    });
+
+    test('bodyweight with date passes', () => {
+      const data = {
+        exportedAt: '2024-01-15T10:00:00Z',
+        bodyweight: { value: 82.5, unit: 'kg', date: '2024-01-15' }
+      };
+      assert.strictEqual(validate(data), true);
+    });
+  });
+
+  describe('bodyweightHistory validation', () => {
+    test('bodyweightHistory entries require value, unit, and date', () => {
+      const data = {
+        exportedAt: '2024-01-15T10:00:00Z',
+        bodyweightHistory: [{ value: 82.5, unit: 'kg' }]
+      };
+      assert.strictEqual(validate(data), false);
+    });
+
+    test('valid bodyweightHistory passes', () => {
+      const data = {
+        exportedAt: '2024-01-15T10:00:00Z',
+        bodyweightHistory: [
+          { value: 82.5, unit: 'kg', date: '2024-01-15' },
+          { value: 83.0, unit: 'kg', date: '2024-01-08' }
+        ]
+      };
+      assert.strictEqual(validate(data), true);
     });
   });
 
@@ -492,34 +564,23 @@ describe('personal-records schema', () => {
     });
   });
 
-  describe('athlete validation', () => {
+  describe('sex validation', () => {
     test('sex must be valid enum', () => {
       const data = {
         exportedAt: '2024-01-15T10:00:00Z',
-        athlete: { sex: 'other' },
-        records: []
+        sex: 'other'
       };
       assert.strictEqual(validate(data), false);
     });
 
     test('valid sex values pass', () => {
-      for (const sex of ['male', 'female', 'mx']) {
+      for (const sex of ['male', 'female']) {
         const data = {
           exportedAt: '2024-01-15T10:00:00Z',
-          athlete: { sex },
-          records: []
+          sex
         };
         assert.strictEqual(validate(data), true, `sex: ${sex} should be valid`);
       }
-    });
-
-    test('bodyweightKg must be non-negative', () => {
-      const data = {
-        exportedAt: '2024-01-15T10:00:00Z',
-        athlete: { bodyweightKg: -5 },
-        records: []
-      };
-      assert.strictEqual(validate(data), false);
     });
   });
 
@@ -527,7 +588,6 @@ describe('personal-records schema', () => {
     test('normalized scores accept wilks and dots', () => {
       const data = {
         exportedAt: '2024-01-15T10:00:00Z',
-        records: [],
         normalizedScores: {
           squat: { wilks: 145.2, dots: 148.5 },
           total: { wilks: 406.2, dots: 414.6 }
@@ -539,7 +599,6 @@ describe('personal-records schema', () => {
     test('normalized scores accept ipfGl and glossbrenner', () => {
       const data = {
         exportedAt: '2024-01-15T10:00:00Z',
-        records: [],
         normalizedScores: {
           squat: { ipfGl: 150, glossbrenner: 148 }
         }
@@ -552,7 +611,6 @@ describe('personal-records schema', () => {
     test('additionalProperties allowed at root', () => {
       const data = {
         exportedAt: '2024-01-15T10:00:00Z',
-        records: [],
         'app:customField': 'value'
       };
       assert.strictEqual(validate(data), true);

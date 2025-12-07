@@ -6,8 +6,13 @@ import kotlinx.serialization.Serializable
 @Serializable
 enum class Sex {
     @SerialName("male") MALE,
-    @SerialName("female") FEMALE,
-    @SerialName("mx") MX
+    @SerialName("female") FEMALE
+}
+
+@Serializable
+enum class HeightUnit {
+    @SerialName("cm") CM,
+    @SerialName("in") IN
 }
 
 @Serializable
@@ -27,9 +32,24 @@ enum class RepMaxType {
 }
 
 @Serializable
-data class Athlete(
-    val bodyweightKg: Double? = null,
-    val sex: Sex? = null
+data class Height(
+    val value: Double,
+    val unit: HeightUnit
+)
+
+@Serializable
+data class Bodyweight(
+    val value: Double,
+    val unit: WeightUnit,
+    val date: String? = null
+)
+
+@Serializable
+data class BodyweightEntry(
+    val value: Double,
+    val unit: WeightUnit,
+    val date: String,
+    val notes: String? = null
 )
 
 @Serializable
@@ -98,9 +118,14 @@ data class NormalizedScores(
 )
 
 @Serializable
-data class PersonalRecords(
+data class LifterProfile(
     val exportedAt: String,
-    val records: List<ExerciseRecord>,
-    val athlete: Athlete? = null,
+    val name: String? = null,
+    val sex: Sex? = null,
+    val birthDate: String? = null,
+    val height: Height? = null,
+    val bodyweight: Bodyweight? = null,
+    val bodyweightHistory: List<BodyweightEntry>? = null,
+    val records: List<ExerciseRecord>? = null,
     val normalizedScores: NormalizedScores? = null
 )

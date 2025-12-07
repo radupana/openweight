@@ -1,8 +1,15 @@
 {
   "exportedAt": "2024-01-15T10:00:00Z",
-  "athlete": {
-    "bodyweightKg": 90.7,
-    "sex": "male"
+  "name": "Mike",
+  "sex": "male",
+  "height": {
+    "value": 71,
+    "unit": "in"
+  },
+  "bodyweight": {
+    "value": 200,
+    "unit": "lb",
+    "date": "2024-01-15"
   },
   "records": [
     {

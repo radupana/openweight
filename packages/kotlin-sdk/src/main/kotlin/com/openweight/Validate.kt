@@ -23,8 +23,8 @@ private val programSchema: JsonSchema by lazy {
         .fromDefinition(Schemas.program)
 }
 
-private val personalRecordsSchema: JsonSchema by lazy {
-    JsonSchema.fromDefinition(Schemas.personalRecords)
+private val lifterProfileSchema: JsonSchema by lazy {
+    JsonSchema.fromDefinition(Schemas.lifterProfile)
 }
 
 private fun SchemaValidationError.toValidationError(): ValidationError {
@@ -143,14 +143,14 @@ fun isValidProgram(data: JsonElement): Boolean {
 }
 
 /**
- * Validates a [JsonElement] against the personal records schema.
+ * Validates a [JsonElement] against the lifter profile schema.
  *
  * @param data The JSON element to validate
  * @return A [ValidationResult] containing validity status and any errors
  */
-fun validatePersonalRecords(data: JsonElement): ValidationResult {
+fun validateLifterProfile(data: JsonElement): ValidationResult {
     val errors = mutableListOf<SchemaValidationError>()
-    val valid = personalRecordsSchema.validate(data, errors::add)
+    val valid = lifterProfileSchema.validate(data, errors::add)
     return ValidationResult(
         valid = valid,
         errors = errors.map { it.toValidationError() }
@@ -158,22 +158,22 @@ fun validatePersonalRecords(data: JsonElement): ValidationResult {
 }
 
 /**
- * Validates a JSON string against the personal records schema.
+ * Validates a JSON string against the lifter profile schema.
  *
  * @param json The JSON string to validate
  * @return A [ValidationResult] containing validity status and any errors
  */
-fun validatePersonalRecords(json: String): ValidationResult {
+fun validateLifterProfile(json: String): ValidationResult {
     val element = Json.parseToJsonElement(json)
-    return validatePersonalRecords(element)
+    return validateLifterProfile(element)
 }
 
 /**
- * Checks if a [JsonElement] is a valid personal records document.
+ * Checks if a [JsonElement] is a valid lifter profile document.
  *
  * @param data The JSON element to check
  * @return true if valid, false otherwise
  */
-fun isValidPersonalRecords(data: JsonElement): Boolean {
-    return personalRecordsSchema.validate(data) { }
+fun isValidLifterProfile(data: JsonElement): Boolean {
+    return lifterProfileSchema.validate(data) { }
 }

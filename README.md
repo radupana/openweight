@@ -1,67 +1,121 @@
 # openweight
 
-Open standard for exchanging strength-training programs, workouts, and logs between fitness apps.
+**Open data format for strength training.**
 
-## SDKs
+Your training data belongs to you, not to any one app.
 
-| SDK        | Package                                                          | Status    |
-|------------|------------------------------------------------------------------|-----------|
-| TypeScript | [@openweight/sdk](https://www.npmjs.com/package/@openweight/sdk) | Published |
-| Kotlin     | `io.github.radupana:openweight-sdk`                              | Published |
+## Why openweight?
 
-## Releasing
+Strength training data is trapped in silos. Each app has its own export format, its own idea of what a "workout"
+or "set" means, and no reliable way to move your history between tools. When you switch apps, you lose years of data.
+When
+an app shuts down, your history disappears.
 
-Both SDKs share the same version number. The version bump script updates all locations.
+**openweight** is a vendor-neutral JSON format that solves this:
 
-### Version Types
+- **Export from one app, import to another** — no more lock-in
+- **Archive your training history** — in a format that will outlast any app
+- **Analyze with any tool** — standard JSON that works everywhere
 
-| Command                 | When to use                        | Example       |
-|-------------------------|------------------------------------|---------------|
-| `npm run version:patch` | Bug fixes, docs, internal changes  | 0.1.0 → 0.1.1 |
-| `npm run version:minor` | New features (backward-compatible) | 0.1.0 → 0.2.0 |
-| `npm run version:major` | Breaking changes                   | 0.1.0 → 1.0.0 |
+## Core Schemas
 
-### Steps
+| Schema              | Purpose                                                            |
+|---------------------|--------------------------------------------------------------------|
+| **WorkoutLog**      | Completed workouts with actual reps, weight, RPE                   |
+| **WorkoutTemplate** | Planned workouts with targets (reps, percentage-based weight, RPE) |
+| **Program**         | Multi-week training programs composed of templates                 |
+| **LifterProfile**   | Athlete data, PRs, 1RMs, height, bodyweight history                |
 
-```bash
-# 1. Create a release branch
-git checkout main && git pull
-git checkout -b release/vX.Y.Z
+## Quick Example
 
-# 2. Bump version (updates version.json, ts-sdk, and kotlin-sdk)
-npm run version:patch   # or version:minor or version:major
-
-# 3. Commit the version change
-git commit -am "chore: release vX.Y.Z"
-
-# 4. Push and create PR
-git push -u origin release/vX.Y.Z
+```json
+{
+  "$schema": "https://openweight.dev/schemas/workout-log.schema.json",
+  "date": "2024-01-15T09:00:00Z",
+  "exercises": [
+    {
+      "exercise": {
+        "name": "Squat"
+      },
+      "sets": [
+        {
+          "reps": 5,
+          "weight": 140,
+          "unit": "kg",
+          "rpe": 7
+        },
+        {
+          "reps": 5,
+          "weight": 140,
+          "unit": "kg",
+          "rpe": 8
+        },
+        {
+          "reps": 5,
+          "weight": 140,
+          "unit": "kg",
+          "rpe": 8.5
+        }
+      ]
+    }
+  ]
+}
 ```
 
-Then:
-1. Create and merge the PR to main
-2. Go to [Releases](https://github.com/radupana/openweight/releases) → **Draft a new release**
-3. Click **Choose a tag** → type the version (e.g., `v0.1.1`) → **Create new tag on: main**
-4. Set the **Release title** to the same version
-5. Click **Publish release**
-
-The workflow automatically:
-- Detects which SDKs have changes since the last release
-- Only publishes SDKs that changed (avoids duplicate version errors)
-- TypeScript → npm (via OIDC, no tokens)
-- Kotlin → Maven Central (via GPG signing)
-
-### SDK Usage
+## Getting Started
 
 **TypeScript/JavaScript:**
+
 ```bash
 npm install @openweight/sdk
 ```
 
-**Kotlin/JVM:**
-```kotlin
-implementation("io.github.radupana:openweight-sdk:0.1.0")
+```typescript
+import {parseWorkoutLog, isValidWorkoutLog} from '@openweight/sdk';
+
+const log = parseWorkoutLog(jsonString);
+console.log(log.exercises[0].exercise.name); // "Squat"
 ```
+
+**Kotlin/JVM:**
+
+```kotlin
+implementation("io.github.radupana:openweight-sdk:0.2.0")
+```
+
+```kotlin
+import org.openweight.sdk.parseWorkoutLog
+
+val log = parseWorkoutLog(jsonString)
+println(log.exercises[0].exercise.name) // "Squat"
+```
+
+## Documentation
+
+Full documentation, schema reference, and interactive playground at **[openweight.dev](https://openweight.dev)**
+
+## SDKs
+
+| SDK        | Package                                                                                                      | Status    |
+|------------|--------------------------------------------------------------------------------------------------------------|-----------|
+| TypeScript | [@openweight/sdk](https://www.npmjs.com/package/@openweight/sdk)                                             | Published |
+| Kotlin     | [io.github.radupana:openweight-sdk](https://central.sonatype.com/artifact/io.github.radupana/openweight-sdk) | Published |
+
+---
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for development setup.
+
+### Releasing
+
+Both SDKs share the same version. Releases are automated via GitHub Actions:
+
+1. Merge a PR with a [Conventional Commit](https://www.conventionalcommits.org/) title:
+    - `feat:` → minor bump
+    - `fix:` → patch bump
+    - `feat!:` or `BREAKING CHANGE:` → major bump
+2. The workflow creates a GitHub release and publishes to npm + Maven Central
 
 ## License
 

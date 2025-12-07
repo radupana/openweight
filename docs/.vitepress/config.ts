@@ -32,6 +32,7 @@ export default defineConfig({
             { text: 'What is openweight?', link: '/guide/' },
             { text: 'Getting Started', link: '/guide/getting-started' },
             { text: 'Core Concepts', link: '/guide/concepts' },
+            { text: 'Versioning', link: '/guide/versioning' },
           ]
         }
       ],
@@ -43,7 +44,7 @@ export default defineConfig({
             { text: 'WorkoutLog', link: '/schema/workout-log' },
             { text: 'WorkoutTemplate', link: '/schema/workout-template' },
             { text: 'Program', link: '/schema/program' },
-            { text: 'PersonalRecords', link: '/schema/personal-records' },
+            { text: 'LifterProfile', link: '/schema/lifter-profile' },
           ]
         }
       ],
@@ -65,7 +66,7 @@ export default defineConfig({
             { text: 'Workout Logs', link: '/examples/workout-logs' },
             { text: 'Templates', link: '/examples/workout-templates' },
             { text: 'Programs', link: '/examples/programs' },
-            { text: 'Personal Records', link: '/examples/personal-records' },
+            { text: 'Lifter Profiles', link: '/examples/lifter-profiles' },
           ]
         }
       ],

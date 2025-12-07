@@ -2,12 +2,12 @@ import { describe, it, expect } from 'vitest'
 import { readFileSync, readdirSync } from 'fs'
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
-import { parseWorkoutLog, parsePersonalRecords } from './parse.js'
-import { serializeWorkoutLog, serializePersonalRecords } from './serialize.js'
+import { parseWorkoutLog, parseLifterProfile } from './parse.js'
+import { serializeWorkoutLog, serializeLifterProfile } from './serialize.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const workoutLogsDir = join(__dirname, '..', '..', '..', 'examples', 'workout-logs')
-const personalRecordsDir = join(__dirname, '..', '..', '..', 'examples', 'personal-records')
+const lifterProfilesDir = join(__dirname, '..', '..', '..', 'examples', 'lifter-profiles')
 
 describe('roundtrip', () => {
   it('parse → serialize → parse produces equivalent data', () => {
@@ -48,11 +48,14 @@ describe('roundtrip', () => {
   })
 })
 
-describe('personal records roundtrip', () => {
+describe('lifter profile roundtrip', () => {
   it('parse → serialize → parse produces equivalent data', () => {
     const json = JSON.stringify({
       exportedAt: '2024-01-15T10:00:00Z',
-      athlete: { bodyweightKg: 82.5, sex: 'male' },
+      name: 'John',
+      sex: 'male',
+      height: { value: 180, unit: 'cm' },
+      bodyweight: { value: 82.5, unit: 'kg', date: '2024-01-15' },
       records: [
         {
           exercise: { name: 'Squat', equipment: 'barbell' },
@@ -74,22 +77,22 @@ describe('personal records roundtrip', () => {
       },
     })
 
-    const parsed1 = parsePersonalRecords(json)
-    const serialized = serializePersonalRecords(parsed1)
-    const parsed2 = parsePersonalRecords(serialized)
+    const parsed1 = parseLifterProfile(json)
+    const serialized = serializeLifterProfile(parsed1)
+    const parsed2 = parseLifterProfile(serialized)
 
     expect(parsed2).toEqual(parsed1)
   })
 
-  describe('personal records example files', () => {
-    const files = readdirSync(personalRecordsDir).filter((f) => f.endsWith('.json'))
+  describe('lifter profile example files', () => {
+    const files = readdirSync(lifterProfilesDir).filter((f) => f.endsWith('.json'))
 
     for (const file of files) {
       it(`roundtrips ${file}`, () => {
-        const content = readFileSync(join(personalRecordsDir, file), 'utf-8')
-        const parsed1 = parsePersonalRecords(content)
-        const serialized = serializePersonalRecords(parsed1)
-        const parsed2 = parsePersonalRecords(serialized)
+        const content = readFileSync(join(lifterProfilesDir, file), 'utf-8')
+        const parsed1 = parseLifterProfile(content)
+        const serialized = serializeLifterProfile(parsed1)
+        const parsed2 = parseLifterProfile(serialized)
 
         expect(parsed2).toEqual(parsed1)
       })

@@ -1,9 +1,36 @@
 {
   "exportedAt": "2024-01-15T10:00:00Z",
-  "athlete": {
-    "bodyweightKg": 82.5,
-    "sex": "male"
+  "name": "John",
+  "sex": "male",
+  "birthDate": "1990-05-15",
+  "height": {
+    "value": 180,
+    "unit": "cm"
   },
+  "bodyweight": {
+    "value": 82.5,
+    "unit": "kg",
+    "date": "2024-01-15"
+  },
+  "bodyweightHistory": [
+    {
+      "value": 82.5,
+      "unit": "kg",
+      "date": "2024-01-15",
+      "notes": "Morning weigh-in"
+    },
+    {
+      "value": 83.0,
+      "unit": "kg",
+      "date": "2024-01-08"
+    },
+    {
+      "value": 81.5,
+      "unit": "kg",
+      "date": "2024-01-01",
+      "notes": "Post-holiday cut"
+    }
+  ],
   "records": [
     {
       "exercise": {

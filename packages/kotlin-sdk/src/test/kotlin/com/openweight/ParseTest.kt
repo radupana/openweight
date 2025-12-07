@@ -127,7 +127,7 @@ class ParseTest {
     }
 
     @Test
-    fun `parsePersonalRecords parses valid JSON`() {
+    fun `parseLifterProfile parses valid JSON`() {
         val json = """
         {
             "exportedAt": "2024-01-15T10:00:00Z",
@@ -143,26 +143,40 @@ class ParseTest {
         }
         """.trimIndent()
 
-        val result = parsePersonalRecords(json)
+        val result = parseLifterProfile(json)
         assertEquals("2024-01-15T10:00:00Z", result.exportedAt)
-        assertEquals(1, result.records.size)
-        assertEquals("Squat", result.records[0].exercise.name)
+        assertEquals(1, result.records?.size)
+        assertEquals("Squat", result.records!![0].exercise.name)
     }
 
     @Test
-    fun `parsePersonalRecords throws ParseException for invalid JSON`() {
+    fun `parseLifterProfile throws ParseException for invalid JSON`() {
         val exception = assertFailsWith<ParseException> {
-            parsePersonalRecords("not json")
+            parseLifterProfile("not json")
         }
         assertTrue(exception.message!!.contains("Invalid JSON"))
     }
 
     @Test
-    fun `parsePersonalRecords throws ParseException for schema validation failures`() {
+    fun `parseLifterProfile parses minimal profile`() {
         val json = """{"exportedAt": "2024-01-15T10:00:00Z"}"""
-        val exception = assertFailsWith<ParseException> {
-            parsePersonalRecords(json)
+        val result = parseLifterProfile(json)
+        assertEquals("2024-01-15T10:00:00Z", result.exportedAt)
+    }
+
+    @Test
+    fun `parseLifterProfile parses profile with height and bodyweight`() {
+        val json = """
+        {
+            "exportedAt": "2024-01-15T10:00:00Z",
+            "height": { "value": 180, "unit": "cm" },
+            "bodyweight": { "value": 82.5, "unit": "kg" }
         }
-        assertTrue(exception.errors.isNotEmpty())
+        """.trimIndent()
+
+        val result = parseLifterProfile(json)
+        assertEquals(180.0, result.height?.value)
+        assertEquals("cm", result.height?.unit?.name?.lowercase())
+        assertEquals(82.5, result.bodyweight?.value)
     }
 }

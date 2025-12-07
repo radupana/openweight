@@ -2,10 +2,10 @@ import { describe, it, expect } from 'vitest'
 import {
   serializeWorkoutLog,
   serializeWorkoutLogPretty,
-  serializePersonalRecords,
-  serializePersonalRecordsPretty,
+  serializeLifterProfile,
+  serializeLifterProfilePretty,
 } from './serialize.js'
-import type { WorkoutLog, PersonalRecords } from './types.js'
+import type { WorkoutLog, LifterProfile } from './types.js'
 
 const workout: WorkoutLog = {
   date: '2024-01-15T09:00:00Z',
@@ -45,10 +45,10 @@ describe('serializeWorkoutLogPretty', () => {
 })
 
 // ============================================
-// Personal Records Serialization Tests
+// Lifter Profile Serialization Tests
 // ============================================
 
-const personalRecords: PersonalRecords = {
+const lifterProfile: LifterProfile = {
   exportedAt: '2024-01-15T10:00:00Z',
   records: [
     {
@@ -58,29 +58,29 @@ const personalRecords: PersonalRecords = {
   ],
 }
 
-describe('serializePersonalRecords', () => {
+describe('serializeLifterProfile', () => {
   it('serializes to compact JSON', () => {
-    const result = serializePersonalRecords(personalRecords)
+    const result = serializeLifterProfile(lifterProfile)
     expect(result).not.toContain('\n')
-    expect(JSON.parse(result)).toEqual(personalRecords)
+    expect(JSON.parse(result)).toEqual(lifterProfile)
   })
 
   it('produces valid JSON', () => {
-    const result = serializePersonalRecords(personalRecords)
+    const result = serializeLifterProfile(lifterProfile)
     expect(() => JSON.parse(result)).not.toThrow()
   })
 })
 
-describe('serializePersonalRecordsPretty', () => {
+describe('serializeLifterProfilePretty', () => {
   it('serializes to formatted JSON with newlines', () => {
-    const result = serializePersonalRecordsPretty(personalRecords)
+    const result = serializeLifterProfilePretty(lifterProfile)
     expect(result).toContain('\n')
     expect(result).toContain('  ')
   })
 
   it('produces valid JSON', () => {
-    const result = serializePersonalRecordsPretty(personalRecords)
+    const result = serializeLifterProfilePretty(lifterProfile)
     expect(() => JSON.parse(result)).not.toThrow()
-    expect(JSON.parse(result)).toEqual(personalRecords)
+    expect(JSON.parse(result)).toEqual(lifterProfile)
   })
 })

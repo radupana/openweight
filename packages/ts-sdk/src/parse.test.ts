@@ -3,7 +3,7 @@ import {
   parseWorkoutLog,
   parseWorkoutTemplate,
   parseProgram,
-  parsePersonalRecords,
+  parseLifterProfile,
   ParseError,
 } from './parse.js'
 
@@ -133,10 +133,10 @@ describe('parseProgram', () => {
 })
 
 // ============================================
-// Personal Records Parsing Tests
+// Lifter Profile Parsing Tests
 // ============================================
 
-const validPersonalRecordsJson = JSON.stringify({
+const validLifterProfileJson = JSON.stringify({
   exportedAt: '2024-01-15T10:00:00Z',
   records: [
     {
@@ -146,29 +146,29 @@ const validPersonalRecordsJson = JSON.stringify({
   ],
 })
 
-describe('parsePersonalRecords', () => {
-  it('parses valid personal records JSON', () => {
-    const result = parsePersonalRecords(validPersonalRecordsJson)
+describe('parseLifterProfile', () => {
+  it('parses valid lifter profile JSON', () => {
+    const result = parseLifterProfile(validLifterProfileJson)
     expect(result.exportedAt).toBe('2024-01-15T10:00:00Z')
     expect(result.records).toHaveLength(1)
-    expect(result.records[0].exercise.name).toBe('Squat')
-    expect(result.records[0].repMaxes?.[0].weight).toBe(180)
+    expect(result.records![0].exercise.name).toBe('Squat')
+    expect(result.records![0].repMaxes?.[0].weight).toBe(180)
   })
 
   it('throws ParseError for invalid JSON syntax', () => {
-    expect(() => parsePersonalRecords('not json')).toThrow(ParseError)
-    expect(() => parsePersonalRecords('not json')).toThrow('Invalid JSON')
+    expect(() => parseLifterProfile('not json')).toThrow(ParseError)
+    expect(() => parseLifterProfile('not json')).toThrow('Invalid JSON')
   })
 
   it('throws ParseError for schema validation failures', () => {
-    const invalidJson = JSON.stringify({ exportedAt: '2024-01-15T10:00:00Z' })
-    expect(() => parsePersonalRecords(invalidJson)).toThrow(ParseError)
+    const invalidJson = JSON.stringify({ records: [] })
+    expect(() => parseLifterProfile(invalidJson)).toThrow(ParseError)
   })
 
   it('includes validation errors in ParseError', () => {
     const invalidJson = JSON.stringify({ records: [] })
     try {
-      parsePersonalRecords(invalidJson)
+      parseLifterProfile(invalidJson)
       expect.fail('Should have thrown')
     } catch (e) {
       expect(e).toBeInstanceOf(ParseError)
@@ -180,17 +180,28 @@ describe('parsePersonalRecords', () => {
   it('preserves additional properties', () => {
     const json = JSON.stringify({
       exportedAt: '2024-01-15T10:00:00Z',
-      records: [],
       'app:customField': 'value',
     })
-    const result = parsePersonalRecords(json)
+    const result = parseLifterProfile(json)
     expect(result['app:customField']).toBe('value')
   })
 
-  it('parses full-featured personal records', () => {
+  it('parses minimal lifter profile', () => {
     const json = JSON.stringify({
       exportedAt: '2024-01-15T10:00:00Z',
-      athlete: { bodyweightKg: 82.5, sex: 'male' },
+    })
+    const result = parseLifterProfile(json)
+    expect(result.exportedAt).toBe('2024-01-15T10:00:00Z')
+    expect(result.records).toBeUndefined()
+  })
+
+  it('parses full-featured lifter profile', () => {
+    const json = JSON.stringify({
+      exportedAt: '2024-01-15T10:00:00Z',
+      name: 'John',
+      sex: 'male',
+      height: { value: 180, unit: 'cm' },
+      bodyweight: { value: 82.5, unit: 'kg', date: '2024-01-15' },
       records: [
         {
           exercise: { name: 'Squat', equipment: 'barbell' },
@@ -216,12 +227,15 @@ describe('parsePersonalRecords', () => {
         squat: { wilks: 145.2, dots: 148.5 },
       },
     })
-    const result = parsePersonalRecords(json)
-    expect(result.athlete?.bodyweightKg).toBe(82.5)
+    const result = parseLifterProfile(json)
+    expect(result.name).toBe('John')
+    expect(result.sex).toBe('male')
+    expect(result.height?.value).toBe(180)
+    expect(result.bodyweight?.value).toBe(82.5)
     expect(result.records).toHaveLength(2)
-    expect(result.records[0].repMaxes).toHaveLength(2)
-    expect(result.records[0].estimated1RM?.formula).toBe('brzycki')
-    expect(result.records[1].durationPR?.seconds).toBe(180)
+    expect(result.records![0].repMaxes).toHaveLength(2)
+    expect(result.records![0].estimated1RM?.formula).toBe('brzycki')
+    expect(result.records![1].durationPR?.seconds).toBe(180)
     expect(result.normalizedScores?.squat?.wilks).toBe(145.2)
   })
 })

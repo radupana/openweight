@@ -6,8 +6,8 @@ import {
   isValidWorkoutTemplate,
   validateProgram,
   isValidProgram,
-  validatePersonalRecords,
-  isValidPersonalRecords,
+  validateLifterProfile,
+  isValidLifterProfile,
 } from './validate.js'
 
 const validWorkout = {
@@ -333,10 +333,10 @@ describe('isValidProgram', () => {
 })
 
 // ============================================
-// Personal Records Validation Tests
+// Lifter Profile Validation Tests
 // ============================================
 
-const validPersonalRecords = {
+const validLifterProfile = {
   exportedAt: '2024-01-15T10:00:00Z',
   records: [
     {
@@ -346,31 +346,30 @@ const validPersonalRecords = {
   ],
 }
 
-describe('validatePersonalRecords', () => {
-  it('returns valid for a correct personal records', () => {
-    const result = validatePersonalRecords(validPersonalRecords)
+describe('validateLifterProfile', () => {
+  it('returns valid for a correct lifter profile', () => {
+    const result = validateLifterProfile(validLifterProfile)
     expect(result.valid).toBe(true)
     expect(result.errors).toHaveLength(0)
   })
 
   it('returns invalid when exportedAt is missing', () => {
-    const result = validatePersonalRecords({
+    const result = validateLifterProfile({
       records: [],
     })
     expect(result.valid).toBe(false)
     expect(result.errors.some((e) => e.message?.includes('exportedAt'))).toBe(true)
   })
 
-  it('returns invalid when records is missing', () => {
-    const result = validatePersonalRecords({
+  it('returns valid when records is missing (optional)', () => {
+    const result = validateLifterProfile({
       exportedAt: '2024-01-15T10:00:00Z',
     })
-    expect(result.valid).toBe(false)
-    expect(result.errors.some((e) => e.message?.includes('records'))).toBe(true)
+    expect(result.valid).toBe(true)
   })
 
   it('returns valid with empty records array', () => {
-    const result = validatePersonalRecords({
+    const result = validateLifterProfile({
       exportedAt: '2024-01-15T10:00:00Z',
       records: [],
     })
@@ -378,7 +377,7 @@ describe('validatePersonalRecords', () => {
   })
 
   it('returns invalid when repMax is missing required fields', () => {
-    const result = validatePersonalRecords({
+    const result = validateLifterProfile({
       exportedAt: '2024-01-15T10:00:00Z',
       records: [
         {
@@ -391,7 +390,7 @@ describe('validatePersonalRecords', () => {
   })
 
   it('returns invalid when estimated1RM is missing required fields', () => {
-    const result = validatePersonalRecords({
+    const result = validateLifterProfile({
       exportedAt: '2024-01-15T10:00:00Z',
       records: [
         {
@@ -404,7 +403,7 @@ describe('validatePersonalRecords', () => {
   })
 
   it('returns valid for full estimated1RM', () => {
-    const result = validatePersonalRecords({
+    const result = validateLifterProfile({
       exportedAt: '2024-01-15T10:00:00Z',
       records: [
         {
@@ -423,7 +422,7 @@ describe('validatePersonalRecords', () => {
   })
 
   it('returns invalid for invalid formula enum', () => {
-    const result = validatePersonalRecords({
+    const result = validateLifterProfile({
       exportedAt: '2024-01-15T10:00:00Z',
       records: [
         {
@@ -442,27 +441,42 @@ describe('validatePersonalRecords', () => {
   })
 
   it('returns invalid for invalid sex enum', () => {
-    const result = validatePersonalRecords({
+    const result = validateLifterProfile({
       exportedAt: '2024-01-15T10:00:00Z',
-      athlete: { sex: 'other' },
-      records: [],
+      sex: 'other',
     })
     expect(result.valid).toBe(false)
   })
 
   it('returns valid for all sex values', () => {
-    for (const sex of ['male', 'female', 'mx']) {
-      const result = validatePersonalRecords({
+    for (const sex of ['male', 'female']) {
+      const result = validateLifterProfile({
         exportedAt: '2024-01-15T10:00:00Z',
-        athlete: { sex },
-        records: [],
+        sex,
       })
       expect(result.valid).toBe(true)
     }
   })
 
+  it('returns valid for height and bodyweight', () => {
+    const result = validateLifterProfile({
+      exportedAt: '2024-01-15T10:00:00Z',
+      height: { value: 180, unit: 'cm' },
+      bodyweight: { value: 82.5, unit: 'kg' },
+    })
+    expect(result.valid).toBe(true)
+  })
+
+  it('returns invalid for invalid height unit', () => {
+    const result = validateLifterProfile({
+      exportedAt: '2024-01-15T10:00:00Z',
+      height: { value: 180, unit: 'meters' },
+    })
+    expect(result.valid).toBe(false)
+  })
+
   it('returns valid for volumePR', () => {
-    const result = validatePersonalRecords({
+    const result = validateLifterProfile({
       exportedAt: '2024-01-15T10:00:00Z',
       records: [
         {
@@ -475,7 +489,7 @@ describe('validatePersonalRecords', () => {
   })
 
   it('returns valid for durationPR', () => {
-    const result = validatePersonalRecords({
+    const result = validateLifterProfile({
       exportedAt: '2024-01-15T10:00:00Z',
       records: [
         {
@@ -488,9 +502,8 @@ describe('validatePersonalRecords', () => {
   })
 
   it('returns valid for normalized scores', () => {
-    const result = validatePersonalRecords({
+    const result = validateLifterProfile({
       exportedAt: '2024-01-15T10:00:00Z',
-      records: [],
       normalizedScores: {
         squat: { wilks: 145.2, dots: 148.5 },
         total: { wilks: 406.2, dots: 414.6, ipfGl: 420 },
@@ -500,25 +513,25 @@ describe('validatePersonalRecords', () => {
   })
 
   it('allows additional properties', () => {
-    const result = validatePersonalRecords({
-      ...validPersonalRecords,
+    const result = validateLifterProfile({
+      ...validLifterProfile,
       'app:customField': 'value',
     })
     expect(result.valid).toBe(true)
   })
 })
 
-describe('isValidPersonalRecords', () => {
-  it('returns true for valid personal records', () => {
-    expect(isValidPersonalRecords(validPersonalRecords)).toBe(true)
+describe('isValidLifterProfile', () => {
+  it('returns true for valid lifter profile', () => {
+    expect(isValidLifterProfile(validLifterProfile)).toBe(true)
   })
 
-  it('returns false for invalid personal records', () => {
-    expect(isValidPersonalRecords({})).toBe(false)
+  it('returns false for invalid lifter profile', () => {
+    expect(isValidLifterProfile({})).toBe(false)
   })
 
   it('returns false for non-object', () => {
-    expect(isValidPersonalRecords('string')).toBe(false)
-    expect(isValidPersonalRecords(null)).toBe(false)
+    expect(isValidLifterProfile('string')).toBe(false)
+    expect(isValidLifterProfile(null)).toBe(false)
   })
 })

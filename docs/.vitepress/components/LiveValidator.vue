@@ -36,11 +36,11 @@ onMounted(async () => {
     addFormats(ajvInstance)
 
     const base = import.meta.env.BASE_URL || '/openweight/'
-    const [workoutLogSchema, workoutTemplateSchema, programSchema, personalRecordsSchema] = await Promise.all([
+    const [workoutLogSchema, workoutTemplateSchema, programSchema, lifterProfileSchema] = await Promise.all([
       fetch(`${base}schemas/workout-log.schema.json`).then(r => r.json()),
       fetch(`${base}schemas/workout-template.schema.json`).then(r => r.json()),
       fetch(`${base}schemas/program.schema.json`).then(r => r.json()),
-      fetch(`${base}schemas/personal-records.schema.json`).then(r => r.json())
+      fetch(`${base}schemas/lifter-profile.schema.json`).then(r => r.json())
     ])
 
     ajvInstance.addSchema(workoutTemplateSchema, 'workout-template.schema.json')
@@ -48,7 +48,7 @@ onMounted(async () => {
     validators['workout-log'] = ajvInstance.compile(workoutLogSchema)
     validators['workout-template'] = ajvInstance.compile(workoutTemplateSchema)
     validators['program'] = ajvInstance.compile(programSchema)
-    validators['personal-records'] = ajvInstance.compile(personalRecordsSchema)
+    validators['lifter-profile'] = ajvInstance.compile(lifterProfileSchema)
 
     isLoaded.value = true
     validate()
@@ -150,12 +150,12 @@ function loadExample(type: string) {
     }
   ]
 }`,
-    'personal-records': `{
+    'lifter-profile': `{
   "exportedAt": "2024-01-15T10:00:00Z",
-  "athlete": {
-    "bodyweightKg": 82.5,
-    "sex": "male"
-  },
+  "name": "John",
+  "sex": "male",
+  "height": { "value": 180, "unit": "cm" },
+  "bodyweight": { "value": 82.5, "unit": "kg" },
   "records": [
     {
       "exercise": {
@@ -209,7 +209,7 @@ const resultClass = computed(() => {
           <option value="workout-log">WorkoutLog</option>
           <option value="workout-template">WorkoutTemplate</option>
           <option value="program">Program</option>
-          <option value="personal-records">PersonalRecords</option>
+          <option value="lifter-profile">LifterProfile</option>
         </select>
       </label>
       <div class="examples">
@@ -217,7 +217,7 @@ const resultClass = computed(() => {
         <button @click="loadExample('workout-log')">Workout Log</button>
         <button @click="loadExample('workout-template')">Template</button>
         <button @click="loadExample('program')">Program</button>
-        <button @click="loadExample('personal-records')">Personal Records</button>
+        <button @click="loadExample('lifter-profile')">Lifter Profile</button>
       </div>
     </div>
 
