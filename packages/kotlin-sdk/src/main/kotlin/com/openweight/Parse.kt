@@ -1,6 +1,6 @@
 package com.openweight
 
-import com.openweight.model.PersonalRecords
+import com.openweight.model.LifterProfile
 import com.openweight.model.Program
 import com.openweight.model.WorkoutLog
 import com.openweight.model.WorkoutTemplate
@@ -58,11 +58,11 @@ fun parseProgram(jsonString: String): Program =
     parse(jsonString, ::validateProgram)
 
 /**
- * Parses a JSON string into a [PersonalRecords], validating against the schema.
+ * Parses a JSON string into a [LifterProfile], validating against the schema.
  *
  * @param jsonString The JSON string to parse
- * @return The parsed [PersonalRecords]
+ * @return The parsed [LifterProfile]
  * @throws ParseException if the JSON is invalid or fails schema validation
  */
-fun parsePersonalRecords(jsonString: String): PersonalRecords =
-    parse(jsonString, ::validatePersonalRecords)
+fun parseLifterProfile(jsonString: String): LifterProfile =
+    parse(jsonString, ::validateLifterProfile)

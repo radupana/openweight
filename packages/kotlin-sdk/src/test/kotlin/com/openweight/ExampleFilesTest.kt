@@ -124,41 +124,41 @@ class ExampleFilesTest {
         assertTrue(validateProgram(serialized).valid, "Roundtrip should be valid")
     }
 
-    @ParameterizedTest(name = "personal-records {0} should be valid")
+    @ParameterizedTest(name = "lifter-profile {0} should be valid")
     @ValueSource(strings = [
         "minimal",
         "full-featured",
         "imperial-units"
     ])
-    fun `valid personal-records examples`(filename: String) {
-        val json = loadResource("/examples/personal-records/$filename.json")
-        val result = validatePersonalRecords(json)
+    fun `valid lifter-profile examples`(filename: String) {
+        val json = loadResource("/examples/lifter-profiles/$filename.json")
+        val result = validateLifterProfile(json)
         assertTrue(result.valid, "Expected $filename.json to be valid: ${result.errors}")
     }
 
-    @ParameterizedTest(name = "invalid personal-records {0} should fail validation")
+    @ParameterizedTest(name = "invalid lifter-profile {0} should fail validation")
     @ValueSource(strings = [
-        "pr-missing-exported-at",
-        "pr-missing-records",
-        "pr-invalid-rep-max",
-        "pr-invalid-formula",
-        "pr-invalid-sex"
+        "profile-missing-exported-at",
+        "profile-invalid-rep-max",
+        "profile-invalid-formula",
+        "profile-invalid-sex",
+        "profile-invalid-height-unit"
     ])
-    fun `invalid personal-records examples`(filename: String) {
+    fun `invalid lifter-profile examples`(filename: String) {
         val json = loadResource("/examples/invalid/$filename.json")
-        val result = validatePersonalRecords(json)
+        val result = validateLifterProfile(json)
         assertFalse(result.valid, "Expected $filename.json to be invalid")
     }
 
-    @ParameterizedTest(name = "personal-records {0} roundtrip")
+    @ParameterizedTest(name = "lifter-profile {0} roundtrip")
     @ValueSource(strings = [
         "minimal",
         "full-featured"
     ])
-    fun `personal-records roundtrip`(filename: String) {
-        val json = loadResource("/examples/personal-records/$filename.json")
-        val parsed = parsePersonalRecords(json)
-        val serialized = serializePersonalRecords(parsed)
-        assertTrue(validatePersonalRecords(serialized).valid, "Roundtrip of $filename.json should be valid")
+    fun `lifter-profile roundtrip`(filename: String) {
+        val json = loadResource("/examples/lifter-profiles/$filename.json")
+        val parsed = parseLifterProfile(json)
+        val serialized = serializeLifterProfile(parsed)
+        assertTrue(validateLifterProfile(serialized).valid, "Roundtrip of $filename.json should be valid")
     }
 }

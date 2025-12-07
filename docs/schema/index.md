@@ -9,7 +9,7 @@ openweight defines four JSON Schemas that together describe the full lifecycle o
 | [WorkoutLog](/schema/workout-log)               | Completed workout sessions       | Stable |
 | [WorkoutTemplate](/schema/workout-template)     | Planned workout prescriptions    | Stable |
 | [Program](/schema/program)                      | Multi-week training programs     | Stable |
-| [PersonalRecords](/schema/personal-records)     | Personal records and 1RM exports | Stable |
+| [LifterProfile](/schema/lifter-profile)         | Athlete data, PRs, and 1RMs      | Stable |
 
 ## JSON Schema Version
 
@@ -24,7 +24,7 @@ Each schema has a canonical `$id` for reference resolution:
 | WorkoutLog      | `https://openweight.org/schemas/workout-log.schema.json`         |
 | WorkoutTemplate | `https://openweight.org/schemas/workout-template.schema.json`    |
 | Program         | `https://openweight.org/schemas/program.schema.json`             |
-| PersonalRecords | `https://openweight.org/schemas/personal-records.schema.json`    |
+| LifterProfile   | `https://openweight.org/schemas/lifter-profile.schema.json`      |
 
 ## Relationships
 
@@ -88,4 +88,4 @@ The canonical schema files are available in the repository:
 - [workout-log.schema.json](https://github.com/radupana/openweight/blob/main/schemas/workout-log.schema.json)
 - [workout-template.schema.json](https://github.com/radupana/openweight/blob/main/schemas/workout-template.schema.json)
 - [program.schema.json](https://github.com/radupana/openweight/blob/main/schemas/program.schema.json)
-- [personal-records.schema.json](https://github.com/radupana/openweight/blob/main/schemas/personal-records.schema.json)
+- [lifter-profile.schema.json](https://github.com/radupana/openweight/blob/main/schemas/lifter-profile.schema.json)

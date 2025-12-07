@@ -21,13 +21,13 @@ function createValidators() {
 
   const workoutLogSchema = loadSchema('workout-log');
   const programSchema = loadSchema('program');
-  const personalRecordsSchema = loadSchema('personal-records');
+  const lifterProfileSchema = loadSchema('lifter-profile');
 
   return {
     'workout-log': ajv.compile(workoutLogSchema),
     'workout-template': ajv.compile(templateSchema),
     'program': ajv.compile(programSchema),
-    'personal-records': ajv.compile(personalRecordsSchema)
+    'lifter-profile': ajv.compile(lifterProfileSchema)
   };
 }
 
@@ -96,22 +96,22 @@ if (existsSync(programsDir)) {
   }
 }
 
-// Validate personal-records
-const personalRecordsDir = join(rootDir, 'examples', 'personal-records');
-if (existsSync(personalRecordsDir)) {
-  console.log('\nValidating personal-records...\n');
+// Validate lifter-profiles
+const lifterProfilesDir = join(rootDir, 'examples', 'lifter-profiles');
+if (existsSync(lifterProfilesDir)) {
+  console.log('\nValidating lifter-profiles...\n');
 
-  const prFiles = readdirSync(personalRecordsDir).filter(f => f.endsWith('.json'));
-  for (const file of prFiles) {
-    const filePath = join(personalRecordsDir, file);
+  const profileFiles = readdirSync(lifterProfilesDir).filter(f => f.endsWith('.json'));
+  for (const file of profileFiles) {
+    const filePath = join(lifterProfilesDir, file);
     const data = JSON.parse(readFileSync(filePath, 'utf-8'));
-    const valid = validators['personal-records'](data);
+    const valid = validators['lifter-profile'](data);
 
     if (valid) {
       console.log(`✓ ${file}`);
     } else {
       console.log(`✗ ${file} - SHOULD BE VALID`);
-      console.log(`  Errors: ${JSON.stringify(validators['personal-records'].errors, null, 2)}`);
+      console.log(`  Errors: ${JSON.stringify(validators['lifter-profile'].errors, null, 2)}`);
       exitCode = 1;
     }
   }
@@ -134,9 +134,9 @@ for (const file of invalidFiles) {
   } else if (file.startsWith('program-')) {
     validator = validators['program'];
     schemaName = 'program';
-  } else if (file.startsWith('pr-')) {
-    validator = validators['personal-records'];
-    schemaName = 'personal-records';
+  } else if (file.startsWith('profile-')) {
+    validator = validators['lifter-profile'];
+    schemaName = 'lifter-profile';
   } else {
     validator = validators['workout-log'];
     schemaName = 'workout-log';

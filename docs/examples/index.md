@@ -9,7 +9,7 @@ Browse example files to understand how openweight data is structured.
 | [Workout Logs](/examples/workout-logs)         | Completed workout sessions       |
 | [Templates](/examples/workout-templates)       | Planned workout prescriptions    |
 | [Programs](/examples/programs)                 | Multi-week training programs     |
-| [Personal Records](/examples/personal-records) | Personal records and 1RM exports |
+| [Lifter Profiles](/examples/lifter-profiles)   | Athlete data, PRs, and 1RMs      |
 
 ## Progression
 
@@ -49,4 +49,4 @@ All example files are available in the repository:
 - [examples/workout-logs/](https://github.com/radupana/openweight/tree/main/examples/workout-logs)
 - [examples/workout-templates/](https://github.com/radupana/openweight/tree/main/examples/workout-templates)
 - [examples/programs/](https://github.com/radupana/openweight/tree/main/examples/programs)
-- [examples/personal-records/](https://github.com/radupana/openweight/tree/main/examples/personal-records)
+- [examples/lifter-profiles/](https://github.com/radupana/openweight/tree/main/examples/lifter-profiles)

@@ -48,14 +48,16 @@ val setTemplate: SetTemplate
 val program: Program
 val week: ProgramWeek
 
-// Personal Records types
-val records: PersonalRecords
+// Lifter Profile types
+val profile: LifterProfile
+val height: Height
+val bodyweight: Bodyweight
+val bodyweightEntry: BodyweightEntry
 val exerciseRecord: ExerciseRecord
 val repMax: RepMax
 val estimated1RM: Estimated1RM
 val volumePR: VolumePR
 val durationPR: DurationPR
-val athlete: Athlete
 val normalizedScores: NormalizedScores
 val liftScores: LiftScores
 ```
@@ -67,12 +69,16 @@ enum class WeightUnit {
     KG, LB
 }
 
+enum class HeightUnit {
+    CM, IN
+}
+
 enum class DistanceUnit {
     M, KM, FT, MI, YD
 }
 
 enum class Sex {
-    MALE, FEMALE, MX
+    MALE, FEMALE
 }
 
 enum class E1RMFormula {
@@ -92,12 +98,12 @@ Parse JSON strings into data classes:
 import com.openweight.parseWorkoutLog
 import com.openweight.parseWorkoutTemplate
 import com.openweight.parseProgram
-import com.openweight.parsePersonalRecords
+import com.openweight.parseLifterProfile
 
 val workout = parseWorkoutLog(jsonString)
 val template = parseWorkoutTemplate(jsonString)
 val program = parseProgram(jsonString)
-val records = parsePersonalRecords(jsonString)
+val profile = parseLifterProfile(jsonString)
 ```
 
 ### Error Handling
@@ -126,15 +132,15 @@ Simple boolean validation:
 import com.openweight.isValidWorkoutLog
 import com.openweight.isValidWorkoutTemplate
 import com.openweight.isValidProgram
-import com.openweight.isValidPersonalRecords
+import com.openweight.isValidLifterProfile
 import kotlinx.serialization.json.JsonElement
 
 if (isValidWorkoutLog(jsonElement)) {
     println("Valid workout!")
 }
 
-if (isValidPersonalRecords(jsonElement)) {
-    println("Valid personal records!")
+if (isValidLifterProfile(jsonElement)) {
+    println("Valid lifter profile!")
 }
 ```
 
@@ -144,7 +150,7 @@ Get detailed error information:
 
 ```kotlin
 import com.openweight.validateWorkoutLog
-import com.openweight.validatePersonalRecords
+import com.openweight.validateLifterProfile
 import com.openweight.ValidationResult
 
 val result: ValidationResult = validateWorkoutLog(jsonElement)
@@ -157,8 +163,8 @@ if (result.valid) {
     }
 }
 
-// Same pattern for personal records
-val prResult = validatePersonalRecords(jsonElement)
+// Same pattern for lifter profiles
+val profileResult = validateLifterProfile(jsonElement)
 ```
 
 ### Validation from String
@@ -176,8 +182,8 @@ Convert data classes to JSON strings:
 ```kotlin
 import com.openweight.serializeWorkoutLog
 import com.openweight.serializeWorkoutLogPretty
-import com.openweight.serializePersonalRecords
-import com.openweight.serializePersonalRecordsPretty
+import com.openweight.serializeLifterProfile
+import com.openweight.serializeLifterProfilePretty
 import com.openweight.model.WorkoutLog
 
 val workout = WorkoutLog(

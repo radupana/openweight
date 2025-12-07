@@ -4,9 +4,9 @@ import {
   workoutLogSchema,
   workoutTemplateSchema,
   programSchema,
-  personalRecordsSchema,
+  lifterProfileSchema,
 } from './schema.js'
-import type { WorkoutLog, WorkoutTemplate, Program, PersonalRecords } from './types.js'
+import type { WorkoutLog, WorkoutTemplate, Program, LifterProfile } from './types.js'
 
 export interface ValidationError {
   path: string
@@ -27,7 +27,7 @@ ajv.addSchema(workoutTemplateSchema)
 const validateWorkoutLogSchema = ajv.compile(workoutLogSchema)
 const validateWorkoutTemplateSchema = ajv.compile(workoutTemplateSchema)
 const validateProgramSchema = ajv.compile(programSchema)
-const validatePersonalRecordsSchema = ajv.compile(personalRecordsSchema)
+const validateLifterProfileSchema = ajv.compile(lifterProfileSchema)
 
 function formatErrors(errors: typeof validateWorkoutLogSchema.errors): ValidationError[] {
   return (errors ?? []).map((err) => ({
@@ -91,19 +91,19 @@ export function isValidProgram(data: unknown): data is Program {
 }
 
 // ============================================
-// Personal Records Validation
+// Lifter Profile Validation
 // ============================================
 
-export function validatePersonalRecords(data: unknown): ValidationResult {
-  const valid = validatePersonalRecordsSchema(data)
+export function validateLifterProfile(data: unknown): ValidationResult {
+  const valid = validateLifterProfileSchema(data)
 
   if (valid) {
     return { valid: true, errors: [] }
   }
 
-  return { valid: false, errors: formatErrors(validatePersonalRecordsSchema.errors) }
+  return { valid: false, errors: formatErrors(validateLifterProfileSchema.errors) }
 }
 
-export function isValidPersonalRecords(data: unknown): data is PersonalRecords {
-  return validatePersonalRecordsSchema(data)
+export function isValidLifterProfile(data: unknown): data is LifterProfile {
+  return validateLifterProfileSchema(data)
 }

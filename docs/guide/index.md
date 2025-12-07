@@ -36,7 +36,7 @@ openweight provides:
 | **WorkoutLog**      | A completed workout session with actual performance data |
 | **WorkoutTemplate** | A planned workout with target reps, weights, and RPE     |
 | **Program**         | A multi-week training program containing templates       |
-| **PersonalRecords** | Personal records and one-rep maxes for data portability  |
+| **LifterProfile**   | Athlete data, personal records, and one-rep maxes        |
 
 ## Next Steps
 

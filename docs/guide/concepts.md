@@ -166,7 +166,11 @@ Exercises with the same `supersetId` are performed together.
 
 ## Extensibility
 
-All openweight objects allow additional properties. Apps can store custom data using a namespaced key:
+All openweight objects allow additional properties through index signatures (`[key: string]: unknown`). This enables apps to store proprietary metadata alongside standard fields without breaking compatibility with other openweight-compliant applications.
+
+### Namespaced Keys
+
+Use a prefix like `myapp:` to avoid conflicts with future schema fields and other apps:
 
 ```json
 {
@@ -175,8 +179,86 @@ All openweight objects allow additional properties. Apps can store custom data u
     ...
   ],
   "myapp:sessionId": "abc123",
-  "myapp:gymLocation": "Downtown"
+  "myapp:gymLocation": "Downtown",
+  "myapp:heartRateAvg": 142,
+  "myapp:caloriesBurned": 450
 }
 ```
 
-Use a prefix like `myapp:` to avoid conflicts with future schema fields.
+### Best Practices for Custom Fields
+
+1. **Always use a namespace prefix** — Choose a unique prefix for your app (e.g., `featherweight:`, `strongapp:`, `myapp:`)
+2. **Use consistent naming** — Stick to camelCase after the prefix: `myapp:customField`
+3. **Document your extensions** — If others might import your data, document what your custom fields mean
+4. **Keep it minimal** — Only add custom fields when standard fields don't suffice
+
+### TypeScript Example
+
+```typescript
+import { serializeWorkoutLogPretty, type WorkoutLog } from '@openweight/sdk'
+
+// Create a workout with custom app-specific metadata
+const workout: WorkoutLog = {
+  date: new Date().toISOString(),
+  name: 'Morning Workout',
+  exercises: [
+    {
+      exercise: { name: 'Squat' },
+      sets: [{ reps: 5, weight: 100, unit: 'kg' }],
+      // Custom field on exercise
+      'myapp:restTimerUsed': true,
+    },
+  ],
+  // Custom fields on workout
+  'myapp:sessionId': 'abc123',
+  'myapp:gymLocation': 'Downtown Gym',
+  'myapp:mood': 'energetic',
+  'myapp:heartRateData': {
+    avg: 142,
+    max: 165,
+    zones: [10, 25, 40, 20, 5],
+  },
+}
+
+const json = serializeWorkoutLogPretty(workout)
+// Custom fields are preserved in the JSON output
+```
+
+### Compatibility Guarantees
+
+- **Other apps will ignore your custom fields** — Apps that don't recognize `myapp:*` fields will simply pass them through unchanged
+- **Round-trip safe** — Parsing and re-serializing preserves all custom fields
+- **Schema validation passes** — Custom fields don't cause validation errors because `additionalProperties` is allowed
+
+### When to Use Custom Fields vs. Standard Fields
+
+| Use Case | Recommendation |
+|----------|----------------|
+| Heart rate, calories | Custom field: `myapp:heartRate` |
+| Session notes | Standard field: `notes` |
+| App-specific IDs | Custom field: `myapp:sessionId` |
+| RPE/RIR | Standard field: `rpe`, `rir` |
+| Gym location | Custom field: `myapp:gymLocation` |
+| Exercise variations | Standard field: `exercise.name` with descriptive name |
+
+### Handling Custom Fields When Importing
+
+When importing data from another app, you can access or ignore custom fields:
+
+```typescript
+import { parseWorkoutLog } from '@openweight/sdk'
+
+const workout = parseWorkoutLog(jsonFromAnotherApp)
+
+// Access standard fields (type-safe)
+console.log(workout.date)
+console.log(workout.exercises[0].exercise.name)
+
+// Access custom fields (requires type assertion or checking)
+const theirSessionId = workout['otherapp:sessionId'] as string | undefined
+if (theirSessionId) {
+  console.log('Imported session:', theirSessionId)
+}
+
+// Or simply ignore them - they won't affect your app's logic
+```

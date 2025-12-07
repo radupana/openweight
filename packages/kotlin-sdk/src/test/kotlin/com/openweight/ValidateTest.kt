@@ -424,7 +424,7 @@ class ValidateTest {
     }
 
     @Test
-    fun `validatePersonalRecords returns valid for correct personal records`() {
+    fun `validateLifterProfile returns valid for correct lifter profile`() {
         val json = """
         {
             "exportedAt": "2024-01-15T10:00:00Z",
@@ -440,13 +440,13 @@ class ValidateTest {
         }
         """.trimIndent()
 
-        val result = validatePersonalRecords(json)
+        val result = validateLifterProfile(json)
         assertTrue(result.valid)
         assertTrue(result.errors.isEmpty())
     }
 
     @Test
-    fun `validatePersonalRecords returns invalid when exportedAt is missing`() {
+    fun `validateLifterProfile returns invalid when exportedAt is missing`() {
         val json = """
         {
             "records": [{
@@ -456,20 +456,20 @@ class ValidateTest {
         }
         """.trimIndent()
 
-        val result = validatePersonalRecords(json)
+        val result = validateLifterProfile(json)
         assertFalse(result.valid)
     }
 
     @Test
-    fun `validatePersonalRecords returns invalid when records is missing`() {
+    fun `validateLifterProfile returns valid when records is missing`() {
         val json = """{"exportedAt": "2024-01-15T10:00:00Z"}"""
 
-        val result = validatePersonalRecords(json)
-        assertFalse(result.valid)
+        val result = validateLifterProfile(json)
+        assertTrue(result.valid)
     }
 
     @Test
-    fun `validatePersonalRecords returns invalid for invalid rep max`() {
+    fun `validateLifterProfile returns invalid for invalid rep max`() {
         val json = """
         {
             "exportedAt": "2024-01-15T10:00:00Z",
@@ -480,12 +480,12 @@ class ValidateTest {
         }
         """.trimIndent()
 
-        val result = validatePersonalRecords(json)
+        val result = validateLifterProfile(json)
         assertFalse(result.valid)
     }
 
     @Test
-    fun `validatePersonalRecords returns invalid for invalid formula`() {
+    fun `validateLifterProfile returns invalid for invalid formula`() {
         val json = """
         {
             "exportedAt": "2024-01-15T10:00:00Z",
@@ -502,46 +502,53 @@ class ValidateTest {
         }
         """.trimIndent()
 
-        val result = validatePersonalRecords(json)
+        val result = validateLifterProfile(json)
         assertFalse(result.valid)
     }
 
     @Test
-    fun `validatePersonalRecords returns valid with athlete data`() {
+    fun `validateLifterProfile returns valid with height and bodyweight`() {
         val json = """
         {
             "exportedAt": "2024-01-15T10:00:00Z",
-            "athlete": { "bodyweightKg": 82.5, "sex": "male" },
-            "records": [{
-                "exercise": { "name": "Squat" },
-                "repMaxes": [{ "reps": 1, "weight": 180, "unit": "kg", "date": "2024-01-15" }]
-            }]
+            "height": { "value": 180, "unit": "cm" },
+            "bodyweight": { "value": 82.5, "unit": "kg" },
+            "sex": "male"
         }
         """.trimIndent()
 
-        val result = validatePersonalRecords(json)
+        val result = validateLifterProfile(json)
         assertTrue(result.valid)
     }
 
     @Test
-    fun `validatePersonalRecords returns invalid for invalid sex`() {
+    fun `validateLifterProfile returns invalid for invalid sex`() {
         val json = """
         {
             "exportedAt": "2024-01-15T10:00:00Z",
-            "athlete": { "sex": "invalid" },
-            "records": [{
-                "exercise": { "name": "Squat" },
-                "repMaxes": [{ "reps": 1, "weight": 180, "unit": "kg", "date": "2024-01-15" }]
-            }]
+            "sex": "invalid"
         }
         """.trimIndent()
 
-        val result = validatePersonalRecords(json)
+        val result = validateLifterProfile(json)
         assertFalse(result.valid)
     }
 
     @Test
-    fun `isValidPersonalRecords returns true for valid personal records`() {
+    fun `validateLifterProfile returns invalid for invalid height unit`() {
+        val json = """
+        {
+            "exportedAt": "2024-01-15T10:00:00Z",
+            "height": { "value": 180, "unit": "meters" }
+        }
+        """.trimIndent()
+
+        val result = validateLifterProfile(json)
+        assertFalse(result.valid)
+    }
+
+    @Test
+    fun `isValidLifterProfile returns true for valid lifter profile`() {
         val element = Json.parseToJsonElement("""
         {
             "exportedAt": "2024-01-15T10:00:00Z",
@@ -552,12 +559,12 @@ class ValidateTest {
         }
         """.trimIndent())
 
-        assertTrue(isValidPersonalRecords(element))
+        assertTrue(isValidLifterProfile(element))
     }
 
     @Test
-    fun `isValidPersonalRecords returns false for invalid personal records`() {
+    fun `isValidLifterProfile returns false for invalid lifter profile`() {
         val element = Json.parseToJsonElement("{}")
-        assertFalse(isValidPersonalRecords(element))
+        assertFalse(isValidLifterProfile(element))
     }
 }

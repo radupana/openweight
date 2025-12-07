@@ -109,18 +109,33 @@ export interface Program {
 }
 
 // ============================================
-// Personal Records Types
+// Lifter Profile Types
 // ============================================
 
-export type Sex = 'male' | 'female' | 'mx'
+export type Sex = 'male' | 'female'
+
+export type HeightUnit = 'cm' | 'in'
 
 export type E1RMFormula = 'brzycki' | 'epley' | 'lombardi' | 'mayhew' | 'oconner' | 'wathan'
 
 export type RepMaxType = 'actual' | 'estimated'
 
-export interface Athlete {
-  bodyweightKg?: number
-  sex?: Sex
+export interface Height {
+  value: number
+  unit: HeightUnit
+}
+
+export interface Bodyweight {
+  value: number
+  unit: WeightUnit
+  date?: string
+}
+
+export interface BodyweightEntry {
+  value: number
+  unit: WeightUnit
+  date: string
+  notes?: string
   [key: string]: unknown
 }
 
@@ -189,10 +204,15 @@ export interface NormalizedScores {
   [key: string]: unknown
 }
 
-export interface PersonalRecords {
+export interface LifterProfile {
   exportedAt: string
-  records: ExerciseRecord[]
-  athlete?: Athlete
+  name?: string
+  sex?: Sex
+  birthDate?: string
+  height?: Height
+  bodyweight?: Bodyweight
+  bodyweightHistory?: BodyweightEntry[]
+  records?: ExerciseRecord[]
   normalizedScores?: NormalizedScores
   [key: string]: unknown
 }

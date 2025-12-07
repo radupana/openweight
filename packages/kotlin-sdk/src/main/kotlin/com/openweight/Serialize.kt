@@ -1,6 +1,6 @@
 package com.openweight
 
-import com.openweight.model.PersonalRecords
+import com.openweight.model.LifterProfile
 import com.openweight.model.Program
 import com.openweight.model.WorkoutLog
 import com.openweight.model.WorkoutTemplate
@@ -66,17 +66,17 @@ fun serializeProgram(program: Program): String = jsonCompact.encodeToString(prog
 fun serializeProgramPretty(program: Program): String = jsonPretty.encodeToString(program)
 
 /**
- * Serializes a [PersonalRecords] to a compact JSON string.
+ * Serializes a [LifterProfile] to a compact JSON string.
  *
- * @param records The personal records to serialize
+ * @param profile The lifter profile to serialize
  * @return A compact JSON string representation
  */
-fun serializePersonalRecords(records: PersonalRecords): String = jsonCompact.encodeToString(records)
+fun serializeLifterProfile(profile: LifterProfile): String = jsonCompact.encodeToString(profile)
 
 /**
- * Serializes a [PersonalRecords] to a formatted JSON string with indentation.
+ * Serializes a [LifterProfile] to a formatted JSON string with indentation.
  *
- * @param records The personal records to serialize
+ * @param profile The lifter profile to serialize
  * @return A pretty-printed JSON string representation
  */
-fun serializePersonalRecordsPretty(records: PersonalRecords): String = jsonPretty.encodeToString(records)
+fun serializeLifterProfilePretty(profile: LifterProfile): String = jsonPretty.encodeToString(profile)

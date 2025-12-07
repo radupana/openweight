@@ -221,8 +221,8 @@ class SerializeTest {
     }
 
     @Test
-    fun `serializePersonalRecords produces valid JSON`() {
-        val records = PersonalRecords(
+    fun `serializeLifterProfile produces valid JSON`() {
+        val profile = LifterProfile(
             exportedAt = "2024-01-15T10:00:00Z",
             records = listOf(
                 ExerciseRecord(
@@ -234,15 +234,15 @@ class SerializeTest {
             )
         )
 
-        val json = serializePersonalRecords(records)
+        val json = serializeLifterProfile(profile)
         assertTrue(json.contains("2024-01-15T10:00:00Z"))
         assertTrue(json.contains("Squat"))
         assertTrue(json.contains("180"))
     }
 
     @Test
-    fun `serializePersonalRecordsPretty produces formatted JSON`() {
-        val records = PersonalRecords(
+    fun `serializeLifterProfilePretty produces formatted JSON`() {
+        val profile = LifterProfile(
             exportedAt = "2024-01-15T10:00:00Z",
             records = listOf(
                 ExerciseRecord(
@@ -254,36 +254,34 @@ class SerializeTest {
             )
         )
 
-        val json = serializePersonalRecordsPretty(records)
+        val json = serializeLifterProfilePretty(profile)
         assertTrue(json.contains("\n"))
         assertTrue(json.contains("  "))
     }
 
     @Test
-    fun `serializePersonalRecords omits null fields`() {
-        val records = PersonalRecords(
-            exportedAt = "2024-01-15T10:00:00Z",
-            records = listOf(
-                ExerciseRecord(
-                    exercise = Exercise(name = "Squat")
-                )
-            )
+    fun `serializeLifterProfile omits null fields`() {
+        val profile = LifterProfile(
+            exportedAt = "2024-01-15T10:00:00Z"
         )
 
-        val json = serializePersonalRecords(records)
-        assertFalse(json.contains("repMaxes"))
-        assertFalse(json.contains("estimated1RM"))
-        assertFalse(json.contains("athlete"))
+        val json = serializeLifterProfile(profile)
+        assertFalse(json.contains("records"))
+        assertFalse(json.contains("height"))
+        assertFalse(json.contains("bodyweight"))
     }
 
     @Test
-    fun `roundtrip personal records preserves data`() {
-        val original = PersonalRecords(
+    fun `roundtrip lifter profile preserves data`() {
+        val original = LifterProfile(
             exportedAt = "2024-01-15T10:00:00Z",
-            athlete = Athlete(bodyweightKg = 82.5, sex = Sex.MALE),
+            name = "John",
+            sex = Sex.MALE,
+            height = Height(value = 180.0, unit = HeightUnit.CM),
+            bodyweight = Bodyweight(value = 82.5, unit = WeightUnit.KG, date = "2024-01-15"),
             records = listOf(
                 ExerciseRecord(
-                    exercise = Exercise(name = "Squat", equipment = "Barbell"),
+                    exercise = Exercise(name = "Squat", equipment = "barbell"),
                     repMaxes = listOf(
                         RepMax(
                             reps = 1,
@@ -304,15 +302,17 @@ class SerializeTest {
             )
         )
 
-        val json = serializePersonalRecords(original)
-        val parsed = parsePersonalRecords(json)
+        val json = serializeLifterProfile(original)
+        val parsed = parseLifterProfile(json)
 
         assertEquals(original.exportedAt, parsed.exportedAt)
-        assertEquals(original.athlete?.bodyweightKg, parsed.athlete?.bodyweightKg)
-        assertEquals(original.athlete?.sex, parsed.athlete?.sex)
-        assertEquals(original.records.size, parsed.records.size)
-        assertEquals(original.records[0].exercise.name, parsed.records[0].exercise.name)
-        assertEquals(original.records[0].repMaxes?.get(0)?.weight, parsed.records[0].repMaxes?.get(0)?.weight)
-        assertEquals(original.records[0].estimated1RM?.formula, parsed.records[0].estimated1RM?.formula)
+        assertEquals(original.name, parsed.name)
+        assertEquals(original.sex, parsed.sex)
+        assertEquals(original.height?.value, parsed.height?.value)
+        assertEquals(original.bodyweight?.value, parsed.bodyweight?.value)
+        assertEquals(original.records?.size, parsed.records?.size)
+        assertEquals(original.records!![0].exercise.name, parsed.records!![0].exercise.name)
+        assertEquals(original.records!![0].repMaxes?.get(0)?.weight, parsed.records!![0].repMaxes?.get(0)?.weight)
+        assertEquals(original.records!![0].estimated1RM?.formula, parsed.records!![0].estimated1RM?.formula)
     }
 }

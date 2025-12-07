@@ -2,32 +2,137 @@
 // Generated from schemas/ by scripts/generate-schemas.js
 // Run: npm run generate:schemas
 
-export const personalRecordsSchema = {
+export const lifterProfileSchema = {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://openweight.org/schemas/personal-records.schema.json",
-  "title": "PersonalRecords",
-  "description": "A collection of personal records (PRs) and one-rep maxes for strength training exercises",
+  "$id": "https://openweight.org/schemas/lifter-profile.schema.json",
+  "title": "LifterProfile",
+  "description": "A lifter's profile including physical attributes, bodyweight history, and personal records",
   "type": "object",
   "required": [
-    "exportedAt",
-    "records"
+    "exportedAt"
   ],
   "additionalProperties": true,
   "properties": {
     "exportedAt": {
       "title": "Exported At",
-      "description": "When this PR snapshot was exported in ISO 8601 format",
+      "description": "When this profile was exported in ISO 8601 format",
       "type": "string",
       "format": "date-time",
       "examples": [
         "2024-01-15T10:00:00Z"
       ]
     },
-    "athlete": {
-      "$ref": "#/definitions/Athlete"
+    "name": {
+      "title": "Name",
+      "description": "Display name or nickname (no PII requirement)",
+      "type": "string",
+      "maxLength": 100,
+      "examples": [
+        "John",
+        "lifter123"
+      ]
+    },
+    "sex": {
+      "title": "Sex",
+      "description": "Biological sex for coefficient calculations (Wilks, DOTS, etc.)",
+      "type": "string",
+      "enum": [
+        "male",
+        "female"
+      ]
+    },
+    "birthDate": {
+      "title": "Birth Date",
+      "description": "Date of birth for age-based categories (masters, juniors)",
+      "type": "string",
+      "format": "date",
+      "examples": [
+        "1990-05-15"
+      ]
+    },
+    "height": {
+      "title": "Height",
+      "description": "Height measurement",
+      "type": "object",
+      "required": [
+        "value",
+        "unit"
+      ],
+      "properties": {
+        "value": {
+          "title": "Value",
+          "description": "Height value",
+          "type": "number",
+          "minimum": 0,
+          "examples": [
+            180,
+            5.9
+          ]
+        },
+        "unit": {
+          "title": "Unit",
+          "description": "Height unit",
+          "type": "string",
+          "enum": [
+            "cm",
+            "in"
+          ],
+          "examples": [
+            "cm",
+            "in"
+          ]
+        }
+      }
+    },
+    "bodyweight": {
+      "title": "Current Bodyweight",
+      "description": "Current or reference bodyweight",
+      "type": "object",
+      "required": [
+        "value",
+        "unit"
+      ],
+      "properties": {
+        "value": {
+          "title": "Value",
+          "description": "Bodyweight value",
+          "type": "number",
+          "minimum": 0,
+          "examples": [
+            82.5,
+            180
+          ]
+        },
+        "unit": {
+          "title": "Unit",
+          "description": "Weight unit",
+          "type": "string",
+          "enum": [
+            "kg",
+            "lb"
+          ]
+        },
+        "date": {
+          "title": "Date",
+          "description": "When this weight was recorded",
+          "type": "string",
+          "format": "date",
+          "examples": [
+            "2024-01-15"
+          ]
+        }
+      }
+    },
+    "bodyweightHistory": {
+      "title": "Bodyweight History",
+      "description": "Historical bodyweight entries for tracking over time",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/BodyweightEntry"
+      }
     },
     "records": {
-      "title": "Records",
+      "title": "Personal Records",
       "description": "Array of exercise PR records",
       "type": "array",
       "items": {
@@ -39,31 +144,53 @@ export const personalRecordsSchema = {
     }
   },
   "definitions": {
-    "Athlete": {
-      "title": "Athlete",
-      "description": "Athlete info for normalization calculations (no PII)",
+    "BodyweightEntry": {
+      "title": "BodyweightEntry",
+      "description": "A single bodyweight measurement at a point in time",
       "type": "object",
+      "required": [
+        "value",
+        "unit",
+        "date"
+      ],
       "additionalProperties": true,
       "properties": {
-        "bodyweightKg": {
-          "title": "Bodyweight (kg)",
-          "description": "Current/reference bodyweight in kilograms for coefficient calculation",
+        "value": {
+          "title": "Value",
+          "description": "Bodyweight value",
           "type": "number",
           "minimum": 0,
           "examples": [
             82.5,
-            75,
-            100
+            180
           ]
         },
-        "sex": {
-          "title": "Sex",
-          "description": "Biological sex for coefficient calculation",
+        "unit": {
+          "title": "Unit",
+          "description": "Weight unit",
           "type": "string",
           "enum": [
-            "male",
-            "female",
-            "mx"
+            "kg",
+            "lb"
+          ]
+        },
+        "date": {
+          "title": "Date",
+          "description": "When this weight was recorded",
+          "type": "string",
+          "format": "date",
+          "examples": [
+            "2024-01-15"
+          ]
+        },
+        "notes": {
+          "title": "Notes",
+          "description": "Context for this weigh-in (morning, post-workout, competition, etc.)",
+          "type": "string",
+          "maxLength": 500,
+          "examples": [
+            "Morning weigh-in",
+            "Competition day"
           ]
         }
       }
