@@ -936,6 +936,18 @@ export const workoutLogSchema = {
               "distanceUnit"
             ]
           }
+        },
+        {
+          "if": {
+            "required": [
+              "targetWeight"
+            ]
+          },
+          "then": {
+            "required": [
+              "unit"
+            ]
+          }
         }
       ],
       "properties": {
@@ -1070,6 +1082,40 @@ export const workoutLogSchema = {
           "description": "Notes for this specific set",
           "type": "string",
           "maxLength": 1000
+        },
+        "targetReps": {
+          "title": "Target Reps",
+          "description": "Prescribed number of reps from a program or template",
+          "type": "integer",
+          "minimum": 0,
+          "examples": [
+            5,
+            8,
+            12
+          ]
+        },
+        "targetWeight": {
+          "title": "Target Weight",
+          "description": "Prescribed weight from a program or template",
+          "type": "number",
+          "minimum": 0,
+          "examples": [
+            100,
+            60.5,
+            225
+          ]
+        },
+        "targetRPE": {
+          "title": "Target RPE",
+          "description": "Prescribed Rate of Perceived Exertion from a program or template (0-10)",
+          "type": "number",
+          "minimum": 0,
+          "maximum": 10,
+          "examples": [
+            7,
+            8,
+            9
+          ]
         }
       }
     }

@@ -80,12 +80,10 @@ console.log(log.exercises[0].exercise.name); // "Squat"
 **Kotlin/JVM:**
 
 ```kotlin
-implementation("io.github.radupana:openweight-sdk:0.2.0")
+implementation("io.github.radupana:openweight-sdk:0.4.0")
 ```
 
 ```kotlin
-import org.openweight.sdk.parseWorkoutLog
-
 val log = parseWorkoutLog(jsonString)
 println(log.exercises[0].exercise.name) // "Squat"
 ```

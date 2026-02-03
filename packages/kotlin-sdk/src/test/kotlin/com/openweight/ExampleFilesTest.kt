@@ -25,7 +25,8 @@ class ExampleFilesTest {
         "timed-exercises",
         "carries-and-distance",
         "tempo-training",
-        "bodyweight-workout"
+        "bodyweight-workout",
+        "programmed-workout"
     ])
     fun `valid workout-log examples`(filename: String) {
         val json = loadResource("/examples/workout-logs/$filename.json")
@@ -65,7 +66,8 @@ class ExampleFilesTest {
         "empty-sets",
         "weight-without-unit",
         "distance-without-unit",
-        "invalid-unit"
+        "invalid-unit",
+        "target-weight-without-unit"
     ])
     fun `invalid workout-log examples`(filename: String) {
         val json = loadResource("/examples/invalid/$filename.json")

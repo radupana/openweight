@@ -16,5 +16,8 @@ data class SetLog(
     val type: String? = null,
     val restSeconds: Int? = null,
     val tempo: String? = null,
-    val notes: String? = null
+    val notes: String? = null,
+    val targetReps: Int? = null,
+    val targetWeight: Double? = null,
+    val targetRPE: Double? = null
 )

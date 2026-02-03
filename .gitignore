@@ -1,6 +1,7 @@
 *.md
 !README.md
 !VISION.md
+!CONTRIBUTING.md
 !docs/**/*.md
 node_modules/
 dist/

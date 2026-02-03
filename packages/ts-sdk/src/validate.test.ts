@@ -90,6 +90,54 @@ describe('validateWorkoutLog', () => {
     expect(result.valid).toBe(false)
   })
 
+  it('returns invalid when targetWeight is provided without unit', () => {
+    const result = validateWorkoutLog({
+      date: '2024-01-15T09:00:00Z',
+      exercises: [
+        {
+          exercise: { name: 'Squat' },
+          sets: [{ reps: 5, targetWeight: 100 }],
+        },
+      ],
+    })
+    expect(result.valid).toBe(false)
+  })
+
+  it('returns valid for target fields with unit', () => {
+    const result = validateWorkoutLog({
+      date: '2024-01-15T09:00:00Z',
+      exercises: [
+        {
+          exercise: { name: 'Squat' },
+          sets: [
+            {
+              reps: 5,
+              weight: 100,
+              unit: 'kg',
+              targetReps: 5,
+              targetWeight: 100,
+              targetRPE: 8,
+            },
+          ],
+        },
+      ],
+    })
+    expect(result.valid).toBe(true)
+  })
+
+  it('returns valid for targetReps alone without unit', () => {
+    const result = validateWorkoutLog({
+      date: '2024-01-15T09:00:00Z',
+      exercises: [
+        {
+          exercise: { name: 'Push-up' },
+          sets: [{ reps: 15, targetReps: 20 }],
+        },
+      ],
+    })
+    expect(result.valid).toBe(true)
+  })
+
   it('returns invalid for invalid unit enum', () => {
     const result = validateWorkoutLog({
       date: '2024-01-15T09:00:00Z',

@@ -1,0 +1,78 @@
+{
+  "date": "2024-01-20T09:00:00Z",
+  "name": "Week 3 Day 1 - Squat",
+  "templateId": "531-squat-day",
+  "durationSeconds": 3600,
+  "exercises": [
+    {
+      "exercise": {
+        "name": "Barbell Back Squat",
+        "equipment": "barbell",
+        "category": "legs"
+      },
+      "sets": [
+        {
+          "reps": 5,
+          "weight": 60,
+          "unit": "kg",
+          "type": "warmup",
+          "targetReps": 5,
+          "targetWeight": 60,
+          "targetRPE": 5
+        },
+        {
+          "reps": 5,
+          "weight": 95,
+          "unit": "kg",
+          "rpe": 7,
+          "targetReps": 5,
+          "targetWeight": 95,
+          "targetRPE": 7
+        },
+        {
+          "reps": 3,
+          "weight": 107.5,
+          "unit": "kg",
+          "rpe": 8,
+          "targetReps": 3,
+          "targetWeight": 107.5,
+          "targetRPE": 8
+        },
+        {
+          "reps": 2,
+          "weight": 120,
+          "unit": "kg",
+          "rpe": 9,
+          "targetReps": 1,
+          "targetWeight": 120,
+          "targetRPE": 9
+        }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Paused Squat",
+        "equipment": "barbell",
+        "category": "legs"
+      },
+      "sets": [
+        {
+          "reps": 5,
+          "weight": 80,
+          "unit": "kg",
+          "rpe": 7.5,
+          "targetReps": 5,
+          "targetRPE": 7
+        },
+        {
+          "reps": 5,
+          "weight": 80,
+          "unit": "kg",
+          "rpe": 8,
+          "targetReps": 5,
+          "targetRPE": 7
+        }
+      ]
+    }
+  ]
+}
