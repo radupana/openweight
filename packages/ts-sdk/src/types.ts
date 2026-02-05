@@ -20,6 +20,9 @@ export interface SetLog {
   restSeconds?: number
   tempo?: string
   notes?: string
+  targetReps?: number
+  targetWeight?: number
+  targetRPE?: number
   [key: string]: unknown
 }
 
