@@ -119,7 +119,7 @@ jobs:
 
           # Update TypeScript SDK
           cd packages/ts-sdk
-          npm version $NEXT_VERSION --no-git-tag-version
+          npm version $NEXT_VERSION --no-git-tag-version --allow-same-version
           cd ../..
 
           # Update Kotlin SDK
