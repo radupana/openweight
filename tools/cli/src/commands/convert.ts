@@ -1,5 +1,6 @@
 import { Command } from 'commander'
 import { readFileSync, writeFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { convert, detectFormat } from '@openweight/converters'
 import type { SourceFormat, ConversionReport } from '@openweight/converters'
 import type { WeightUnit } from '@openweight/sdk'
@@ -26,7 +27,7 @@ export const convertCommand = new Command('convert')
     report: boolean
   }) => {
     try {
-      const csv = readFileSync(file, 'utf-8')
+      const csv = readFileSync(resolve(file), 'utf-8')
 
       // Validate format option
       let format: SourceFormat | undefined
@@ -87,7 +88,7 @@ export const convertCommand = new Command('convert')
         : JSON.stringify(result.workouts, null, options.pretty ? 2 : undefined)
 
       if (options.output) {
-        writeFileSync(options.output, output + '\n')
+        writeFileSync(resolve(options.output), output + '\n')
         console.error(`Wrote ${result.workouts.length} workout(s) to ${options.output}`)
       } else {
         process.stdout.write(output + '\n')

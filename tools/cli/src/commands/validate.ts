@@ -1,5 +1,6 @@
 import { Command } from 'commander'
 import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import {
   validateWorkoutLog,
   validateWorkoutTemplate,
@@ -29,7 +30,7 @@ export const validateCommand = new Command('validate')
       // Read input
       const input = file === '-'
         ? readStdin()
-        : readFileSync(file, 'utf-8')
+        : readFileSync(resolve(file), 'utf-8')
 
       // Parse JSON
       let data: unknown
