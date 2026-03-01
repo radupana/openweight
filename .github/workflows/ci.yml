@@ -40,6 +40,9 @@ jobs:
       - name: Run converter tests
         run: npm run test:converters
 
+      - name: Run CLI tests
+        run: npm run test:cli
+
       - name: Validate examples
         run: npm run validate-examples
 

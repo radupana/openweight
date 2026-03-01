@@ -88,6 +88,34 @@ val log = parseWorkoutLog(jsonString)
 println(log.exercises[0].exercise.name) // "Squat"
 ```
 
+## CLI
+
+Validate and convert workout data from the command line.
+
+```bash
+# Validate a workout log
+npx @openweight/cli validate workout.json
+
+# Validate with explicit schema type
+npx @openweight/cli validate --schema program training-plan.json
+
+# Convert a Strong CSV export to openweight JSON
+npx @openweight/cli convert --weight-unit kg strong-export.csv --pretty
+
+# Convert a Hevy CSV export (auto-detected, units included in CSV)
+npx @openweight/cli convert hevy-export.csv -o workouts.json
+
+# Show conversion report
+npx @openweight/cli convert --report hevy-export.csv
+```
+
+### Supported Formats
+
+| App      | Format | Notes                                      |
+|----------|--------|-------------------------------------------  |
+| **Strong** | CSV  | Requires `--weight-unit` (kg or lb)        |
+| **Hevy**   | CSV  | Auto-detects units from kg/lbs columns     |
+
 ## Documentation
 
 Full documentation, schema reference, and interactive playground at **[openweight.dev](https://openweight.dev)**
