@@ -63,14 +63,15 @@ After conversion, every workout is validated against the openweight schema. You 
 Add `--report` to see exactly what happened:
 
 ```
-=== Conversion Report ===
-Source format: strong
-Workouts converted: 147
-Exercises found: 23
-Sets converted: 2,841
-Warnings: 2
-  - Unmapped exercise: "Cable Crunch" (kept as-is)
-  - Unmapped exercise: "Face Pull" (kept as-is)
+--- Conversion Report ---
+Source:     strong
+Rows:       2841/2841 converted, 0 skipped
+Workouts:   147
+Exercises:  23
+
+Unmapped exercises (kept as-is):
+  - Reverse Hyperextension
+  - Hip Thrust (Smith Machine)
 ```
 
 No silent failures. No mystery transformations. You see exactly what was converted and what wasn't.

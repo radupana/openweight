@@ -42,12 +42,11 @@ npx @openweight/cli convert --weight-unit kg strong.csv -o workouts.json --prett
 
 Example output:
 ```
-=== Conversion Report ===
-Source format: strong
-Workouts converted: 247
-Exercises found: 31
-Sets converted: 4,218
-Warnings: 0
+--- Conversion Report ---
+Source:     strong
+Rows:       4218/4218 converted, 0 skipped
+Workouts:   247
+Exercises:  31
 ```
 
 ## What Gets Converted

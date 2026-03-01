@@ -63,118 +63,56 @@ The smallest valid program — one week with two workouts.
 ## 531-bbb.json (5/3/1 Boring But Big)
 
 A complete 4-week mesocycle with percentage-based loading. This example shows:
-- **Weekly progression**: Week 1 (5s), Week 2 (3s), Week 3 (5/3/1), Week 4 (Deload)
-- **Percentage-based loading**: All weights relative to Training Max
+- **Weekly progression**: Week 1 (3x5), Week 2 (3x3), Week 3 (5/3/1), Week 4 (Deload)
+- **Percentage-based loading**: All weights relative to 1RM
 - **AMRAP sets**: Final working set each week
 - **BBB accessory work**: 5x10 at lighter percentages
 
+The full example in the repo includes all four main lifts per week. Here's a condensed excerpt showing the squat day from Week 1:
+
 ```json
 {
-  "name": "5/3/1 Boring But Big - Squat Focus",
-  "description": "Jim Wendler's 5/3/1 with BBB accessory template",
+  "name": "5/3/1 Boring But Big",
+  "description": "Jim Wendler's 5/3/1 program with Boring But Big supplemental work. A 4-week cycle focusing on the four main lifts with 5x10 volume work.",
   "author": "Jim Wendler",
-  "tags": ["strength", "intermediate", "4-week", "531"],
+  "tags": ["strength", "powerlifting", "intermediate"],
   "weeks": [
     {
-      "name": "Week 1 - 5s",
+      "name": "Week 1 - 3x5",
+      "notes": "Working sets at 65%, 75%, 85% of training max",
       "workouts": [
         {
           "name": "Squat Day",
+          "day": 1,
           "exercises": [
             {
-              "exercise": { "name": "Squat", "equipment": "barbell" },
+              "exercise": { "name": "Barbell Back Squat", "equipment": "barbell", "category": "legs" },
+              "order": 1,
               "sets": [
-                { "percentage": 65, "percentageOf": "TM", "targetReps": 5 },
-                { "percentage": 75, "percentageOf": "TM", "targetReps": 5 },
-                { "percentage": 85, "percentageOf": "TM", "targetReps": 5, "type": "amrap" }
+                { "type": "working", "targetReps": 5, "percentage": 65, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 5, "percentage": 75, "percentageOf": "1RM", "restSeconds": 180 },
+                { "type": "working", "targetReps": 5, "percentage": 85, "percentageOf": "1RM", "notes": "AMRAP", "restSeconds": 180 }
               ]
             },
             {
-              "exercise": { "name": "Squat" },
-              "notes": "BBB 5x10",
+              "exercise": { "name": "Barbell Back Squat", "equipment": "barbell", "category": "legs" },
+              "order": 2,
+              "notes": "BBB sets",
               "sets": [
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Week 2 - 3s",
-      "workouts": [
-        {
-          "name": "Squat Day",
-          "exercises": [
-            {
-              "exercise": { "name": "Squat", "equipment": "barbell" },
-              "sets": [
-                { "percentage": 70, "percentageOf": "TM", "targetReps": 3 },
-                { "percentage": 80, "percentageOf": "TM", "targetReps": 3 },
-                { "percentage": 90, "percentageOf": "TM", "targetReps": 3, "type": "amrap" }
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 },
+                { "targetReps": 10, "percentage": 50, "percentageOf": "1RM", "restSeconds": 90 }
               ]
             },
             {
-              "exercise": { "name": "Squat" },
-              "notes": "BBB 5x10",
+              "exercise": { "name": "Leg Curl", "equipment": "machine", "category": "legs" },
+              "order": 3,
               "sets": [
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Week 3 - 5/3/1",
-      "workouts": [
-        {
-          "name": "Squat Day",
-          "exercises": [
-            {
-              "exercise": { "name": "Squat", "equipment": "barbell" },
-              "sets": [
-                { "percentage": 75, "percentageOf": "TM", "targetReps": 5 },
-                { "percentage": 85, "percentageOf": "TM", "targetReps": 3 },
-                { "percentage": 95, "percentageOf": "TM", "targetReps": 1, "type": "amrap" }
-              ]
-            },
-            {
-              "exercise": { "name": "Squat" },
-              "notes": "BBB 5x10",
-              "sets": [
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 10 }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Week 4 - Deload",
-      "notes": "Reduce intensity, focus on recovery",
-      "workouts": [
-        {
-          "name": "Squat Day",
-          "exercises": [
-            {
-              "exercise": { "name": "Squat", "equipment": "barbell" },
-              "sets": [
-                { "percentage": 40, "percentageOf": "TM", "targetReps": 5 },
-                { "percentage": 50, "percentageOf": "TM", "targetReps": 5 },
-                { "percentage": 60, "percentageOf": "TM", "targetReps": 5 }
+                { "targetRepsMin": 10, "targetRepsMax": 15 },
+                { "targetRepsMin": 10, "targetRepsMax": 15 },
+                { "targetRepsMin": 10, "targetRepsMax": 15 }
               ]
             }
           ]
@@ -184,6 +122,8 @@ A complete 4-week mesocycle with percentage-based loading. This example shows:
   ]
 }
 ```
+
+See the [full 531-bbb.json on GitHub](https://github.com/radupana/openweight/blob/main/examples/programs/531-bbb.json) for all four weeks and all four lifts.
 
 ## Program Metadata
 

@@ -30,7 +30,6 @@ A single exercise prescription within a template.
 | `order` | integer | No | Position in workout (1-indexed) |
 | `notes` | string | No | Notes specific to this exercise |
 | `supersetId` | integer | No | Groups exercises into supersets |
-| `restSeconds` | integer | No | Recommended rest between sets |
 
 ## Exercise
 
@@ -54,12 +53,12 @@ Prescribes what to do in a set.
 | `targetRepsMax` | integer | No | Maximum reps in range |
 | `targetWeight` | number | No | Absolute weight target |
 | `unit` | "kg" \| "lb" | Conditional | Required if targetWeight is present |
-| `percentage` | number (0-100) | No | Percentage of reference |
+| `percentage` | number (0-200) | No | Percentage of reference |
 | `percentageOf` | string | Conditional | Reference for percentage (e.g., "1RM") |
 | `targetRPE` | number (0-10) | No | Target RPE |
 | `targetRIR` | integer | No | Target Reps In Reserve |
 | `type` | string | No | Set type (default: "working") |
-| `rest` | integer | No | Rest after this set (seconds) |
+| `restSeconds` | integer | No | Rest after this set (seconds) |
 | `tempo` | string | No | Tempo notation |
 | `notes` | string | No | Notes for this set |
 
@@ -116,12 +115,11 @@ Common `percentageOf` values: `1RM`, `TM` (Training Max), `E1RM` (Estimated 1RM)
         "equipment": "barbell",
         "category": "legs"
       },
-      "restSeconds": 180,
       "sets": [
-        { "percentage": 65, "percentageOf": "TM", "targetReps": 5, "type": "warmup" },
-        { "percentage": 75, "percentageOf": "TM", "targetReps": 5 },
-        { "percentage": 85, "percentageOf": "TM", "targetReps": 5 },
-        { "percentage": 85, "percentageOf": "TM", "targetReps": 5, "type": "amrap" }
+        { "percentage": 65, "percentageOf": "1RM", "targetReps": 5, "type": "warmup", "restSeconds": 180 },
+        { "percentage": 75, "percentageOf": "1RM", "targetReps": 5, "restSeconds": 180 },
+        { "percentage": 85, "percentageOf": "1RM", "targetReps": 5, "restSeconds": 180 },
+        { "percentage": 85, "percentageOf": "1RM", "targetReps": 5, "type": "amrap", "restSeconds": 180 }
       ]
     },
     {
@@ -131,11 +129,11 @@ Common `percentageOf` values: `1RM`, `TM` (Training Max), `E1RM` (Estimated 1RM)
       },
       "notes": "BBB sets",
       "sets": [
-        { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-        { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-        { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-        { "percentage": 50, "percentageOf": "TM", "targetReps": 10 },
-        { "percentage": 50, "percentageOf": "TM", "targetReps": 10 }
+        { "percentage": 50, "percentageOf": "1RM", "targetReps": 10 },
+        { "percentage": 50, "percentageOf": "1RM", "targetReps": 10 },
+        { "percentage": 50, "percentageOf": "1RM", "targetReps": 10 },
+        { "percentage": 50, "percentageOf": "1RM", "targetReps": 10 },
+        { "percentage": 50, "percentageOf": "1RM", "targetReps": 10 }
       ]
     }
   ]

@@ -12,14 +12,14 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.radupana:openweight-sdk:0.2.0")
+    implementation("io.github.radupana:openweight-sdk:0.4.0")
 }
 ```
 
 For Gradle (Groovy):
 
 ```groovy
-implementation 'io.github.radupana:openweight-sdk:0.2.0'
+implementation 'io.github.radupana:openweight-sdk:0.4.0'
 ```
 
 ## Requirements

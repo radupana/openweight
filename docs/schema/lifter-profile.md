@@ -81,7 +81,7 @@ A rep max record (e.g., heaviest weight for 1 rep, 3 reps, 5 reps).
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `reps` | integer (1-15) | Yes | Rep count |
+| `reps` | integer (min 1) | Yes | Rep count |
 | `weight` | number | Yes | Weight lifted |
 | `unit` | "kg" \| "lb" | Yes | Weight unit |
 | `date` | string (date) | Yes | When PR was achieved |
@@ -142,21 +142,21 @@ Best time for timed exercises (planks, carries, etc.).
 
 Pre-calculated bodyweight-normalized scores for powerlifts.
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `squat` | LiftScores | Scores for squat |
-| `bench` | LiftScores | Scores for bench press |
-| `deadlift` | LiftScores | Scores for deadlift |
-| `total` | LiftScores | Scores for powerlifting total |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `squat` | LiftScores | No | Scores for squat |
+| `bench` | LiftScores | No | Scores for bench press |
+| `deadlift` | LiftScores | No | Scores for deadlift |
+| `total` | LiftScores | No | Scores for powerlifting total |
 
 ### LiftScores
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `wilks` | number | Classic powerlifting coefficient |
-| `dots` | number | Modern replacement for Wilks |
-| `ipfGl` | number | IPF Goodlift points |
-| `glossbrenner` | number | Alternative coefficient |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `wilks` | number | No | Classic powerlifting coefficient |
+| `dots` | number | No | Modern replacement for Wilks |
+| `ipfGl` | number | No | IPF Goodlift points |
+| `glossbrenner` | number | No | Alternative coefficient |
 
 ## Example
 

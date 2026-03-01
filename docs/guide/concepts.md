@@ -40,7 +40,7 @@ An Exercise describes which movement was performed:
 | `category`      | string   | Body part: chest, back, legs, etc.                  |
 | `musclesWorked` | string[] | Specific muscles targeted                           |
 
-The same Exercise definition is shared between logs and templates.
+The same Exercise definition is shared between logs and templates. The LifterProfile schema uses a simplified Exercise (without `musclesWorked`) since it only needs to identify which exercise a record belongs to.
 
 ## Sets
 

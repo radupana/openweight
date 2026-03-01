@@ -138,4 +138,4 @@ Both SDKs support all four schema types:
 | WorkoutLog      | `parseWorkoutLog`       | `validateWorkoutLog`       | `serializeWorkoutLog`       |
 | WorkoutTemplate | `parseWorkoutTemplate`  | `validateWorkoutTemplate`  | `serializeWorkoutTemplate`  |
 | Program         | `parseProgram`          | `validateProgram`          | `serializeProgram`          |
-| PersonalRecords | `parsePersonalRecords`  | `validatePersonalRecords`  | `serializePersonalRecords`  |
+| LifterProfile   | `parseLifterProfile`    | `validateLifterProfile`    | `serializeLifterProfile`    |

@@ -72,12 +72,13 @@ A typical strength training session with warmup sets and RPE tracking.
 
 ## bodyweight-workout.json
 
-A workout without any weight — no `weight` or `unit` fields needed.
+A workout that includes bodyweight exercises, weighted bodyweight exercises, and failure sets.
 
 ```json
 {
-  "date": "2024-01-17T07:00:00Z",
-  "name": "Bodyweight Circuit",
+  "date": "2024-01-19T07:00:00Z",
+  "name": "Bodyweight Session",
+  "durationSeconds": 2700,
   "exercises": [
     {
       "exercise": {
@@ -88,7 +89,20 @@ A workout without any weight — no `weight` or `unit` fields needed.
       "sets": [
         { "reps": 10 },
         { "reps": 8 },
-        { "reps": 6 }
+        { "reps": 7 },
+        { "toFailure": true }
+      ]
+    },
+    {
+      "exercise": {
+        "name": "Weighted Pull-up",
+        "equipment": "bodyweight",
+        "category": "back"
+      },
+      "sets": [
+        { "reps": 5, "weight": 10, "unit": "kg" },
+        { "reps": 5, "weight": 10, "unit": "kg" },
+        { "reps": 4, "weight": 10, "unit": "kg" }
       ]
     },
     {
@@ -100,7 +114,7 @@ A workout without any weight — no `weight` or `unit` fields needed.
       "sets": [
         { "reps": 20 },
         { "reps": 18 },
-        { "reps": 15 }
+        { "reps": 15, "toFailure": true }
       ]
     }
   ]
@@ -144,39 +158,56 @@ Exercises measured by duration instead of reps — using `durationSeconds`.
 
 ## superset-workout.json
 
-Exercises grouped into supersets using `supersetId`.
+Exercises grouped into supersets using `supersetId`. Includes non-superset exercises too.
 
 ```json
 {
-  "date": "2024-01-19T16:00:00Z",
-  "name": "Push/Pull Supersets",
+  "date": "2024-01-18T12:00:00Z",
+  "name": "Full Body Supersets",
+  "durationSeconds": 3600,
   "exercises": [
     {
-      "exercise": { "name": "Bench Press" },
+      "exercise": { "name": "Barbell Bench Press", "equipment": "barbell", "category": "chest" },
       "supersetId": 1,
       "sets": [
-        { "reps": 10, "weight": 60, "unit": "kg" }
+        { "reps": 8, "weight": 80, "unit": "kg", "rpe": 7 },
+        { "reps": 8, "weight": 80, "unit": "kg", "rpe": 7.5 },
+        { "reps": 8, "weight": 80, "unit": "kg", "rpe": 8 }
       ]
     },
     {
-      "exercise": { "name": "Bent Over Row" },
+      "exercise": { "name": "Barbell Row", "equipment": "barbell", "category": "back" },
       "supersetId": 1,
       "sets": [
-        { "reps": 10, "weight": 60, "unit": "kg" }
+        { "reps": 8, "weight": 70, "unit": "kg", "rpe": 7 },
+        { "reps": 8, "weight": 70, "unit": "kg", "rpe": 7.5 },
+        { "reps": 8, "weight": 70, "unit": "kg", "rpe": 8 }
       ]
     },
     {
-      "exercise": { "name": "Shoulder Press" },
-      "supersetId": 2,
+      "exercise": { "name": "Barbell Back Squat", "equipment": "barbell", "category": "legs" },
       "sets": [
-        { "reps": 12, "weight": 20, "unit": "kg" }
+        { "reps": 6, "weight": 100, "unit": "kg", "rpe": 8 },
+        { "reps": 6, "weight": 100, "unit": "kg", "rpe": 8.5 },
+        { "reps": 6, "weight": 100, "unit": "kg", "rpe": 9 }
       ]
     },
     {
-      "exercise": { "name": "Pull-up" },
+      "exercise": { "name": "Leg Curl", "equipment": "machine", "category": "legs" },
       "supersetId": 2,
       "sets": [
-        { "reps": 8 }
+        { "reps": 12, "weight": 40, "unit": "kg" },
+        { "reps": 12, "weight": 40, "unit": "kg" },
+        { "reps": 12, "weight": 40, "unit": "kg" }
+      ]
+    },
+    {
+      "exercise": { "name": "Leg Extension", "equipment": "machine", "category": "legs" },
+      "supersetId": 2,
+      "sets": [
+        { "reps": 12, "weight": 50, "unit": "kg" },
+        { "reps": 12, "weight": 50, "unit": "kg" },
+        { "reps": 12, "weight": 50, "unit": "kg" }
       ]
     }
   ]

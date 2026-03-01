@@ -35,12 +35,11 @@ npx @openweight/cli convert hevy.csv -o workouts.json --pretty --report
 
 Example output:
 ```
-=== Conversion Report ===
-Source format: hevy
-Workouts converted: 183
-Exercises found: 27
-Sets converted: 3,104
-Warnings: 0
+--- Conversion Report ---
+Source:     hevy
+Rows:       3104/3104 converted, 0 skipped
+Workouts:   183
+Exercises:  27
 ```
 
 ## What Gets Converted

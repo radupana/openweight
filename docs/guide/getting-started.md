@@ -106,7 +106,7 @@ For Android/JVM projects, add the Maven Central dependency:
 
 ```kotlin
 dependencies {
-    implementation("io.github.radupana:openweight-sdk:0.2.0")
+    implementation("io.github.radupana:openweight-sdk:0.4.0")
 }
 ```
 
