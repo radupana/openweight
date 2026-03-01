@@ -39,6 +39,14 @@
     "@openweight/sdk": "^0.9.0",
     "papaparse": "^5.4.1"
   },
+  "peerDependencies": {
+    "openai": "^4.104.0"
+  },
+  "peerDependenciesMeta": {
+    "openai": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@types/node": "^24.10.1",
     "@types/papaparse": "^5.3.15",

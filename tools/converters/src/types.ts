@@ -1,4 +1,5 @@
 import type { WorkoutLog, WeightUnit, DistanceUnit } from '@openweight/sdk'
+import type { AIProvider, AIColumnMapping, AIExerciseMapping } from './ai/provider.js'
 
 export type SourceFormat = 'strong' | 'hevy'
 
@@ -7,6 +8,8 @@ export interface ConvertOptions {
   csv: string
   weightUnit?: WeightUnit
   exerciseMappings?: Record<string, string>
+  ai?: AIProvider
+  aiModel?: string
 }
 
 export interface ConvertResult {
@@ -69,6 +72,8 @@ export interface ConversionReport {
   columnMappings: ColumnMapping[]
   unmappedExercises: string[]
   warnings: ConversionWarning[]
+  aiColumnMappings?: AIColumnMapping[]
+  aiExerciseSuggestions?: AIExerciseMapping[]
 }
 
 export interface ParsedCSV {

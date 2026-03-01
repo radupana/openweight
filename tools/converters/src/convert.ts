@@ -2,6 +2,7 @@ import { validateWorkoutLog } from '@openweight/sdk'
 import { parseCSV } from './parsers/csv.js'
 import { strongParser } from './parsers/strong.js'
 import { hevyParser } from './parsers/hevy.js'
+import { mapColumnsWithAI } from './mapping/column-mapper.js'
 import { transformRows } from './transform/transformer.js'
 import { hasExerciseMapping } from './mapping/exercise-names.js'
 import { buildReport } from './report.js'
@@ -13,6 +14,9 @@ import type {
   SourceParser,
   ConversionWarning,
 } from './types.js'
+import type { AIColumnMapping, AIExerciseMapping } from './ai/provider.js'
+
+import mappingsJson from './mapping/exercise-mappings.json' with { type: 'json' }
 
 const PARSERS: SourceParser[] = [strongParser, hevyParser]
 
@@ -30,7 +34,7 @@ export function detectFormat(csv: string): SourceFormat {
 /**
  * Convert a CSV string from a fitness app into openweight WorkoutLog objects.
  */
-export function convert(options: ConvertOptions): ConvertResult {
+export async function convert(options: ConvertOptions): Promise<ConvertResult> {
   const { csv, format: formatOption } = options
   const warnings: ConversionWarning[] = []
 
@@ -52,7 +56,38 @@ export function convert(options: ConvertOptions): ConvertResult {
   }
 
   // Map columns
-  const columnMappings = parser.mapColumns(headers)
+  let columnMappings = parser.mapColumns(headers)
+  let aiColumnMappings: AIColumnMapping[] | undefined
+  let aiExerciseSuggestions: AIExerciseMapping[] | undefined
+
+  // Tier 3: AI column mapping if provider is available
+  if (options.ai) {
+    const unmapped = columnMappings.filter((m) => m.tier === 'unmapped')
+    if (unmapped.length > 0) {
+      try {
+        // Re-run with AI — we need the parser's exact/alias maps
+        // The parser.mapColumns already ran Tier 1+2, so we pass through to AI
+        const sampleRows = rows.slice(0, 5)
+        const result = await mapColumnsWithAI(
+          headers,
+          getExactMap(parser),
+          getAliasMap(parser),
+          options.ai,
+          sampleRows
+        )
+        columnMappings = result.mappings
+        if (result.aiMappings.length > 0) {
+          aiColumnMappings = result.aiMappings
+        }
+      } catch (err) {
+        warnings.push({
+          type: 'parse',
+          message: `AI column mapping failed, falling back to Tier 1+2: ${err instanceof Error ? err.message : String(err)}`,
+        })
+      }
+    }
+  }
+
   const unmappedColumns = columnMappings.filter((m) => m.tier === 'unmapped')
   for (const col of unmappedColumns) {
     warnings.push({
@@ -89,6 +124,28 @@ export function convert(options: ConvertOptions): ConvertResult {
     }
   }
 
+  // AI exercise name normalization
+  if (options.ai && unmappedExercises.length > 0) {
+    try {
+      const knownCanonicalNames = Object.values(mappingsJson as Record<string, string>)
+      const uniqueCanonicals = [...new Set(knownCanonicalNames)]
+
+      const suggestions = await options.ai.normalizeExerciseNames({
+        unknownNames: unmappedExercises,
+        knownCanonicalNames: uniqueCanonicals,
+      })
+
+      if (suggestions.length > 0) {
+        aiExerciseSuggestions = suggestions
+      }
+    } catch (err) {
+      warnings.push({
+        type: 'parse',
+        message: `AI exercise normalization failed: ${err instanceof Error ? err.message : String(err)}`,
+      })
+    }
+  }
+
   // Transform into WorkoutLog objects
   const { workouts: rawWorkouts, warnings: transformWarnings } =
     transformRows(intermediateRows)
@@ -120,5 +177,76 @@ export function convert(options: ConvertOptions): ConvertResult {
     warnings,
   })
 
+  // Attach AI results to report
+  if (aiColumnMappings) report.aiColumnMappings = aiColumnMappings
+  if (aiExerciseSuggestions) report.aiExerciseSuggestions = aiExerciseSuggestions
+
   return { workouts, report }
+}
+
+// Helper to extract exact maps from parsers (they use mapColumns internally)
+// We inspect the parser's known columns by looking at its format
+// These maps mirror the parser-internal column maps exactly.
+// They are duplicated here so mapColumnsWithAI can re-run Tier 1+2.
+function getExactMap(parser: SourceParser): Record<string, string> {
+  if (parser.format === 'strong') {
+    return {
+      'Date': 'rawDate',
+      'Workout Name': 'workoutName',
+      'Duration': 'rawDuration',
+      'Exercise Name': 'exerciseName',
+      'Set Order': 'setIndex',
+      'Weight': 'weight',
+      'Reps': 'reps',
+      'Distance': 'distance',
+      'Seconds': 'durationSeconds',
+      'Notes': 'exerciseNotes',
+      'Workout Notes': 'workoutNotes',
+      'RPE': 'rpe',
+    }
+  }
+  if (parser.format === 'hevy') {
+    return {
+      'title': 'workoutName',
+      'start_time': 'rawDate',
+      'end_time': 'endTime',
+      'description': 'workoutNotes',
+      'exercise_title': 'exerciseName',
+      'superset_id': 'supersetId',
+      'exercise_notes': 'exerciseNotes',
+      'reps': 'reps',
+      'weight_kg': 'weightKg',
+      'weight_lbs': 'weightLbs',
+      'duration_seconds': 'durationSeconds',
+      'distance_km': 'distanceKm',
+      'distance_miles': 'distanceMiles',
+      'rpe': 'rpe',
+      'set_index': 'setIndex',
+      'set_type': 'rawSetType',
+    }
+  }
+  return {}
+}
+
+function getAliasMap(parser: SourceParser): Record<string, string> {
+  if (parser.format === 'strong') {
+    return {
+      'workout_name': 'workoutName',
+      'exercise_name': 'exerciseName',
+      'set_order': 'setIndex',
+      'workout_notes': 'workoutNotes',
+      'exercise_notes': 'exerciseNotes',
+    }
+  }
+  if (parser.format === 'hevy') {
+    return {
+      'workout_title': 'workoutName',
+      'exercise_name': 'exerciseName',
+      'set_order': 'setIndex',
+      'notes': 'workoutNotes',
+      'weight': 'weightKg',
+      'distance': 'distanceKm',
+    }
+  }
+  return {}
 }

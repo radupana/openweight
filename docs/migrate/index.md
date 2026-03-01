@@ -76,6 +76,18 @@ Unmapped exercises (kept as-is):
 
 No silent failures. No mystery transformations. You see exactly what was converted and what wasn't.
 
+### AI-Assisted Mapping
+
+Got unmapped exercises or columns from an unusual CSV format? Add `--ai-assist` to let an LLM help:
+
+```bash
+npx @openweight/cli convert export.csv -o workouts.json --ai-assist --report
+```
+
+The AI suggests mappings for unknown columns and canonical names for unrecognized exercises. You review and approve each suggestion before it's applied. Confirmed mappings are cached locally so you only approve once.
+
+Works with OpenAI (`OPENAI_API_KEY`) or any local model via Ollama (`OPENWEIGHT_AI_URL=http://localhost:11434/v1`).
+
 ## Next Steps
 
 Ready to migrate? Pick your app:

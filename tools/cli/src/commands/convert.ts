@@ -1,8 +1,9 @@
 import { Command } from 'commander'
 import { readFileSync, writeFileSync } from 'node:fs'
+import { createInterface } from 'node:readline'
 import { resolvePath } from '../resolve-path.js'
-import { convert, detectFormat } from '@openweight/converters'
-import type { SourceFormat, ConversionReport } from '@openweight/converters'
+import { convert, detectFormat, createAIProvider, MappingCache } from '@openweight/converters'
+import type { SourceFormat, ConversionReport, AIColumnMapping, AIExerciseMapping } from '@openweight/converters'
 import type { WeightUnit } from '@openweight/sdk'
 
 export const convertCommand = new Command('convert')
@@ -19,12 +20,18 @@ export const convertCommand = new Command('convert')
   .option('-o, --output <file>', 'Output file (default: stdout)')
   .option('--pretty', 'Pretty-print JSON output', false)
   .option('--report', 'Print conversion report to stderr', false)
+  .option('--ai-assist', 'Use AI to map unknown columns and normalize exercise names', false)
+  .option('--auto-approve', 'Skip confirmation prompts for AI suggestions', false)
+  .option('--ai-model <model>', 'AI model to use (default: gpt-4o-mini)')
   .action(async (file: string, options: {
     format?: string
     weightUnit?: string
     output?: string
     pretty: boolean
     report: boolean
+    aiAssist: boolean
+    autoApprove: boolean
+    aiModel?: string
   }) => {
     try {
       const csv = readFileSync(resolvePath(file), 'utf-8')
@@ -69,7 +76,108 @@ export const convertCommand = new Command('convert')
         process.exit(1)
       }
 
-      const result = convert({ csv, format, weightUnit })
+      // Set up AI provider if requested
+      let ai
+      let cache: MappingCache | undefined
+      if (options.aiAssist) {
+        try {
+          ai = await createAIProvider({ model: options.aiModel })
+          cache = new MappingCache()
+          console.error('AI-assisted conversion enabled')
+        } catch (err) {
+          console.error(`Error: ${err instanceof Error ? err.message : String(err)}`)
+          process.exit(1)
+        }
+      }
+
+      let result = await convert({ csv, format, weightUnit, ai })
+
+      // Handle AI suggestions with interactive confirmation
+      if (options.aiAssist && cache) {
+        let needsRerun = false
+        const confirmedExerciseMappings: Record<string, string> = {}
+
+        // Column mapping suggestions
+        if (result.report.aiColumnMappings?.length) {
+          console.error('\nAI column mapping suggestions:')
+          for (const m of result.report.aiColumnMappings) {
+            console.error(`  "${m.sourceColumn}" → ${m.targetField} (confidence: ${(m.confidence * 100).toFixed(0)}%, ${m.reasoning})`)
+          }
+
+          if (!options.autoApprove) {
+            const accepted = await promptConfirm('Accept these column mappings?')
+            if (accepted) {
+              // Save to cache
+              const cacheEntry: Record<string, string> = {}
+              for (const m of result.report.aiColumnMappings) {
+                cacheEntry[m.sourceColumn] = m.targetField
+              }
+              cache.setColumnMappings(
+                result.report.columnMappings.map((m) => m.sourceColumn),
+                cacheEntry
+              )
+              cache.save()
+              console.error('Column mappings saved to cache.')
+            }
+          } else {
+            // Auto-approve: save to cache
+            const cacheEntry: Record<string, string> = {}
+            for (const m of result.report.aiColumnMappings) {
+              cacheEntry[m.sourceColumn] = m.targetField
+            }
+            cache.setColumnMappings(
+              result.report.columnMappings.map((m) => m.sourceColumn),
+              cacheEntry
+            )
+            cache.save()
+          }
+        }
+
+        // Exercise name suggestions
+        if (result.report.aiExerciseSuggestions?.length) {
+          console.error('\nAI exercise name suggestions:')
+          for (const s of result.report.aiExerciseSuggestions) {
+            console.error(`  "${s.originalName}" → "${s.canonicalName}" (confidence: ${(s.confidence * 100).toFixed(0)}%, ${s.reasoning})`)
+          }
+
+          let accepted = options.autoApprove
+          if (!options.autoApprove) {
+            accepted = await promptConfirm('Accept these exercise name mappings?')
+          }
+
+          if (accepted) {
+            for (const s of result.report.aiExerciseSuggestions) {
+              confirmedExerciseMappings[s.originalName] = s.canonicalName
+              cache.setExerciseMapping(s.originalName, s.canonicalName)
+            }
+            cache.save()
+            needsRerun = true
+            console.error('Exercise mappings saved to cache.')
+          }
+        }
+
+        // Re-run with confirmed exercise mappings applied
+        if (needsRerun) {
+          console.error('Re-running conversion with confirmed mappings...')
+          result = await convert({
+            csv,
+            format,
+            weightUnit,
+            ai,
+            exerciseMappings: confirmedExerciseMappings,
+          })
+        }
+      }
+
+      // Always print AI-related warnings to stderr when --ai-assist is on
+      if (options.aiAssist) {
+        const aiWarnings = result.report.warnings.filter(
+          (w) => w.message.includes('AI ')
+        )
+        for (const w of aiWarnings) {
+          console.error(`Warning: ${w.message}`)
+        }
+      }
 
       if (result.workouts.length === 0) {
         console.error('Error: No valid workouts produced from conversion')
@@ -120,10 +228,34 @@ function printReport(report: ConversionReport): void {
     }
   }
 
+  if (report.aiColumnMappings?.length) {
+    console.error(`\nAI column mappings (${report.aiColumnMappings.length}):`)
+    for (const m of report.aiColumnMappings) {
+      console.error(`  "${m.sourceColumn}" → ${m.targetField}`)
+    }
+  }
+
+  if (report.aiExerciseSuggestions?.length) {
+    console.error(`\nAI exercise suggestions (${report.aiExerciseSuggestions.length}):`)
+    for (const s of report.aiExerciseSuggestions) {
+      console.error(`  "${s.originalName}" → "${s.canonicalName}"`)
+    }
+  }
+
   if (report.warnings.length > 0) {
     console.error(`\nWarnings (${report.warnings.length}):`)
     for (const w of report.warnings) {
       console.error(`  ${w.message}`)
     }
   }
+}
+
+function promptConfirm(message: string): Promise<boolean> {
+  const rl = createInterface({ input: process.stdin, output: process.stderr })
+  return new Promise((resolve) => {
+    rl.question(`${message} [Y/n] `, (answer) => {
+      rl.close()
+      resolve(answer.trim().toLowerCase() !== 'n')
+    })
+  })
 }

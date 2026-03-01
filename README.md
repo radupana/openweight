@@ -120,6 +120,20 @@ npx @openweight/cli validate workout.json
 npx @openweight/cli validate --schema workout-log workout.json
 ```
 
+### AI-Assisted Conversion
+
+When the converter encounters unknown CSV columns or exercise names, you can use `--ai-assist` to let an LLM help map them:
+
+```bash
+# Requires OPENAI_API_KEY environment variable
+npx @openweight/cli convert export.csv --ai-assist --pretty
+
+# Or use a local model via Ollama
+OPENWEIGHT_AI_URL=http://localhost:11434/v1 npx @openweight/cli convert export.csv --ai-assist
+```
+
+AI suggestions are shown for your approval before being applied. Confirmed mappings are cached locally (`~/.openweight/mapping-cache.json`) so the same columns/exercises resolve instantly next time.
+
 ### All CLI options
 
 ```
@@ -129,6 +143,9 @@ openweight convert <file>
   -o, --output <file>         Output file (default: stdout)
   --pretty                    Pretty-print JSON
   --report                    Print conversion report to stderr
+  --ai-assist                 Use AI to map unknown columns and exercise names
+  --ai-model <model>          AI model to use (default: gpt-4o-mini)
+  --auto-approve              Skip confirmation prompts for AI suggestions
 
 openweight validate <file>
   -s, --schema <type>         Schema: workout-log, workout-template, program, lifter-profile

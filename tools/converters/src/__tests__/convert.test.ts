@@ -21,9 +21,9 @@ describe('detectFormat', () => {
 
 describe('convert', () => {
   describe('Strong CSV', () => {
-    it('converts a basic Strong export', () => {
+    it('converts a basic Strong export', async () => {
       const csv = fixture('strong-basic.csv')
-      const { workouts, report } = convert({ csv, format: 'strong', weightUnit: 'kg' })
+      const { workouts, report } = await convert({ csv, format: 'strong', weightUnit: 'kg' })
 
       expect(workouts).toHaveLength(1)
       expect(report.source).toBe('strong')
@@ -54,9 +54,9 @@ describe('convert', () => {
       }
     })
 
-    it('converts multiple workouts from Strong', () => {
+    it('converts multiple workouts from Strong', async () => {
       const csv = fixture('strong-multiworkout.csv')
-      const { workouts, report } = convert({ csv, format: 'strong', weightUnit: 'kg' })
+      const { workouts, report } = await convert({ csv, format: 'strong', weightUnit: 'kg' })
 
       expect(workouts).toHaveLength(2)
       expect(report.workoutCount).toBe(2)
@@ -82,9 +82,9 @@ describe('convert', () => {
   })
 
   describe('Hevy CSV', () => {
-    it('converts a basic Hevy export', () => {
+    it('converts a basic Hevy export', async () => {
       const csv = fixture('hevy-basic.csv')
-      const { workouts, report } = convert({ csv, format: 'hevy' })
+      const { workouts, report } = await convert({ csv, format: 'hevy' })
 
       expect(workouts).toHaveLength(1)
       expect(report.source).toBe('hevy')
@@ -110,9 +110,9 @@ describe('convert', () => {
       }
     })
 
-    it('converts Hevy exercise notes to exercise-level notes', () => {
+    it('converts Hevy exercise notes to exercise-level notes', async () => {
       const csv = fixture('hevy-exercise-notes.csv')
-      const { workouts } = convert({ csv, format: 'hevy' })
+      const { workouts } = await convert({ csv, format: 'hevy' })
 
       expect(workouts).toHaveLength(1)
       const workout = workouts[0]
@@ -131,9 +131,9 @@ describe('convert', () => {
       }
     })
 
-    it('converts Hevy supersets', () => {
+    it('converts Hevy supersets', async () => {
       const csv = fixture('hevy-supersets.csv')
-      const { workouts } = convert({ csv, format: 'hevy' })
+      const { workouts } = await convert({ csv, format: 'hevy' })
 
       expect(workouts).toHaveLength(1)
       const workout = workouts[0]
@@ -156,23 +156,23 @@ describe('convert', () => {
   })
 
   describe('auto-detection', () => {
-    it('auto-detects Strong format when format not specified', () => {
+    it('auto-detects Strong format when format not specified', async () => {
       const csv = fixture('strong-basic.csv')
-      const { report } = convert({ csv, weightUnit: 'kg' })
+      const { report } = await convert({ csv, weightUnit: 'kg' })
       expect(report.source).toBe('strong')
     })
 
-    it('auto-detects Hevy format when format not specified', () => {
+    it('auto-detects Hevy format when format not specified', async () => {
       const csv = fixture('hevy-basic.csv')
-      const { report } = convert({ csv })
+      const { report } = await convert({ csv })
       expect(report.source).toBe('hevy')
     })
   })
 
   describe('real-world exports', () => {
-    it('converts a real Strong CSV export', () => {
+    it('converts a real Strong CSV export', async () => {
       const csv = fixture('strong-real.csv')
-      const { workouts, report } = convert({ csv, format: 'strong', weightUnit: 'lb' })
+      const { workouts, report } = await convert({ csv, format: 'strong', weightUnit: 'lb' })
 
       expect(workouts).toHaveLength(2)
       expect(report.totalRows).toBe(30)
@@ -200,9 +200,9 @@ describe('convert', () => {
       }
     })
 
-    it('converts a real Hevy CSV export', () => {
+    it('converts a real Hevy CSV export', async () => {
       const csv = fixture('hevy-real.csv')
-      const { workouts, report } = convert({ csv, format: 'hevy' })
+      const { workouts, report } = await convert({ csv, format: 'hevy' })
 
       expect(workouts).toHaveLength(2)
       expect(report.totalRows).toBe(22)
@@ -232,9 +232,9 @@ describe('convert', () => {
   })
 
   describe('report', () => {
-    it('includes conversion statistics', () => {
+    it('includes conversion statistics', async () => {
       const csv = fixture('strong-basic.csv')
-      const { report } = convert({ csv, format: 'strong', weightUnit: 'kg' })
+      const { report } = await convert({ csv, format: 'strong', weightUnit: 'kg' })
 
       expect(report.totalRows).toBe(6)
       expect(report.convertedRows).toBe(6)
