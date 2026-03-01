@@ -58,50 +58,6 @@ workout", or "set" means, and no reliable way to move training history between t
 | **Examples**       | Sample files for testing and illustration                                                     | `examples/`            |
 | **Converters**     | Transform other formats (Strong CSV, etc.) into openweight                                    | `tools/converters/`    |
 
----
-
-## 5. Milestones
-
-### Milestone 1 — Core Workout Log Schema ✓
-
-Define the schema for completed workouts.
-
-- [x] Design data model from first principles (Workout → Exercise → Set)
-- [x] Create JSON Schema with full documentation (`schemas/workout-log.schema.json`)
-- [x] Write example files (`examples/workout-logs/`)
-- [x] Basic validation script
-
-### Milestone 2 — TypeScript SDK ✓
-
-- [x] Generate or write TypeScript types from schema
-- [x] Parse/serialize functions
-- [x] Validation helpers (wrapping AJV or similar)
-- [x] Publish as npm package (`@openweight/sdk`)
-
-### Milestone 3 — Program & Template Schema ✓
-
-- [x] Design program/template data model
-- [x] Create JSON Schema (`schemas/workout-template.schema.json`, `schemas/program.schema.json`)
-- [x] Update TypeScript SDK
-- [x] Example program files
-
-### Milestone 4 — Kotlin SDK ✓
-
-- [x] Generate or write Kotlin data classes from schema
-- [x] Parse/serialize functions (kotlinx.serialization)
-- [x] Publish to Maven Central (`io.github.radupana:openweight-sdk`)
-- [ ] Integrate into [Featherweight](https://github.com/radupana/featherweight) for export/import
-
-### Milestone 5 — Converters
-
-- [ ] Strong CSV → openweight converter
-- [ ] Other app converters as needed
-
-### Milestone 6 — Polish & Documentation
-
-- [ ] CLI tool (`openweight validate`, `openweight convert`)
-- [x] Documentation site or comprehensive README
-- [ ] v1.0 release
 
 ---
 
