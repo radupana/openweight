@@ -1,7 +1,6 @@
 {
   "name": "@openweight/converters",
   "version": "0.1.0",
-  "private": true,
   "description": "Format converters for openweight - import workout data from Strong, Hevy, and more",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -22,6 +21,15 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/radupana/openweight.git",
+    "directory": "tools/converters"
+  },
   "scripts": {
     "build": "tsup",
     "test": "vitest run",

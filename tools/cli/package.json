@@ -1,7 +1,6 @@
 {
   "name": "@openweight/cli",
   "version": "0.1.0",
-  "private": true,
   "description": "CLI tool for openweight - validate and convert workout data",
   "type": "module",
   "bin": {
@@ -10,6 +9,15 @@
   "files": [
     "dist"
   ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/radupana/openweight.git",
+    "directory": "tools/cli"
+  },
   "scripts": {
     "build": "tsup",
     "test": "vitest run",

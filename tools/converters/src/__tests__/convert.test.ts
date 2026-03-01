@@ -148,6 +148,68 @@ describe('convert', () => {
     })
   })
 
+  describe('real-world exports', () => {
+    it('converts a real Strong CSV export', () => {
+      const csv = fixture('strong-real.csv')
+      const { workouts, report } = convert({ csv, format: 'strong', weightUnit: 'lb' })
+
+      expect(workouts).toHaveLength(2)
+      expect(report.totalRows).toBe(30)
+      expect(report.convertedRows).toBe(30)
+      expect(report.skippedRows).toBe(0)
+
+      // First workout: chest & triceps
+      expect(workouts[0].name).toBe('4by5 Chest And Triceps')
+      expect(workouts[0].exercises).toHaveLength(3)
+      expect(workouts[0].durationSeconds).toBe(6180) // 1h 43m
+
+      // Exercise name normalization from real data
+      expect(workouts[0].exercises[0].exercise.name).toBe('Bench Press')
+      expect(workouts[0].exercises[1].exercise.name).toBe('Incline Bench Press')
+      expect(workouts[0].exercises[2].exercise.name).toBe('Lateral Raise')
+
+      // Second workout: legs & back
+      expect(workouts[1].name).toBe('Day 1 4x5')
+      expect(workouts[1].exercises[0].exercise.name).toBe('Squat')
+      expect(workouts[1].exercises[1].exercise.name).toBe('Deadlift')
+      expect(workouts[1].exercises[2].exercise.name).toBe('Bent Over Row')
+
+      for (const w of workouts) {
+        expect(isValidWorkoutLog(w)).toBe(true)
+      }
+    })
+
+    it('converts a real Hevy CSV export', () => {
+      const csv = fixture('hevy-real.csv')
+      const { workouts, report } = convert({ csv, format: 'hevy' })
+
+      expect(workouts).toHaveLength(2)
+      expect(report.totalRows).toBe(22)
+      expect(report.convertedRows).toBe(22)
+      expect(report.skippedRows).toBe(0)
+
+      // First workout: chest day
+      const chest = workouts[0]
+      expect(chest.name).toBe('Monday ? You mean international CHEST DAY !')
+      expect(chest.exercises).toHaveLength(3)
+      expect(chest.durationSeconds).toBe(3720) // ~1h 2m
+
+      // Hevy uses weight_kg — verify units come through
+      expect(chest.exercises[0].sets[0].unit).toBe('kg')
+      expect(chest.exercises[0].sets[0].weight).toBe(48)
+
+      // Second workout: back and biceps
+      const back = workouts[1]
+      expect(back.exercises).toHaveLength(3)
+      // Bicep Curl (Dumbbell) should normalize
+      expect(back.exercises[2].exercise.name).toBe('Bicep Curl')
+
+      for (const w of workouts) {
+        expect(isValidWorkoutLog(w)).toBe(true)
+      }
+    })
+  })
+
   describe('report', () => {
     it('includes conversion statistics', () => {
       const csv = fixture('strong-basic.csv')

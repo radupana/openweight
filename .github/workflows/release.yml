@@ -122,6 +122,16 @@ jobs:
           npm version $NEXT_VERSION --no-git-tag-version --allow-same-version
           cd ../..
 
+          # Update Converters
+          cd tools/converters
+          npm version $NEXT_VERSION --no-git-tag-version --allow-same-version
+          cd ../..
+
+          # Update CLI
+          cd tools/cli
+          npm version $NEXT_VERSION --no-git-tag-version --allow-same-version
+          cd ../..
+
           # Update Kotlin SDK
           sed -i "s/version = \".*\"/version = \"$NEXT_VERSION\"/" packages/kotlin-sdk/build.gradle.kts
 
@@ -133,7 +143,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add version.json packages/ts-sdk/package.json packages/kotlin-sdk/build.gradle.kts
+          git add version.json packages/ts-sdk/package.json packages/kotlin-sdk/build.gradle.kts tools/converters/package.json tools/cli/package.json
           git commit -m "chore: release v$NEXT_VERSION [skip ci]"
           git push
 

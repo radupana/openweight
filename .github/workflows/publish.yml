@@ -14,11 +14,13 @@ permissions:
 
 jobs:
   detect-changes:
-    name: Detect SDK changes
+    name: Detect package changes
     runs-on: ubuntu-latest
     outputs:
       ts-changed: ${{ steps.check.outputs.ts-changed }}
       kotlin-changed: ${{ steps.check.outputs.kotlin-changed }}
+      converters-changed: ${{ steps.check.outputs.converters-changed }}
+      cli-changed: ${{ steps.check.outputs.cli-changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -31,9 +33,11 @@ jobs:
           PREV_TAG=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
 
           if [ -z "$PREV_TAG" ]; then
-            echo "No previous tag found, publishing both SDKs"
+            echo "No previous tag found, publishing all packages"
             echo "ts-changed=true" >> $GITHUB_OUTPUT
             echo "kotlin-changed=true" >> $GITHUB_OUTPUT
+            echo "converters-changed=true" >> $GITHUB_OUTPUT
+            echo "cli-changed=true" >> $GITHUB_OUTPUT
             exit 0
           fi
 
@@ -55,6 +59,24 @@ jobs:
           else
             echo "Kotlin SDK has no changes"
             echo "kotlin-changed=false" >> $GITHUB_OUTPUT
+          fi
+
+          CONVERTERS_CHANGES=$(git diff --name-only $PREV_TAG HEAD -- tools/converters/ | head -1)
+          if [ -n "$CONVERTERS_CHANGES" ]; then
+            echo "Converters has changes"
+            echo "converters-changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "Converters has no changes"
+            echo "converters-changed=false" >> $GITHUB_OUTPUT
+          fi
+
+          CLI_CHANGES=$(git diff --name-only $PREV_TAG HEAD -- tools/cli/ tools/converters/ | head -1)
+          if [ -n "$CLI_CHANGES" ]; then
+            echo "CLI has changes"
+            echo "cli-changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "CLI has no changes"
+            echo "cli-changed=false" >> $GITHUB_OUTPUT
           fi
 
   publish-npm:
@@ -89,6 +111,68 @@ jobs:
 
       - name: Publish to npm
         run: npm publish --workspace=@openweight/sdk --provenance
+
+  publish-converters:
+    name: Publish Converters to npm
+    runs-on: ubuntu-latest
+    needs: [detect-changes, publish-npm]
+    if: always() && needs.detect-changes.outputs.converters-changed == 'true'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Update npm for OIDC support
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run tests
+        run: npm run test:converters
+
+      - name: Publish to npm
+        run: npm publish --workspace=@openweight/converters --provenance
+
+  publish-cli:
+    name: Publish CLI to npm
+    runs-on: ubuntu-latest
+    needs: [detect-changes, publish-converters]
+    if: always() && needs.detect-changes.outputs.cli-changed == 'true'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Update npm for OIDC support
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run tests
+        run: npm run test:cli
+
+      - name: Publish to npm
+        run: npm publish --workspace=@openweight/cli --provenance
 
   publish-maven:
     name: Publish Kotlin SDK to Maven Central
