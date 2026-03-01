@@ -101,5 +101,53 @@ describe('Hevy parser', () => {
       const result = hevyParser.parseRow(row, 0, { csv: '' })
       expect(result!.supersetId).toBe('1')
     })
+
+    it('captures exercise notes', () => {
+      const row = {
+        'title': 'Test',
+        'start_time': '2024-01-15T10:30:00Z',
+        'end_time': '2024-01-15T12:00:00Z',
+        'description': '',
+        'exercise_title': 'Bench Press (Barbell)',
+        'superset_id': '',
+        'exercise_notes': 'Paused reps',
+        'reps': '5',
+        'weight_kg': '100',
+        'weight_lbs': '220.46',
+        'duration_seconds': '0',
+        'distance_km': '0',
+        'distance_miles': '0',
+        'rpe': '8',
+        'set_index': '1',
+        'set_type': 'normal',
+      }
+
+      const result = hevyParser.parseRow(row, 0, { csv: '' })
+      expect(result!.exerciseNotes).toBe('Paused reps')
+    })
+
+    it('returns undefined for empty exercise notes', () => {
+      const row = {
+        'title': 'Test',
+        'start_time': '2024-01-15T10:30:00Z',
+        'end_time': '2024-01-15T12:00:00Z',
+        'description': '',
+        'exercise_title': 'Bench Press (Barbell)',
+        'superset_id': '',
+        'exercise_notes': '',
+        'reps': '5',
+        'weight_kg': '100',
+        'weight_lbs': '220.46',
+        'duration_seconds': '0',
+        'distance_km': '0',
+        'distance_miles': '0',
+        'rpe': '',
+        'set_index': '1',
+        'set_type': 'normal',
+      }
+
+      const result = hevyParser.parseRow(row, 0, { csv: '' })
+      expect(result!.exerciseNotes).toBeUndefined()
+    })
   })
 })

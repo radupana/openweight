@@ -110,6 +110,27 @@ describe('convert', () => {
       }
     })
 
+    it('converts Hevy exercise notes to exercise-level notes', () => {
+      const csv = fixture('hevy-exercise-notes.csv')
+      const { workouts } = convert({ csv, format: 'hevy' })
+
+      expect(workouts).toHaveLength(1)
+      const workout = workouts[0]
+      expect(workout.exercises).toHaveLength(2)
+
+      // Bench Press should have exercise notes
+      const bench = workout.exercises[0]
+      expect(bench.notes).toBe('Paused reps')
+
+      // OHP should not have notes
+      const ohp = workout.exercises[1]
+      expect(ohp.notes).toBeUndefined()
+
+      for (const w of workouts) {
+        expect(isValidWorkoutLog(w)).toBe(true)
+      }
+    })
+
     it('converts Hevy supersets', () => {
       const csv = fixture('hevy-supersets.csv')
       const { workouts } = convert({ csv, format: 'hevy' })

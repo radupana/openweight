@@ -11,8 +11,8 @@ import type {
 /**
  * Hevy CSV columns (as of 2024 export):
  * title, start_time, end_time, description, exercise_title,
- * superset_id, reps, weight_kg, weight_lbs, duration_seconds,
- * distance_km, distance_miles, rpe, set_index, set_type
+ * superset_id, exercise_notes, reps, weight_kg, weight_lbs,
+ * duration_seconds, distance_km, distance_miles, rpe, set_index, set_type
  *
  * Hevy exports weight in both kg and lbs columns.
  */
@@ -23,6 +23,7 @@ const EXACT_COLUMNS: Record<string, string> = {
   'description': 'workoutNotes',
   'exercise_title': 'exerciseName',
   'superset_id': 'supersetId',
+  'exercise_notes': 'exerciseNotes',
   'reps': 'reps',
   'weight_kg': 'weightKg',
   'weight_lbs': 'weightLbs',
@@ -121,6 +122,7 @@ export const hevyParser: SourceParser = {
       rpe: parseNumber(row['rpe']),
       rawSetType: row['set_type']?.trim() || undefined,
       supersetId: row['superset_id']?.trim() || undefined,
+      exerciseNotes: row['exercise_notes']?.trim() || undefined,
       workoutNotes: row['description']?.trim() || undefined,
       sourceRow: rowIndex + 2,
     }
