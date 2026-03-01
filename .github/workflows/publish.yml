@@ -43,6 +43,17 @@ jobs:
 
           echo "Comparing against previous tag: $PREV_TAG"
 
+          # If the publish workflow itself changed, republish all npm packages
+          CI_CHANGES=$(git diff --name-only $PREV_TAG HEAD -- .github/workflows/publish.yml | head -1)
+          if [ -n "$CI_CHANGES" ]; then
+            echo "Publish workflow changed, publishing all npm packages"
+            echo "ts-changed=true" >> $GITHUB_OUTPUT
+            echo "kotlin-changed=false" >> $GITHUB_OUTPUT
+            echo "converters-changed=true" >> $GITHUB_OUTPUT
+            echo "cli-changed=true" >> $GITHUB_OUTPUT
+            exit 0
+          fi
+
           TS_CHANGES=$(git diff --name-only $PREV_TAG HEAD -- packages/ts-sdk/ schemas/ | head -1)
           if [ -n "$TS_CHANGES" ]; then
             echo "TypeScript SDK has changes"
@@ -93,7 +104,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Update npm for OIDC support
         run: npm install -g npm@latest
@@ -108,6 +118,12 @@ jobs:
         run: |
           npm test
           npm run test:sdk
+
+      - name: Setup npm auth
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Publish to npm
         run: npm publish --workspace=@openweight/sdk --provenance
@@ -126,7 +142,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Update npm for OIDC support
         run: npm install -g npm@latest
@@ -139,6 +154,12 @@ jobs:
 
       - name: Run tests
         run: npm run test:converters
+
+      - name: Setup npm auth
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Publish to npm
         run: npm publish --workspace=@openweight/converters --provenance
@@ -157,7 +178,6 @@ jobs:
         uses: actions/setup-node@v6
         with:
           node-version: '20.x'
-          registry-url: 'https://registry.npmjs.org'
 
       - name: Update npm for OIDC support
         run: npm install -g npm@latest
@@ -170,6 +190,12 @@ jobs:
 
       - name: Run tests
         run: npm run test:cli
+
+      - name: Setup npm auth
+        uses: actions/setup-node@v6
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Publish to npm
         run: npm publish --workspace=@openweight/cli --provenance
