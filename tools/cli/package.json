@@ -1,6 +1,6 @@
 {
   "name": "@openweight/cli",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "description": "CLI tool for openweight - validate and convert workout data",
   "type": "module",
   "bin": {
@@ -24,8 +24,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@openweight/converters": "^0.4.0",
-    "@openweight/sdk": "^0.4.0",
+    "@openweight/converters": "^0.5.0",
+    "@openweight/sdk": "^0.5.0",
     "commander": "^13.1.0"
   },
   "devDependencies": {
