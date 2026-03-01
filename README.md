@@ -90,31 +90,56 @@ println(log.exercises[0].exercise.name) // "Squat"
 
 ## CLI
 
-Validate and convert workout data from the command line.
+### Convert your workout data
 
+Export your data from your app, then convert it to openweight JSON:
+
+**From Strong:**
+1. Strong app → Settings → Export Workout Data → CSV
+2. Run:
 ```bash
-# Validate a workout log
-npx @openweight/cli validate workout.json
-
-# Validate with explicit schema type
-npx @openweight/cli validate --schema program training-plan.json
-
-# Convert a Strong CSV export to openweight JSON
-npx @openweight/cli convert --weight-unit kg strong-export.csv --pretty
-
-# Convert a Hevy CSV export (auto-detected, units included in CSV)
-npx @openweight/cli convert hevy-export.csv -o workouts.json
-
-# Show conversion report
-npx @openweight/cli convert --report hevy-export.csv
+npx @openweight/cli convert --weight-unit kg strong.csv -o workouts.json --pretty
 ```
 
-### Supported Formats
+**From Hevy:**
+1. Hevy app → Profile → Settings → Export & Import Data
+2. Run:
+```bash
+npx @openweight/cli convert hevy.csv -o workouts.json --pretty
+```
 
-| App      | Format | Notes                                      |
-|----------|--------|-------------------------------------------  |
-| **Strong** | CSV  | Requires `--weight-unit` (kg or lb)        |
-| **Hevy**   | CSV  | Auto-detects units from kg/lbs columns     |
+The source format is auto-detected from CSV headers. Use `--format strong` or `--format hevy` to override.
+
+### Validate openweight files
+
+```bash
+# Auto-detects schema type (workout-log, program, etc.)
+npx @openweight/cli validate workout.json
+
+# Explicit schema type
+npx @openweight/cli validate --schema workout-log workout.json
+```
+
+### All CLI options
+
+```
+openweight convert <file>
+  -f, --format <format>       Source format: strong, hevy (auto-detected)
+  -u, --weight-unit <unit>    Weight unit: kg or lb (required for Strong)
+  -o, --output <file>         Output file (default: stdout)
+  --pretty                    Pretty-print JSON
+  --report                    Print conversion report to stderr
+
+openweight validate <file>
+  -s, --schema <type>         Schema: workout-log, workout-template, program, lifter-profile
+```
+
+### Supported formats
+
+| App        | Format | Notes                                    |
+|------------|--------|------------------------------------------|
+| **Strong** | CSV    | Requires `--weight-unit` (kg or lb)      |
+| **Hevy**   | CSV    | Auto-detects units from kg/lbs columns   |
 
 ## Documentation
 

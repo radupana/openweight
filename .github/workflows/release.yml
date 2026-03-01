@@ -118,19 +118,13 @@ jobs:
           echo "{\"version\": \"$NEXT_VERSION\"}" > version.json
 
           # Update TypeScript SDK
-          cd packages/ts-sdk
-          npm version $NEXT_VERSION --no-git-tag-version --allow-same-version
-          cd ../..
+          npm pkg set version="$NEXT_VERSION" --workspace=@openweight/sdk
 
           # Update Converters
-          cd tools/converters
-          npm version $NEXT_VERSION --no-git-tag-version --allow-same-version
-          cd ../..
+          npm pkg set version="$NEXT_VERSION" --workspace=@openweight/converters
 
           # Update CLI
-          cd tools/cli
-          npm version $NEXT_VERSION --no-git-tag-version --allow-same-version
-          cd ../..
+          npm pkg set version="$NEXT_VERSION" --workspace=@openweight/cli
 
           # Update Kotlin SDK
           sed -i "s/version = \".*\"/version = \"$NEXT_VERSION\"/" packages/kotlin-sdk/build.gradle.kts
