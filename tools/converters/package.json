@@ -1,0 +1,45 @@
+{
+  "name": "@openweight/converters",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Format converters for openweight - import workout data from Strong, Hevy, and more",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@openweight/sdk": "^0.3.2",
+    "papaparse": "^5.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "@types/papaparse": "^5.3.15",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^4.0.14"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

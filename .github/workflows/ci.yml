@@ -37,6 +37,9 @@ jobs:
       - name: Run SDK tests
         run: npm run test:sdk
 
+      - name: Run converter tests
+        run: npm run test:converters
+
       - name: Validate examples
         run: npm run validate-examples
 
