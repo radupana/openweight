@@ -17,14 +17,34 @@ export default defineConfig({
 
   themeConfig: {
     nav: [
+      { text: 'Migrate', link: '/migrate/' },
       { text: 'Guide', link: '/guide/' },
       { text: 'Schema', link: '/schema/' },
       { text: 'SDK', link: '/sdk/' },
+      { text: 'CLI', link: '/cli/' },
       { text: 'Examples', link: '/examples/' },
       { text: 'Playground', link: '/playground/' },
     ],
 
     sidebar: {
+      '/migrate/': [
+        {
+          text: 'Migrate Your Data',
+          items: [
+            { text: 'Overview', link: '/migrate/' },
+            { text: 'From Strong', link: '/migrate/strong' },
+            { text: 'From Hevy', link: '/migrate/hevy' },
+          ]
+        }
+      ],
+      '/cli/': [
+        {
+          text: 'CLI Reference',
+          items: [
+            { text: 'Overview', link: '/cli/' },
+          ]
+        }
+      ],
       '/guide/': [
         {
           text: 'Introduction',

@@ -126,8 +126,18 @@ jobs:
           # Update CLI
           npm pkg set version="$NEXT_VERSION" --workspace=@openweight/cli
 
+          # Update inter-package dependency ranges
+          # CLI depends on SDK and converters
+          npm pkg set "dependencies.@openweight/sdk=^$NEXT_VERSION" --workspace=@openweight/cli
+          npm pkg set "dependencies.@openweight/converters=^$NEXT_VERSION" --workspace=@openweight/cli
+          # Converters depends on SDK
+          npm pkg set "dependencies.@openweight/sdk=^$NEXT_VERSION" --workspace=@openweight/converters
+
           # Update Kotlin SDK
           sed -i "s/version = \".*\"/version = \"$NEXT_VERSION\"/" packages/kotlin-sdk/build.gradle.kts
+
+          # Regenerate lockfile after version and dependency updates
+          npm install --package-lock-only
 
       - name: Commit version bump
         if: steps.check-release.outputs.needed == 'true'
@@ -137,7 +147,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-          git add version.json packages/ts-sdk/package.json packages/kotlin-sdk/build.gradle.kts tools/converters/package.json tools/cli/package.json
+          git add version.json package-lock.json packages/ts-sdk/package.json packages/kotlin-sdk/build.gradle.kts tools/converters/package.json tools/cli/package.json
           git commit -m "chore: release v$NEXT_VERSION [skip ci]"
           git push
 

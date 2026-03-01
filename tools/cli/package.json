@@ -25,8 +25,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@openweight/converters": "^0.1.0",
-    "@openweight/sdk": "^0.3.2",
+    "@openweight/converters": "^0.4.0",
+    "@openweight/sdk": "^0.4.0",
     "commander": "^13.1.0"
   },
   "devDependencies": {
