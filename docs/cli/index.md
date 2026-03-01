@@ -34,7 +34,7 @@ npx @openweight/cli convert <file> [options]
 | `--pretty`                 | Pretty-print JSON output                                     |
 | `--report`                 | Print conversion report to stderr                            |
 | `--ai-assist`              | Use AI to map unknown columns and normalize exercise names   |
-| `--ai-model <model>`       | AI model to use (default: `gpt-4o-mini`)                     |
+| `--ai-model <model>`       | AI model to use (default: `gpt-4.1-mini`)                    |
 | `--auto-approve`           | Skip confirmation prompts for AI suggestions                 |
 
 **Examples:**

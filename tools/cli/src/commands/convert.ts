@@ -22,7 +22,7 @@ export const convertCommand = new Command('convert')
   .option('--report', 'Print conversion report to stderr', false)
   .option('--ai-assist', 'Use AI to map unknown columns and normalize exercise names', false)
   .option('--auto-approve', 'Skip confirmation prompts for AI suggestions', false)
-  .option('--ai-model <model>', 'AI model to use (default: gpt-4o-mini)')
+  .option('--ai-model <model>', 'AI model to use (default: gpt-4.1-mini)')
   .action(async (file: string, options: {
     format?: string
     weightUnit?: string
