@@ -77,7 +77,7 @@ export const strongParser: SourceParser = {
       weightUnit: options.weightUnit,
       reps: parseNumber(row['Reps']),
       distance,
-      distanceUnit: distance ? 'm' : undefined,
+      distanceUnit: distance ? 'm' : undefined, // Strong exports Distance in meters
       durationSeconds: parseNumber(row['Seconds']),
       rpe: parseNumber(row['RPE']),
       rawSetType: row['Set Type']?.trim() || undefined,

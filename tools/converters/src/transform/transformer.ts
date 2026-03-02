@@ -208,44 +208,61 @@ function sanitizeSet(set: SetLog, sourceRow: number, warnings: ConversionWarning
     return null
   }
 
-  // Validate individual fields (defense-in-depth: the transformer pre-filters weight/distance > 0,
-  // so the <= 0 branches here only guard against future call sites or refactors)
+  // Strip individual fields that are out of range rather than rejecting the whole set.
+  // The transformer pre-filters weight/distance/duration > 0 before calling sanitizeSet,
+  // so the <= 0 branches here are defense-in-depth for future call sites.
   if (set.weight !== undefined && (!Number.isFinite(set.weight) || set.weight <= 0)) {
     warnings.push({
       type: 'parse',
-      message: `Set rejected: invalid weight ${set.weight}`,
+      message: `Invalid weight ${set.weight} stripped from set`,
       sourceRow,
     })
-    return null
+    delete set.weight
+    delete set.unit
   }
   if (set.reps !== undefined && (!Number.isFinite(set.reps) || set.reps < 0 || !Number.isInteger(set.reps))) {
     warnings.push({
       type: 'parse',
-      message: `Set rejected: invalid reps ${set.reps}`,
+      message: `Invalid reps ${set.reps} stripped from set`,
       sourceRow,
     })
-    return null
+    delete set.reps
   }
   if (set.distance !== undefined && (!Number.isFinite(set.distance) || set.distance <= 0)) {
     warnings.push({
       type: 'parse',
-      message: `Set rejected: invalid distance ${set.distance}`,
+      message: `Invalid distance ${set.distance} stripped from set`,
       sourceRow,
     })
-    return null
+    delete set.distance
+    delete set.distanceUnit
   }
   if (set.durationSeconds !== undefined && (!Number.isFinite(set.durationSeconds) || set.durationSeconds <= 0)) {
     warnings.push({
       type: 'parse',
-      message: `Set rejected: invalid duration ${set.durationSeconds}`,
+      message: `Invalid duration ${set.durationSeconds} stripped from set`,
       sourceRow,
     })
-    return null
+    delete set.durationSeconds
   }
   if (set.rpe !== undefined && (!Number.isFinite(set.rpe) || set.rpe < 0 || set.rpe > 10)) {
     warnings.push({
       type: 'parse',
-      message: `Set rejected: RPE ${set.rpe} outside valid range 0-10`,
+      message: `RPE ${set.rpe} outside valid range 0-10, stripped from set`,
+      sourceRow,
+    })
+    delete set.rpe
+  }
+
+  // After stripping invalid fields, re-check if the set still has meaningful data
+  const stillMeaningful = set.reps !== undefined
+    || set.weight !== undefined
+    || set.distance !== undefined
+    || set.durationSeconds !== undefined
+  if (!stillMeaningful) {
+    warnings.push({
+      type: 'parse',
+      message: 'Set filtered out: no valid fields remaining after sanitization',
       sourceRow,
     })
     return null

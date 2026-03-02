@@ -10,7 +10,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const fixture = (name: string) =>
   readFileSync(resolve(__dirname, '..', '__fixtures__', 'exploratory', name), 'utf-8')
 
-describe('robustness: bodyweight and distance exercises (Finding #3)', () => {
+describe('robustness: bodyweight/distance exercises are not rejected as invalid', () => {
   it('Strong bodyweight/distance exercises produce valid workouts', async () => {
     const csv = fixture('strong-bodyweight-distance.csv')
     const { workouts } = await convert({ csv, format: 'strong', weightUnit: 'kg' })
@@ -41,7 +41,7 @@ describe('robustness: bodyweight and distance exercises (Finding #3)', () => {
   })
 })
 
-describe('robustness: set-level sanitization (Finding #4)', () => {
+describe('robustness: extreme values are sanitized per-field without losing valid data', () => {
   it('Strong extreme values: keeps valid sets, rejects invalid ones', async () => {
     const csv = fixture('strong-extreme-values.csv')
     const { workouts, report } = await convert({ csv, format: 'strong', weightUnit: 'kg' })
@@ -64,14 +64,19 @@ describe('robustness: set-level sanitization (Finding #4)', () => {
     const heavySet = bench!.sets.find(s => s.weight === 999.99)
     expect(heavySet).toBeDefined()
 
-    // Row 6 (RPE=-1): RPE is silently dropped (< 0 never assigned to set)
+    // Row 6 (RPE=-1): RPE is silently dropped by transformer (rpe > 0 guard)
     // but the set itself is valid (weight=500, reps=1)
     const squat = workouts[0].exercises.find(e => e.exercise.name === 'Squat')
-    if (squat) {
-      const setWithNegRpe = squat.sets.find(s => s.weight === 500)
-      expect(setWithNegRpe).toBeDefined()
-      expect(setWithNegRpe!.rpe).toBeUndefined()
-    }
+    expect(squat).toBeDefined()
+    const setWithNegRpe = squat!.sets.find(s => s.weight === 500)
+    expect(setWithNegRpe).toBeDefined()
+    expect(setWithNegRpe!.rpe).toBeUndefined()
+
+    // Row 7 (RPE=11): RPE passes the > 0 guard but sanitizeSet strips it
+    // (out of 0-10 range) — the set keeps its weight and reps
+    const setWithHighRpe = squat!.sets.find(s => s.weight === 100 && s.reps === 3)
+    expect(setWithHighRpe).toBeDefined()
+    expect(setWithHighRpe!.rpe).toBeUndefined()
 
     for (const w of workouts) {
       expect(isValidWorkoutLog(w)).toBe(true)
@@ -96,7 +101,7 @@ describe('robustness: set-level sanitization (Finding #4)', () => {
   })
 })
 
-describe('robustness: garbage values (Finding #5)', () => {
+describe('robustness: garbage values are skipped, valid rows preserved', () => {
   it('Strong garbage values: skips unparseable rows, keeps valid ones', async () => {
     const csv = fixture('strong-garbage-values.csv')
     const { workouts, report } = await convert({ csv, format: 'strong', weightUnit: 'kg' })
@@ -127,7 +132,7 @@ describe('robustness: garbage values (Finding #5)', () => {
   })
 })
 
-describe('robustness: reversed/zero Hevy duration (Finding #7)', () => {
+describe('robustness: reversed/zero Hevy duration emits warnings', () => {
   it('warns on reversed timestamps', async () => {
     const csv = fixture('hevy-reversed-time.csv')
     const { workouts, report } = await convert({ csv, format: 'hevy' })
@@ -155,7 +160,7 @@ describe('robustness: reversed/zero Hevy duration (Finding #7)', () => {
   })
 })
 
-describe('robustness: Strong set types (Finding #1)', () => {
+describe('robustness: Strong set types are mapped correctly', () => {
   it('extracts set types from Set Type column', async () => {
     const csv = fixture('strong-all-set-types.csv')
     const { workouts } = await convert({ csv, format: 'strong', weightUnit: 'kg' })
@@ -182,28 +187,32 @@ describe('robustness: Strong set types (Finding #1)', () => {
   })
 })
 
-describe('robustness: date format normalization (Finding #2)', () => {
+describe('robustness: equivalent date formats group into the same workout', () => {
   it('groups same-instant dates with different formats together', async () => {
     const csv = fixture('strong-date-formats.csv')
     const { workouts, report } = await convert({ csv, format: 'strong', weightUnit: 'kg' })
 
-    // Rows with "2024-01-15 10:30:00", "2024-01-15T10:30:00Z", "2024-01-15T10:30:00"
-    // should group together since they represent the same instant when parsed
-    // The +05:30 offset is a different instant so it groups separately
-    // Some date formats may not parse — check warnings
+    // Rows 1-3 and 6-8 all resolve to 2024-01-15T10:30:00Z with name "Morning"
+    // and should group into a single workout
+    const morning = workouts.find(w => w.name === 'Morning')
+    expect(morning).toBeDefined()
 
-    // At minimum, we should get fewer workouts than raw rows (8 rows)
-    // and the parseable same-instant rows should be grouped
-    expect(workouts.length).toBeLessThan(8)
+    // Bench Press sets from rows 1-3,6 + Squat sets from rows 7-8
+    const benchSets = morning!.exercises.find(e => e.exercise.name === 'Bench Press')?.sets ?? []
+    const squatSets = morning!.exercises.find(e => e.exercise.name === 'Squat')?.sets ?? []
+    expect(benchSets.length).toBeGreaterThanOrEqual(3)
+    expect(squatSets.length).toBeGreaterThanOrEqual(1)
 
-    // Every workout produced should be valid
+    // Row 4 (+05:30 offset) is a different UTC instant, so "Afternoon" is separate
+    const afternoon = workouts.find(w => w.name === 'Afternoon')
+    expect(afternoon).toBeDefined()
+
+    // Row 5 (date only, no time) groups separately
+    const dateOnly = workouts.find(w => w.name === 'Date Only')
+    expect(dateOnly).toBeDefined()
+
     for (const w of workouts) {
       expect(isValidWorkoutLog(w)).toBe(true)
     }
-
-    // Unparseable date formats should produce warnings
-    const totalWorkouts = workouts.length
-    const skippedRows = report.warnings.filter(w => w.type === 'skipped_row').length
-    expect(totalWorkouts + skippedRows).toBeGreaterThan(0)
   })
 })
