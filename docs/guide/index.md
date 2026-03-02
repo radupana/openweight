@@ -16,7 +16,7 @@ data belongs to app vendors, not to you.
 
 openweight provides:
 
-- **A CLI converter** that migrates your existing data from Strong, Hevy, and more — one command, no code
+- **A CLI converter** that migrates your existing data from Strong, Hevy, JEFIT, and more — one command, no code
 - **A clean JSON Schema** that represents strength training concepts using domain terminology (workouts, exercises,
   sets, reps, RPE)
 - **SDKs for TypeScript and Kotlin** that apps can use to read and write the format
@@ -41,7 +41,7 @@ openweight provides:
 
 ## Next Steps
 
-- [Migrate Your Data](/migrate/) — Convert your existing training history from Strong, Hevy, and more
+- [Migrate Your Data](/migrate/) — Convert your existing training history from Strong, Hevy, JEFIT, and more
 - [Getting Started](/guide/getting-started) — Install the SDK and parse your first workout
 - [Core Concepts](/guide/concepts) — Understand the data model
 - [Schema Reference](/schema/) — Explore the full schema specification
