@@ -125,6 +125,29 @@ describe('unpackSets', () => {
     expect(sets).toHaveLength(1)
     expect(warnings).toHaveLength(1)
   })
+
+  it('rejects negative weight', () => {
+    const { sets, warnings } = unpackSets('-5x5,100x5', ctx)
+    expect(sets).toHaveLength(1)
+    expect(sets[0]).toEqual({ weight: 100, reps: 5 })
+    expect(warnings).toHaveLength(1)
+    expect(warnings[0].message).toContain('Negative value')
+  })
+
+  it('rejects negative reps', () => {
+    const { sets, warnings } = unpackSets('100x-3,100x5', ctx)
+    expect(sets).toHaveLength(1)
+    expect(warnings).toHaveLength(1)
+    expect(warnings[0].message).toContain('Negative value')
+  })
+
+  it('rejects zero reps', () => {
+    const { sets, warnings } = unpackSets('100x0,100x5', ctx)
+    expect(sets).toHaveLength(1)
+    expect(sets[0]).toEqual({ weight: 100, reps: 5 })
+    expect(warnings).toHaveLength(1)
+    expect(warnings[0].message).toContain('Zero reps')
+  })
 })
 
 describe('parseJefit', () => {

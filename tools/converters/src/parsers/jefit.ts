@@ -110,8 +110,29 @@ export function unpackSets(
       continue
     }
 
+    // Reject negative values — weight and reps cannot be negative
+    if (weight < 0 || reps < 0) {
+      warnings.push({
+        type: 'parse',
+        message: `Negative value in set token "${trimmed}" in exercise "${sourceContext.exerciseName}"`,
+        sourceRow: sourceContext.sourceRow,
+      })
+      continue
+    }
+
+    // Reject zero reps — a set with 0 reps is meaningless
+    // (weight=0 is valid and means bodyweight, handled below)
+    if (reps === 0) {
+      warnings.push({
+        type: 'parse',
+        message: `Zero reps in set token "${trimmed}" in exercise "${sourceContext.exerciseName}"`,
+        sourceRow: sourceContext.sourceRow,
+      })
+      continue
+    }
+
     // Guard against unreasonable values (e.g. scientific notation like 1e10)
-    if (Math.abs(weight) > 10_000 || Math.abs(reps) > 10_000) {
+    if (weight > 10_000 || reps > 10_000) {
       warnings.push({
         type: 'parse',
         message: `Unreasonable value in set token "${trimmed}" in exercise "${sourceContext.exerciseName}"`,

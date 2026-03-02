@@ -168,12 +168,22 @@ describe('JEFIT robustness', () => {
 
     expect(workouts.length).toBeGreaterThanOrEqual(1)
 
-    // Negative weight should be stripped
+    // Negative weight (-5x5) should be rejected at parse time with a clear warning
+    const negativeWarnings = report.warnings.filter((w) =>
+      w.message.includes('Negative value')
+    )
+    expect(negativeWarnings.length).toBeGreaterThan(0)
+
+    // Squat has "-5x5,100x5" — the -5 set is rejected, the 100x5 set survives
     const squat = workouts[0].exercises.find((e) => e.exercise.name === 'Squat')
-    if (squat) {
-      const negWeightSet = squat.sets.find((s) => s.weight === -5)
-      expect(negWeightSet).toBeUndefined()
-    }
+    expect(squat).toBeDefined()
+    expect(squat!.sets.every((s) => s.weight === undefined || s.weight > 0)).toBe(true)
+
+    // Zero reps (100x0) should be rejected with a clear warning
+    const zeroRepsWarnings = report.warnings.filter((w) =>
+      w.message.includes('Zero reps')
+    )
+    expect(zeroRepsWarnings.length).toBeGreaterThan(0)
 
     // 999.99 is extreme but valid (under 10000 guard)
     const bench = workouts[0].exercises.find((e) => e.exercise.name === 'Bench Press')
