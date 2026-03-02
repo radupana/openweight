@@ -47,6 +47,17 @@ belongsession,ename,logs
   it('throws on missing markers', () => {
     expect(() => splitJefitSections('no markers here')).toThrow('Missing JEFIT section markers')
   })
+
+  it('throws on missing section end markers', () => {
+    const content = `### WORKOUT SESSIONS ###
+_id,mydate,starttime,starttimie,total_time
+1,2024-01-15,1705305000,,3600
+
+### EXERCISE LOGS ###
+belongsession,ename,logs
+1,"Bench Press","100x5"`
+    expect(() => splitJefitSections(content)).toThrow('Missing JEFIT section end marker')
+  })
 })
 
 describe('unpackSets', () => {
@@ -97,6 +108,20 @@ describe('unpackSets', () => {
 
   it('warns on NaN values', () => {
     const { sets, warnings } = unpackSets('NaNxNaN,15x10', ctx)
+    expect(sets).toHaveLength(1)
+    expect(warnings).toHaveLength(1)
+  })
+
+  it('rejects unreasonable values like scientific notation', () => {
+    const { sets, warnings } = unpackSets('1e10x5,100x8', ctx)
+    expect(sets).toHaveLength(1)
+    expect(sets[0]).toEqual({ weight: 100, reps: 8 })
+    expect(warnings).toHaveLength(1)
+    expect(warnings[0].message).toContain('Unreasonable value')
+  })
+
+  it('rejects values exceeding 10000', () => {
+    const { sets, warnings } = unpackSets('100x50000,100x8', ctx)
     expect(sets).toHaveLength(1)
     expect(warnings).toHaveLength(1)
   })

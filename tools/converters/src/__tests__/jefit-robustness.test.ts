@@ -42,6 +42,10 @@ describe('JEFIT robustness', () => {
     expect(workouts[0].exercises).toHaveLength(1)
     expect(workouts[0].exercises[0].exercise.name).toBe('Deadlift')
 
+    // 3 exercise log rows total, 2 skipped (empty logs)
+    expect(report.totalRows).toBe(3)
+    expect(report.skippedRows).toBe(2)
+
     const noSetsWarnings = report.warnings.filter((w) =>
       w.message.includes('no valid sets')
     )
@@ -171,14 +175,24 @@ describe('JEFIT robustness', () => {
       expect(negWeightSet).toBeUndefined()
     }
 
-    // 999.99 is extreme but valid (finite)
+    // 999.99 is extreme but valid (under 10000 guard)
     const bench = workouts[0].exercises.find((e) => e.exercise.name === 'Bench Press')
     if (bench) {
       expect(bench.sets[0].weight).toBe(999.99)
     }
 
-    // Warnings should be generated
-    expect(report.warnings.length).toBeGreaterThan(0)
+    // 1e10 (10 billion) should be rejected by the >10000 guard in unpackSets
+    const legPress = workouts[0].exercises.find((e) => e.exercise.name === 'Leg Press')
+    if (legPress) {
+      const absurdSet = legPress.sets.find((s) => s.weight === 1e10)
+      expect(absurdSet).toBeUndefined()
+    }
+
+    // Warnings should be generated for unreasonable values
+    const unreasonableWarnings = report.warnings.filter((w) =>
+      w.message.includes('Unreasonable value')
+    )
+    expect(unreasonableWarnings.length).toBeGreaterThan(0)
 
     for (const w of workouts) {
       expect(isValidWorkoutLog(w)).toBe(true)
@@ -191,6 +205,11 @@ describe('JEFIT robustness', () => {
 
     // Only session 1 exists — exercises for 999 and 888 should be skipped
     expect(workouts).toHaveLength(1)
+
+    // Report should reflect skipped rows
+    expect(report.skippedRows).toBe(2)
+    expect(report.totalRows).toBe(4)
+    expect(report.convertedRows).toBe(2)
 
     const orphanWarnings = report.warnings.filter((w) =>
       w.message.includes('unknown session')

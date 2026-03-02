@@ -44,6 +44,9 @@ export function splitJefitSections(raw: string): {
   // Extract sessions section: after marker line, up to section end
   const afterSessionsMarker = raw.indexOf('\n', sessionsStart)
   const sessionsEndMarker = raw.indexOf(SECTION_END, afterSessionsMarker)
+  if (sessionsEndMarker === -1) {
+    throw new Error('Missing JEFIT section end marker for workout sessions')
+  }
   const workoutSessions = raw
     .slice(afterSessionsMarker + 1, sessionsEndMarker)
     .trim()
@@ -51,6 +54,9 @@ export function splitJefitSections(raw: string): {
   // Extract logs section: after marker line, up to section end
   const afterLogsMarker = raw.indexOf('\n', logsStart)
   const logsEndMarker = raw.indexOf(SECTION_END, afterLogsMarker)
+  if (logsEndMarker === -1) {
+    throw new Error('Missing JEFIT section end marker for exercise logs')
+  }
   const exerciseLogs = raw.slice(afterLogsMarker + 1, logsEndMarker).trim()
 
   return { workoutSessions, exerciseLogs }
@@ -104,6 +110,16 @@ export function unpackSets(
       continue
     }
 
+    // Guard against unreasonable values (e.g. scientific notation like 1e10)
+    if (Math.abs(weight) > 10_000 || Math.abs(reps) > 10_000) {
+      warnings.push({
+        type: 'parse',
+        message: `Unreasonable value in set token "${trimmed}" in exercise "${sourceContext.exerciseName}"`,
+        sourceRow: sourceContext.sourceRow,
+      })
+      continue
+    }
+
     sets.push({
       weight: weight === 0 ? undefined : weight,
       reps: reps,
@@ -126,6 +142,8 @@ export function parseJefit(
   options: ConvertOptions
 ): {
   rows: IntermediateRow[]
+  totalLogRows: number
+  skippedLogRows: number
   warnings: ConversionWarning[]
   columnMappings: ColumnMapping[]
 } {
@@ -188,22 +206,28 @@ export function parseJefit(
   // Parse exercise logs CSV
   const logs = parseCSV(exerciseLogs)
   const rows: IntermediateRow[] = []
-  let rowCounter = 0
+  let skippedLogRows = 0
 
   for (let i = 0; i < logs.rows.length; i++) {
     const logRow = logs.rows[i]
     const sessionId = logRow['belongsession']?.trim()
     const exerciseNameRaw = logRow['ename']?.trim()
     const logsStr = logRow['logs']
+    // sourceRow: CSV line number in the logs section (1-indexed header + 1-indexed data)
+    const sourceRow = i + 2
 
-    if (!sessionId || !exerciseNameRaw) continue
+    if (!sessionId || !exerciseNameRaw) {
+      skippedLogRows++
+      continue
+    }
 
     const session = sessionMap.get(sessionId)
     if (!session) {
+      skippedLogRows++
       warnings.push({
         type: 'parse',
         message: `Exercise "${exerciseNameRaw}" references unknown session "${sessionId}" — skipped`,
-        sourceRow: i + 2,
+        sourceRow,
       })
       continue
     }
@@ -215,22 +239,22 @@ export function parseJefit(
 
     const { sets, warnings: setWarnings } = unpackSets(logsStr ?? '', {
       exerciseName: exerciseNameRaw,
-      sourceRow: i + 2,
+      sourceRow,
     })
     warnings.push(...setWarnings)
 
     if (sets.length === 0) {
+      skippedLogRows++
       warnings.push({
         type: 'parse',
         message: `Exercise "${exerciseNameRaw}" has no valid sets — skipped`,
-        sourceRow: i + 2,
+        sourceRow,
       })
       continue
     }
 
     for (let setIdx = 0; setIdx < sets.length; setIdx++) {
       const set = sets[setIdx]
-      rowCounter++
       rows.push({
         rawDate: session.date,
         rawDuration: session.durationSeconds,
@@ -239,7 +263,7 @@ export function parseJefit(
         weight: set.weight,
         weightUnit: set.weight !== undefined ? options.weightUnit : undefined,
         reps: set.reps,
-        sourceRow: rowCounter,
+        sourceRow,
       })
     }
   }
@@ -284,5 +308,11 @@ export function parseJefit(
     },
   ]
 
-  return { rows, warnings, columnMappings }
+  return {
+    rows,
+    totalLogRows: logs.rows.length,
+    skippedLogRows,
+    warnings,
+    columnMappings,
+  }
 }

@@ -129,12 +129,14 @@ describe('JEFIT convert', () => {
       const csv = fixture('jefit-basic.csv')
       const { report } = await convert({ csv, format: 'jefit', weightUnit: 'kg' })
 
-      expect(report.totalRows).toBeGreaterThan(0)
-      expect(report.convertedRows).toBeGreaterThan(0)
+      // totalRows = number of exercise log CSV rows (2 exercises)
+      expect(report.totalRows).toBe(2)
+      expect(report.convertedRows).toBe(2)
       expect(report.skippedRows).toBe(0)
       expect(report.workoutCount).toBe(1)
       expect(report.exerciseCount).toBe(2)
       expect(report.columnMappings.length).toBeGreaterThan(0)
     })
+
   })
 })

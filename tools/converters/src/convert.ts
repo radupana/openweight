@@ -207,6 +207,8 @@ async function convertJefit(
 ): Promise<ConvertResult> {
   const {
     rows: intermediateRows,
+    totalLogRows,
+    skippedLogRows,
     warnings,
     columnMappings,
   } = parseJefit(csv, options)
@@ -220,6 +222,29 @@ async function convertJefit(
   for (const name of exerciseNames) {
     if (!hasExerciseMapping(name, options.exerciseMappings)) {
       unmappedExercises.push(name)
+    }
+  }
+
+  // AI exercise name normalization
+  let aiExerciseSuggestions: AIExerciseMapping[] | undefined
+  if (options.ai && unmappedExercises.length > 0) {
+    try {
+      const knownCanonicalNames = Object.values(mappingsJson as Record<string, string>)
+      const uniqueCanonicals = [...new Set(knownCanonicalNames)]
+
+      const suggestions = await options.ai.normalizeExerciseNames({
+        unknownNames: unmappedExercises,
+        knownCanonicalNames: uniqueCanonicals,
+      })
+
+      if (suggestions.length > 0) {
+        aiExerciseSuggestions = suggestions
+      }
+    } catch (err) {
+      warnings.push({
+        type: 'parse',
+        message: `AI exercise normalization failed: ${err instanceof Error ? err.message : String(err)}`,
+      })
     }
   }
 
@@ -245,14 +270,16 @@ async function convertJefit(
 
   const report = buildReport({
     source: format,
-    totalRows: intermediateRows.length,
-    convertedRows: intermediateRows.length,
-    skippedRows: 0,
+    totalRows: totalLogRows,
+    convertedRows: totalLogRows - skippedLogRows,
+    skippedRows: skippedLogRows,
     workouts,
     columnMappings,
     unmappedExercises,
     warnings,
   })
+
+  if (aiExerciseSuggestions) report.aiExerciseSuggestions = aiExerciseSuggestions
 
   return { workouts, report }
 }
