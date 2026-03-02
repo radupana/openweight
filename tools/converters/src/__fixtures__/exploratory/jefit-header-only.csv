@@ -1,0 +1,7 @@
+### WORKOUT SESSIONS ###
+_id,mydate,starttime,starttimie,total_time
+###########################
+
+### EXERCISE LOGS ###
+belongsession,ename,logs
+###########################

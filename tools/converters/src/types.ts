@@ -1,7 +1,7 @@
 import type { WorkoutLog, WeightUnit, DistanceUnit } from '@openweight/sdk'
 import type { AIProvider, AIColumnMapping, AIExerciseMapping } from './ai/provider.js'
 
-export type SourceFormat = 'strong' | 'hevy'
+export type SourceFormat = 'strong' | 'hevy' | 'jefit'
 
 export interface ConvertOptions {
   format?: SourceFormat
