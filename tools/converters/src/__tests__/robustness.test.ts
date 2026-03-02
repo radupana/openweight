@@ -48,16 +48,21 @@ describe('robustness: set-level sanitization (Finding #4)', () => {
 
     expect(workouts.length).toBeGreaterThan(0)
 
-    // Row 3 (weight=-5) should be rejected
-    const parseWarnings = report.warnings.filter(w => w.type === 'parse')
-    expect(parseWarnings.length).toBeGreaterThan(0)
+    // Row 2 (all zeros) produces an empty-set warning
+    const emptySetWarnings = report.warnings.filter(w =>
+      w.type === 'parse' && w.message.includes('Empty set')
+    )
+    expect(emptySetWarnings.length).toBeGreaterThan(0)
 
-    // Row 4 (weight=999.99, reps=100) is valid — extreme but finite
+    // Row 4 (weight=-5): negative weight is filtered by the transformer (weight > 0),
+    // so the set becomes {reps: 1} — valid but weightless, not rejected
+    // Row 3 (weight=999.99, reps=100) is valid — extreme but finite
     const bench = workouts[0].exercises.find(e => e.exercise.name === 'Bench Press')
-    if (bench) {
-      const heavySet = bench.sets.find(s => s.weight === 999.99)
-      expect(heavySet).toBeDefined()
-    }
+    expect(bench).toBeDefined()
+    const negWeightSet = bench!.sets.find(s => s.weight === -5)
+    expect(negWeightSet).toBeUndefined()
+    const heavySet = bench!.sets.find(s => s.weight === 999.99)
+    expect(heavySet).toBeDefined()
 
     // Row 6 (RPE=-1): RPE is silently dropped (< 0 never assigned to set)
     // but the set itself is valid (weight=500, reps=1)

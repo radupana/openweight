@@ -208,7 +208,8 @@ function sanitizeSet(set: SetLog, sourceRow: number, warnings: ConversionWarning
     return null
   }
 
-  // Validate individual fields
+  // Validate individual fields (defense-in-depth: the transformer pre-filters weight/distance > 0,
+  // so the <= 0 branches here only guard against future call sites or refactors)
   if (set.weight !== undefined && (!Number.isFinite(set.weight) || set.weight <= 0)) {
     warnings.push({
       type: 'parse',

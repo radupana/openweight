@@ -62,6 +62,8 @@ export const strongParser: SourceParser = {
 
     if (!date || !exerciseName) return null
 
+    const distance = parseNumber(row['Distance'])
+
     return {
       rawDate: date,
       workoutName: row['Workout Name']?.trim() || undefined,
@@ -74,8 +76,8 @@ export const strongParser: SourceParser = {
       weight: parseNumber(row['Weight']),
       weightUnit: options.weightUnit,
       reps: parseNumber(row['Reps']),
-      distance: parseNumber(row['Distance']),
-      distanceUnit: (parseNumber(row['Distance']) ?? 0) > 0 ? 'm' : undefined,
+      distance,
+      distanceUnit: distance ? 'm' : undefined,
       durationSeconds: parseNumber(row['Seconds']),
       rpe: parseNumber(row['RPE']),
       rawSetType: row['Set Type']?.trim() || undefined,
