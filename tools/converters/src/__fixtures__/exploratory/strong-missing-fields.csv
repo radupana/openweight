@@ -1,0 +1,8 @@
+Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Reps,Distance,Seconds,Notes,Workout Notes,RPE
+2024-05-01 10:00:00,Normal,1h,Bench Press,1,80,5,0,0,,,8
+,Missing Date,,Bench Press,1,80,5,0,0,,,
+2024-05-01 10:00:00,Normal,1h,,1,80,5,0,0,,,
+2024-05-01 10:00:00,Normal,1h,Bench Press,,80,5,0,0,,,
+2024-05-01 10:00:00,Normal,1h,Bench Press,2,,5,0,0,,,
+2024-05-01 10:00:00,Normal,1h,Bench Press,3,80,,0,0,,,
+2024-05-01 10:00:00,,1h,Bench Press,4,80,5,0,0,,,

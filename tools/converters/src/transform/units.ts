@@ -34,5 +34,5 @@ export function parseDistanceUnit(raw: string | undefined): DistanceUnit | undef
 export function parseNumber(raw: string | undefined): number | undefined {
   if (!raw || !raw.trim()) return undefined
   const num = Number(raw.trim())
-  return isNaN(num) ? undefined : num
+  return isFinite(num) ? num : undefined
 }

@@ -21,7 +21,8 @@ export function transformRows(rows: IntermediateRow[]): TransformResult {
   const warnings: ConversionWarning[] = []
 
   // Group rows by workout identity (date + name)
-  const workoutGroups = new Map<string, IntermediateRow[]>()
+  // Normalize grouping key so equivalent instants (e.g. different TZ offsets) group together
+  const workoutGroups = new Map<string, { date: string; rows: IntermediateRow[] }>()
   for (const row of rows) {
     const date = parseDate(row.rawDate)
     if (!date) {
@@ -32,19 +33,22 @@ export function transformRows(rows: IntermediateRow[]): TransformResult {
       })
       continue
     }
-    const key = `${date}|${row.workoutName ?? ''}`
-    const group = workoutGroups.get(key)
-    if (group) {
-      group.push(row)
+    // Normalize to UTC ISO string for grouping so identical instants share a key
+    const normalizedDate = new Date(date).toISOString()
+    const key = `${normalizedDate}|${row.workoutName ?? ''}`
+    const existing = workoutGroups.get(key)
+    if (existing) {
+      existing.rows.push(row)
     } else {
-      workoutGroups.set(key, [row])
+      workoutGroups.set(key, { date, rows: [row] })
     }
   }
 
   const workouts: WorkoutLog[] = []
 
-  for (const [key, groupRows] of workoutGroups) {
-    const [dateStr, workoutName] = key.split('|')
+  for (const [, group] of workoutGroups) {
+    const { date: dateStr, rows: groupRows } = group
+    const workoutName = groupRows[0].workoutName
     const firstRow = groupRows[0]
 
     // Build exercises
@@ -61,7 +65,8 @@ export function transformRows(rows: IntermediateRow[]): TransformResult {
 
     const exercises: ExerciseLog[] = []
     for (const [exerciseName, { rows: exRows, order }] of exerciseMap) {
-      const sets: SetLog[] = exRows.map((row) => {
+      const sets: SetLog[] = []
+      for (const row of exRows) {
         const set: SetLog = {}
         if (row.reps !== undefined && row.reps > 0) set.reps = row.reps
         if (row.weight !== undefined && row.weight > 0) {
@@ -79,8 +84,20 @@ export function transformRows(rows: IntermediateRow[]): TransformResult {
         if (setType.type) set.type = setType.type
         if (setType.toFailure) set.toFailure = true
 
-        return set
-      })
+        // Sanitize: reject sets with invalid field values
+        const sanitized = sanitizeSet(set, row.sourceRow, warnings)
+        if (sanitized) sets.push(sanitized)
+      }
+
+      // Drop exercises with no valid sets
+      if (sets.length === 0) {
+        warnings.push({
+          type: 'parse',
+          message: `Exercise "${exerciseName}" dropped: no valid sets after sanitization`,
+          sourceRow: exRows[0].sourceRow,
+        })
+        continue
+      }
 
       const exerciseLog: ExerciseLog = {
         exercise: { name: exerciseName },
@@ -106,6 +123,15 @@ export function transformRows(rows: IntermediateRow[]): TransformResult {
       exercises.push(exerciseLog)
     }
 
+    // Drop workouts with no valid exercises
+    if (exercises.length === 0) {
+      warnings.push({
+        type: 'parse',
+        message: `Workout on ${dateStr} dropped: no valid exercises after sanitization`,
+      })
+      continue
+    }
+
     const workout: WorkoutLog = {
       date: dateStr,
       exercises,
@@ -115,7 +141,7 @@ export function transformRows(rows: IntermediateRow[]): TransformResult {
     if (firstRow.workoutNotes) workout.notes = firstRow.workoutNotes
 
     // Parse workout duration
-    const duration = parseWorkoutDuration(firstRow)
+    const duration = parseWorkoutDuration(firstRow, warnings)
     if (duration !== undefined) workout.durationSeconds = duration
 
     workouts.push(workout)
@@ -127,7 +153,7 @@ export function transformRows(rows: IntermediateRow[]): TransformResult {
   return { workouts, warnings }
 }
 
-function parseWorkoutDuration(row: IntermediateRow): number | undefined {
+function parseWorkoutDuration(row: IntermediateRow, warnings: ConversionWarning[]): number | undefined {
   if (!row.rawDuration) return undefined
 
   const raw = String(row.rawDuration)
@@ -139,10 +165,90 @@ function parseWorkoutDuration(row: IntermediateRow): number | undefined {
     const endDate = new Date(end)
     if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
       const diff = Math.round((endDate.getTime() - startDate.getTime()) / 1000)
-      return diff > 0 ? diff : undefined
+      if (diff < 0) {
+        warnings.push({
+          type: 'parse',
+          message: 'Workout start time is after end time',
+          sourceRow: row.sourceRow,
+        })
+        return undefined
+      }
+      if (diff === 0) {
+        warnings.push({
+          type: 'parse',
+          message: 'Workout has zero duration (start equals end)',
+          sourceRow: row.sourceRow,
+        })
+        return undefined
+      }
+      return diff
     }
     return undefined
   }
 
   return parseDuration(raw)
+}
+
+/**
+ * Sanitize a set: reject sets with invalid field values or no meaningful data.
+ * Returns the set if valid, null if it should be filtered out.
+ */
+function sanitizeSet(set: SetLog, sourceRow: number, warnings: ConversionWarning[]): SetLog | null {
+  // Reject sets with no meaningful fields (empty set)
+  const hasMeaningfulField = set.reps !== undefined
+    || set.weight !== undefined
+    || set.distance !== undefined
+    || set.durationSeconds !== undefined
+  if (!hasMeaningfulField) {
+    warnings.push({
+      type: 'parse',
+      message: 'Empty set filtered out (no reps, weight, distance, or duration)',
+      sourceRow,
+    })
+    return null
+  }
+
+  // Validate individual fields
+  if (set.weight !== undefined && (!Number.isFinite(set.weight) || set.weight <= 0)) {
+    warnings.push({
+      type: 'parse',
+      message: `Set rejected: invalid weight ${set.weight}`,
+      sourceRow,
+    })
+    return null
+  }
+  if (set.reps !== undefined && (!Number.isFinite(set.reps) || set.reps < 0 || !Number.isInteger(set.reps))) {
+    warnings.push({
+      type: 'parse',
+      message: `Set rejected: invalid reps ${set.reps}`,
+      sourceRow,
+    })
+    return null
+  }
+  if (set.distance !== undefined && (!Number.isFinite(set.distance) || set.distance <= 0)) {
+    warnings.push({
+      type: 'parse',
+      message: `Set rejected: invalid distance ${set.distance}`,
+      sourceRow,
+    })
+    return null
+  }
+  if (set.durationSeconds !== undefined && (!Number.isFinite(set.durationSeconds) || set.durationSeconds <= 0)) {
+    warnings.push({
+      type: 'parse',
+      message: `Set rejected: invalid duration ${set.durationSeconds}`,
+      sourceRow,
+    })
+    return null
+  }
+  if (set.rpe !== undefined && (!Number.isFinite(set.rpe) || set.rpe < 0 || set.rpe > 10)) {
+    warnings.push({
+      type: 'parse',
+      message: `Set rejected: RPE ${set.rpe} outside valid range 0-10`,
+      sourceRow,
+    })
+    return null
+  }
+
+  return set
 }

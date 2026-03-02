@@ -1,0 +1,6 @@
+Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Reps,Distance,Seconds,Notes,Workout Notes,RPE
+2024-01-15 10:30:00,Notes Test,1h,"Bench Press",1,100,5,0,0,"Line 1
+Line 2
+Line 3","Workout note line 1
+Workout note line 2",8
+2024-01-15 10:30:00,Notes Test,1h,"Bench Press",2,100,5,0,0,"Simple note",,8

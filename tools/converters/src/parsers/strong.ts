@@ -26,6 +26,7 @@ const EXACT_COLUMNS: Record<string, string> = {
   'Notes': 'exerciseNotes',
   'Workout Notes': 'workoutNotes',
   'RPE': 'rpe',
+  'Set Type': 'rawSetType',
 }
 
 const ALIAS_COLUMNS: Record<string, string> = {
@@ -74,6 +75,7 @@ export const strongParser: SourceParser = {
       weightUnit: options.weightUnit,
       reps: parseNumber(row['Reps']),
       distance: parseNumber(row['Distance']),
+      distanceUnit: (parseNumber(row['Distance']) ?? 0) > 0 ? 'm' : undefined,
       durationSeconds: parseNumber(row['Seconds']),
       rpe: parseNumber(row['RPE']),
       rawSetType: row['Set Type']?.trim() || undefined,

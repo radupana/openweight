@@ -1,0 +1,5 @@
+title,start_time,end_time,description,exercise_title,superset_id,reps,weight_kg,weight_lbs,duration_seconds,distance_km,distance_miles,rpe,set_index,set_type
+Extremes,2024-01-01T00:00:00Z,2024-01-01T00:01:00Z,,Bench Press (Barbell),,0,0,0,0,0,0,,1,1
+Extremes,2024-01-01T00:00:00Z,2024-01-01T00:01:00Z,,Bench Press (Barbell),,100,999.99,2204.6,0,0,0,10,2,1
+Extremes,2024-01-01T00:00:00Z,2024-01-01T00:01:00Z,,Bench Press (Barbell),,1,-5,-11,0,0,0,0,3,1
+Extremes,2024-01-01T00:00:00Z,2024-01-01T00:01:00Z,,Running,,0,0,0,0,99999,62137,,,4,1
