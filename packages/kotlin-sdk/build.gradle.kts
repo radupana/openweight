@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "io.github.radupana"
-version = "0.11.1"
+version = "0.12.0"
 
 mavenPublishing {
     publishToMavenCentral(com.vanniktech.maven.publish.SonatypeHost.CENTRAL_PORTAL)
