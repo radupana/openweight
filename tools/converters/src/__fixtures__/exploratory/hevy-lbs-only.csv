@@ -1,0 +1,4 @@
+title,start_time,end_time,description,exercise_title,superset_id,reps,weight_kg,weight_lbs,duration_seconds,distance_km,distance_miles,rpe,set_index,set_type
+Lbs Workout,2024-01-15T10:00:00Z,2024-01-15T11:00:00Z,,Bench Press (Barbell),,5,0,176.37,0,0,0,8,1,1
+Lbs Workout,2024-01-15T10:00:00Z,2024-01-15T11:00:00Z,,Bench Press (Barbell),,5,0,176.37,0,0,0,8,2,1
+Lbs Workout,2024-01-15T10:00:00Z,2024-01-15T11:00:00Z,,Back Squat (Barbell),,5,0,308.65,0,0,0,7,1,1

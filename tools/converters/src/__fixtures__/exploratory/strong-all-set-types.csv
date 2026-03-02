@@ -1,0 +1,5 @@
+Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Reps,Distance,Seconds,Notes,Workout Notes,RPE,Set Type
+2024-01-15 10:00:00,Set Types,1h,Bench Press,1,40,10,0,0,warm up,,,Warm Up
+2024-01-15 10:00:00,Set Types,1h,Bench Press,2,80,5,0,0,normal,,8,Normal
+2024-01-15 10:00:00,Set Types,1h,Bench Press,3,60,8,0,0,drop set,,,Drop Set
+2024-01-15 10:00:00,Set Types,1h,Bench Press,4,80,3,0,0,failure,,10,Failure

@@ -1,0 +1,6 @@
+Date,Workout Name,Duration,Exercise Name,Set Order,Weight,Reps,Distance,Seconds,Notes,Workout Notes,RPE
+not-a-date,Garbage,nope,Bench Press,1,abc,xyz,foo,bar,,,NaN
+2024-01-01 10:00:00,Garbage,1h,Bench Press,one,eighty,five,0,0,,,eight
+2024-01-01 10:00:00,Garbage,1h,Bench Press,2,80,5,0,0,,,
+2024-01-01 10:00:00,Garbage,1h,Bench Press,3,Infinity,5,0,0,,,
+2024-01-01 10:00:00,Garbage,1h,Bench Press,4,1e10,5,0,0,,,

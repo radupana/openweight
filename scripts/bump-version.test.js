@@ -12,6 +12,7 @@ describe('bump-version.js', () => {
   function setupTempDir() {
     tempDir = mkdtempSync(join(tmpdir(), 'bump-version-test-'));
 
+    writeFileSync(join(tempDir, 'package.json'), JSON.stringify({ type: 'module' }));
     writeFileSync(join(tempDir, 'version.json'), JSON.stringify({ version: '1.2.3' }, null, 2));
 
     const tsSdkDir = join(tempDir, 'packages/ts-sdk');

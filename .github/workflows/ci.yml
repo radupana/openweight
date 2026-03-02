@@ -7,9 +7,14 @@ on:
     branches: [main]
 
 jobs:
-  typescript:
-    name: TypeScript SDK
+  test:
+    name: Test (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # 18 = minimum supported (engines >=18), 22 = current LTS
+        node-version: ['18', '22']
 
     steps:
       - uses: actions/checkout@v6
@@ -17,7 +22,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20.x'
+          node-version: ${{ matrix.node-version }}
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
@@ -28,20 +34,8 @@ jobs:
       - name: Type check
         run: npm run typecheck
 
-      - name: Run schema tests
-        run: npm test
-
-      - name: Run script tests
-        run: npm run test:scripts
-
-      - name: Run SDK tests
-        run: npm run test:sdk
-
-      - name: Run converter tests
-        run: npm run test:converters
-
-      - name: Run CLI tests
-        run: npm run test:cli
+      - name: Run all tests
+        run: npm run test:all
 
       - name: Validate examples
         run: npm run validate-examples
@@ -62,10 +56,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v5
 
-      - name: Build
-        run: ./gradlew build
-        working-directory: packages/kotlin-sdk
-
-      - name: Test
-        run: ./gradlew test
+      - name: Build and Test
+        run: ./gradlew build test
         working-directory: packages/kotlin-sdk

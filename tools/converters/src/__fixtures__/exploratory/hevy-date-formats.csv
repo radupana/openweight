@@ -1,0 +1,7 @@
+title,start_time,end_time,description,exercise_title,superset_id,reps,weight_kg,weight_lbs,duration_seconds,distance_km,distance_miles,rpe,set_index,set_type
+ISO Standard,2024-01-15T10:30:00Z,2024-01-15T12:00:00Z,,Bench Press,,5,80,176.37,0,0,0,,1,1
+"Hevy Human","30 Jun 2025, 19:56","30 Jun 2025, 20:58",,Bench Press,,5,80,176.37,0,0,0,,1,1
+ISO Offset,2024-01-15T10:30:00+05:30,2024-01-15T12:00:00+05:30,,Bench Press,,5,80,176.37,0,0,0,,1,1
+No TZ,2024-01-15T10:30:00,2024-01-15T12:00:00,,Bench Press,,5,80,176.37,0,0,0,,1,1
+Date Only,2024-01-15,2024-01-15,,Bench Press,,5,80,176.37,0,0,0,,1,1
+US Format,"Jan 15, 2024 10:30 AM","Jan 15, 2024 12:00 PM",,Bench Press,,5,80,176.37,0,0,0,,1,1
