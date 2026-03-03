@@ -1,0 +1,14 @@
+### WORKOUT SESSIONS ###
+_id,mydate,starttime,starttimie,total_time
+1,2024-03-01,1709290800,,3600
+###########################
+
+### EXERCISE LOGS ###
+belongsession,ename,logs
+1,"Barbell Bench Press","100x5,100x5"
+1,"Sentadilla Frontal","80x8,80x6"
+1,"Entwicklungsdrücken","40x10,40x10"
+1,"懸垂","0x10,0x8"
+1,"Подтягивания","0x12,0x10"
+1,"My Custom Exercise™","50x10,50x10"
+###########################

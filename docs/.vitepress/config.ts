@@ -34,6 +34,7 @@ export default defineConfig({
             { text: 'Overview', link: '/migrate/' },
             { text: 'From Strong', link: '/migrate/strong' },
             { text: 'From Hevy', link: '/migrate/hevy' },
+            { text: 'From JEFIT', link: '/migrate/jefit' },
           ]
         }
       ],

@@ -1,0 +1,38 @@
+### WORKOUT SESSIONS ###
+_id,mydate,starttime,starttimie,total_time
+101,2024-01-08,1704700800,,4500
+102,2024-01-10,1704873600,,3900
+103,2024-01-12,1705046400,,4200
+104,2024-01-15,1705305000,,3600
+105,2024-01-17,1705477800,,5100
+###########################
+
+### EXERCISE LOGS ###
+belongsession,ename,logs
+101,"Barbell Bench Press","80x8,85x6,90x5,90x4"
+101,"Incline Dumbbell Press","30x10,32.5x8,32.5x8"
+101,"Cable Fly","15x15,15x12,15x12"
+101,"Tricep Pushdown","25x12,25x12,25x10"
+101,"Dumbbell Lateral Raise","10x15,10x15,10x12"
+102,"Barbell Squat","100x8,110x6,120x5,120x4"
+102,"Romanian Deadlift","80x10,85x8,85x8"
+102,"Leg Press","150x12,160x10,170x8"
+102,"Leg Curl","30x12,30x12,30x10"
+102,"Calf Raise","60x15,60x15,60x12"
+103,"Deadlift","140x5,150x5,160x3,170x1"
+103,"Barbell Row","70x10,75x8,80x8"
+103,"Pull Up","0x12,0x10,0x8"
+103,"Dumbbell Curl","15x12,17.5x10,17.5x10"
+103,"Face Pull","15x15,15x15,15x12"
+104,"Barbell Overhead Press","50x8,55x6,57.5x5,57.5x4"
+104,"Dumbbell Bench Press","30x10,32.5x8,32.5x8"
+104,"Lateral Raise","10x15,12.5x12,12.5x12"
+104,"Barbell Skull Crusher","25x12,25x10,25x10"
+104,"Cable Lateral Raise","7.5x15,7.5x15,7.5x12"
+105,"Front Squat","80x6,85x5,90x4,90x3"
+105,"Bulgarian Split Squat","20x10,22.5x8,22.5x8"
+105,"Leg Extension","40x12,45x10,45x10"
+105,"Leg Curl","30x12,35x10,35x10"
+105,"Barbell Hip Thrust","100x10,110x8,120x8"
+105,"Calf Raise","65x15,65x15,65x12"
+###########################

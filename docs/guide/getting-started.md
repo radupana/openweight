@@ -4,7 +4,7 @@ This guide will help you get up and running with openweight in minutes.
 
 ## Already tracking workouts?
 
-If you're using **Strong** or **Hevy**, you can convert your entire training history right now — no code required:
+If you're using **Strong**, **Hevy**, or **JEFIT**, you can convert your entire training history right now — no code required:
 
 ```bash
 npx @openweight/cli convert your-export.csv -o workouts.json --pretty

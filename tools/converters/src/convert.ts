@@ -2,6 +2,7 @@ import { validateWorkoutLog } from '@openweight/sdk'
 import { parseCSV } from './parsers/csv.js'
 import { strongParser } from './parsers/strong.js'
 import { hevyParser } from './parsers/hevy.js'
+import { isJefit, parseJefit } from './parsers/jefit.js'
 import { mapColumnsWithAI } from './mapping/column-mapper.js'
 import { transformRows } from './transform/transformer.js'
 import { hasExerciseMapping } from './mapping/exercise-names.js'
@@ -12,6 +13,7 @@ import type {
   ConvertResult,
   SourceFormat,
   SourceParser,
+  ColumnMapping,
   ConversionWarning,
 } from './types.js'
 import type { AIColumnMapping, AIExerciseMapping } from './ai/provider.js'
@@ -24,6 +26,9 @@ const PARSERS: SourceParser[] = [strongParser, hevyParser]
  * Detect the source format of a CSV string by examining its headers.
  */
 export function detectFormat(csv: string): SourceFormat {
+  // Check for JEFIT section markers before CSV parsing
+  if (isJefit(csv)) return 'jefit'
+
   const { headers } = parseCSV(csv)
   for (const parser of PARSERS) {
     if (parser.detect(headers)) return parser.format
@@ -38,11 +43,16 @@ export async function convert(options: ConvertOptions): Promise<ConvertResult> {
   const { csv, format: formatOption } = options
   const warnings: ConversionWarning[] = []
 
+  // Detect format early — JEFIT needs a completely different parse path
+  const format = formatOption ?? detectFormat(csv)
+
+  if (format === 'jefit') {
+    return convertJefit(csv, format, options)
+  }
+
   // Parse CSV
   const { headers, rows } = parseCSV(csv)
 
-  // Detect or verify format
-  const format = formatOption ?? detectFormat(csv)
   const parser = PARSERS.find((p) => p.format === format)
   if (!parser) {
     throw new ConvertError(`Unsupported format: ${format}`, 'UNSUPPORTED_FORMAT')
@@ -56,7 +66,7 @@ export async function convert(options: ConvertOptions): Promise<ConvertResult> {
   }
 
   // Map columns
-  let columnMappings = parser.mapColumns(headers)
+  let columnMappings: ColumnMapping[] = parser.mapColumns(headers)
   let aiColumnMappings: AIColumnMapping[] | undefined
   let aiExerciseSuggestions: AIExerciseMapping[] | undefined
 
@@ -184,6 +194,96 @@ export async function convert(options: ConvertOptions): Promise<ConvertResult> {
   return { workouts, report }
 }
 
+/**
+ * JEFIT-specific conversion path.
+ * JEFIT is a multi-section composite file, not a flat CSV,
+ * so it bypasses the flat CSV parse → detect → mapColumns pipeline
+ * and rejoins at the transform step.
+ */
+async function convertJefit(
+  csv: string,
+  format: SourceFormat,
+  options: ConvertOptions
+): Promise<ConvertResult> {
+  const {
+    rows: intermediateRows,
+    totalLogRows,
+    skippedLogRows,
+    warnings,
+    columnMappings,
+  } = parseJefit(csv, options)
+
+  // Track unmapped exercise names
+  const exerciseNames = new Set<string>()
+  for (const row of intermediateRows) {
+    exerciseNames.add(row.exerciseName)
+  }
+  const unmappedExercises: string[] = []
+  for (const name of exerciseNames) {
+    if (!hasExerciseMapping(name, options.exerciseMappings)) {
+      unmappedExercises.push(name)
+    }
+  }
+
+  // AI exercise name normalization
+  let aiExerciseSuggestions: AIExerciseMapping[] | undefined
+  if (options.ai && unmappedExercises.length > 0) {
+    try {
+      const knownCanonicalNames = Object.values(mappingsJson as Record<string, string>)
+      const uniqueCanonicals = [...new Set(knownCanonicalNames)]
+
+      const suggestions = await options.ai.normalizeExerciseNames({
+        unknownNames: unmappedExercises,
+        knownCanonicalNames: uniqueCanonicals,
+      })
+
+      if (suggestions.length > 0) {
+        aiExerciseSuggestions = suggestions
+      }
+    } catch (err) {
+      warnings.push({
+        type: 'parse',
+        message: `AI exercise normalization failed: ${err instanceof Error ? err.message : String(err)}`,
+      })
+    }
+  }
+
+  // Transform into WorkoutLog objects
+  const { workouts: rawWorkouts, warnings: transformWarnings } =
+    transformRows(intermediateRows)
+  warnings.push(...transformWarnings)
+
+  // Validate each workout
+  const workouts = []
+  for (const workout of rawWorkouts) {
+    const result = validateWorkoutLog(workout)
+    if (result.valid) {
+      workouts.push(workout)
+    } else {
+      warnings.push({
+        type: 'validation',
+        message: `Workout on ${workout.date} failed validation`,
+        details: result.errors.map((e) => `${e.path}: ${e.message}`).join('; '),
+      })
+    }
+  }
+
+  const report = buildReport({
+    source: format,
+    totalRows: totalLogRows,
+    convertedRows: totalLogRows - skippedLogRows,
+    skippedRows: skippedLogRows,
+    workouts,
+    columnMappings,
+    unmappedExercises,
+    warnings,
+  })
+
+  if (aiExerciseSuggestions) report.aiExerciseSuggestions = aiExerciseSuggestions
+
+  return { workouts, report }
+}
+
 // Helper to extract exact maps from parsers (they use mapColumns internally)
 // We inspect the parser's known columns by looking at its format
 // These maps mirror the parser-internal column maps exactly.
@@ -225,6 +325,7 @@ function getExactMap(parser: SourceParser): Record<string, string> {
       'set_type': 'rawSetType',
     }
   }
+  // JEFIT uses its own parse path — no flat column mapping
   return {}
 }
 

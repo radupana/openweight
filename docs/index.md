@@ -19,7 +19,7 @@ hero:
 features:
   - icon: "\U0001F4E6"
     title: Migrate in One Command
-    details: "Already using Strong or Hevy? Convert your entire training history to openweight with a single npx command. No code required."
+    details: "Already using Strong, Hevy, or JEFIT? Convert your entire training history to openweight with a single npx command. No code required."
     link: /migrate/
     linkText: Migrate now
   - icon: "\U0001F4CB"

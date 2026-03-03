@@ -1,0 +1,24 @@
+### WORKOUT SESSIONS ###
+_id,mydate,starttime,starttimie,total_time
+1,2024-03-01,1709290800,,5400
+###########################
+
+### EXERCISE LOGS ###
+belongsession,ename,logs
+1,"Barbell Bench Press","100x5,100x5,100x5"
+1,"Incline Dumbbell Press","32.5x10,32.5x8,35x6"
+1,"Cable Fly","15x15,15x12"
+1,"Tricep Pushdown","25x12,25x12,25x10"
+1,"Barbell Skull Crusher","30x10,30x10"
+1,"Barbell Squat","140x5,140x5,140x3"
+1,"Romanian Deadlift","100x8,100x8"
+1,"Leg Press","180x10,180x10,200x8"
+1,"Leg Extension","40x12,45x10"
+1,"Leg Curl","30x12,30x12"
+1,"Calf Raise","60x15,60x15,60x12"
+1,"Lateral Raise","10x15,10x15,12.5x12"
+1,"Face Pull","15x15,15x15"
+1,"Barbell Overhead Press","50x8,55x6,57.5x4"
+1,"Dumbbell Curl","15x12,17.5x10"
+1,"Pull Up","0x10,0x8,0x6"
+###########################

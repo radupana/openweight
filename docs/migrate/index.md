@@ -2,7 +2,8 @@
 
 You've spent years tracking workouts. Every rep, every PR, every grind session — logged.
 
-But right now, that data is locked inside one app. If you switch apps, it's gone. If the app shuts down, it's gone.
+But right now, that data is locked inside one app. If you switch apps, it's gone. If the app shuts
+down, it's gone.
 
 **One command changes that.**
 
@@ -14,10 +15,11 @@ Your entire training history — converted to an open format that you own foreve
 
 ## Supported Apps
 
-| App | Format | Command |
-|-----|--------|---------|
-| **Strong** | CSV | `npx @openweight/cli convert --weight-unit kg strong.csv -o workouts.json` |
-| **Hevy** | CSV | `npx @openweight/cli convert hevy.csv -o workouts.json` |
+| App        | Format | Command                                                                    |
+|------------|--------|----------------------------------------------------------------------------|
+| **Strong** | CSV    | `npx @openweight/cli convert --weight-unit kg strong.csv -o workouts.json` |
+| **Hevy**   | CSV    | `npx @openweight/cli convert hevy.csv -o workouts.json`                    |
+| **JEFIT**  | CSV    | `npx @openweight/cli convert --weight-unit kg jefit.csv -o workouts.json`  |
 
 More converters coming soon. [Request one on GitHub](https://github.com/radupana/openweight/issues).
 
@@ -25,11 +27,13 @@ More converters coming soon. [Request one on GitHub](https://github.com/radupana
 
 ### 1. Export from your app
 
-Every major training app lets you export your data as CSV. Find the export option in your app's settings.
+Every major training app lets you export your data as CSV. Find the export option in your app's
+settings.
 
 ### 2. Convert to openweight
 
-Run a single command. The converter auto-detects your app's format from the CSV headers and handles all the mapping — exercise names, set types, units, supersets, everything.
+Run a single command. The converter auto-detects your app's format from the CSV headers and handles
+all the mapping — exercise names, set types, units, supersets, everything.
 
 ```bash
 npx @openweight/cli convert export.csv -o workouts.json --pretty --report
@@ -38,6 +42,7 @@ npx @openweight/cli convert export.csv -o workouts.json --pretty --report
 ### 3. You're done
 
 Your training data is now standard JSON that works everywhere:
+
 - **Import into another app** that supports openweight
 - **Analyze with any tool** — Python, R, Excel, custom scripts
 - **Archive forever** — JSON doesn't expire, doesn't need a subscription, doesn't need a server
@@ -46,17 +51,18 @@ Your training data is now standard JSON that works everywhere:
 
 The converter preserves everything that matters:
 
-| Data | Supported |
-|------|-----------|
-| Exercise names | Normalized to standard names |
-| Sets, reps, weight | With correct units (kg/lb) |
-| RPE | When tracked |
-| Set types | Warm-up, working, drop sets, to-failure |
-| Supersets | Groupings preserved |
-| Workout duration | Calculated from timestamps |
-| Workout notes | Per-workout and per-exercise |
+| Data               | Supported                               |
+|--------------------|-----------------------------------------|
+| Exercise names     | Normalized to standard names            |
+| Sets, reps, weight | With correct units (kg/lb)              |
+| RPE                | When tracked                            |
+| Set types          | Warm-up, working, drop sets, to-failure |
+| Supersets          | Groupings preserved                     |
+| Workout duration   | Calculated from timestamps              |
+| Workout notes      | Per-workout and per-exercise            |
 
-After conversion, every workout is validated against the openweight schema. You get clean, spec-compliant data — not a raw dump.
+After conversion, every workout is validated against the openweight schema. You get clean,
+spec-compliant data — not a raw dump.
 
 ## Conversion Report
 
@@ -84,9 +90,12 @@ Got unmapped exercises or columns from an unusual CSV format? Add `--ai-assist` 
 npx @openweight/cli convert export.csv -o workouts.json --ai-assist --report
 ```
 
-The AI suggests mappings for unknown columns and canonical names for unrecognized exercises. You review and approve each suggestion before it's applied. Confirmed mappings are cached locally so you only approve once.
+The AI suggests mappings for unknown columns and canonical names for unrecognized exercises. You
+review and approve each suggestion before it's applied. Confirmed mappings are cached locally so you
+only approve once.
 
-Works with OpenAI (`OPENAI_API_KEY`) or any local model via Ollama (`OPENWEIGHT_AI_URL=http://localhost:11434/v1`).
+Works with OpenAI (`OPENAI_API_KEY`) or any local model via Ollama (
+`OPENWEIGHT_AI_URL=http://localhost:11434/v1`).
 
 ## Next Steps
 
@@ -94,6 +103,7 @@ Ready to migrate? Pick your app:
 
 - [Migrate from Strong](/migrate/strong) — Step-by-step guide
 - [Migrate from Hevy](/migrate/hevy) — Step-by-step guide
+- [Migrate from JEFIT](/migrate/jefit) — Step-by-step guide
 
 ## For App Developers
 
@@ -111,6 +121,7 @@ for (const workout of workouts) {
 }
 ```
 
-Users who've already converted their data can bring it straight into your app. That's a powerful onboarding story — "bring your training history with you."
+Users who've already converted their data can bring it straight into your app. That's a powerful
+onboarding story — "bring your training history with you."
 
 See the [TypeScript SDK docs](/sdk/typescript) or [Kotlin SDK docs](/sdk/kotlin) for the full API.

@@ -12,6 +12,9 @@ npx @openweight/cli convert --weight-unit kg strong.csv -o workouts.json --prett
 # Convert a Hevy export
 npx @openweight/cli convert hevy.csv -o workouts.json --pretty
 
+# Convert a JEFIT export
+npx @openweight/cli convert --weight-unit kg jefit.csv -o workouts.json --pretty
+
 # Validate an openweight file
 npx @openweight/cli validate workout.json
 ```
@@ -28,7 +31,7 @@ npx @openweight/cli convert <file> [options]
 
 | Option                     | Description                                                  |
 |----------------------------|--------------------------------------------------------------|
-| `-f, --format <format>`    | Source format: `strong`, `hevy` (auto-detected from headers) |
+| `-f, --format <format>`    | Source format: `strong`, `hevy`, `jefit` (auto-detected)     |
 | `-u, --weight-unit <unit>` | Weight unit: `kg` or `lb` (required for Strong)              |
 | `-o, --output <file>`      | Output file (default: stdout)                                |
 | `--pretty`                 | Pretty-print JSON output                                     |
@@ -115,8 +118,9 @@ The CLI auto-detects the source format by inspecting CSV column headers:
 |--------------------------------------------------------|--------|
 | `Date`, `Exercise Name`, `Set Order`, `Weight`, `Reps` | Strong |
 | `title`, `start_time`, `exercise_title`, `set_index`   | Hevy   |
+| `### WORKOUT SESSIONS ###` + `### EXERCISE LOGS ###` section markers | JEFIT |
 
-To override, use `--format strong` or `--format hevy`.
+To override, use `--format strong`, `--format hevy`, or `--format jefit`.
 
 ## Programmatic Usage
 

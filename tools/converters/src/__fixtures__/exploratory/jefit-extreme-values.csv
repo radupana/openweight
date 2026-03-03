@@ -1,0 +1,14 @@
+### WORKOUT SESSIONS ###
+_id,mydate,starttime,starttimie,total_time
+1,2024-03-01,1709290800,,3600
+###########################
+
+### EXERCISE LOGS ###
+belongsession,ename,logs
+1,"Barbell Bench Press","999.99x5,999.99x5"
+1,"Barbell Squat","-5x5,100x5"
+1,"Deadlift","100x0,100x999"
+1,"Overhead Press","0x0"
+1,"Barbell Row","Infinityx5,100x8"
+1,"Leg Press","1e10x5,100x8"
+###########################
