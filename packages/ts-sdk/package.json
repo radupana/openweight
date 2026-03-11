@@ -47,7 +47,7 @@
     "directory": "packages/ts-sdk"
   },
   "dependencies": {
-    "ajv": "^8.17.1",
+    "ajv": "^8.18.0",
     "ajv-formats": "^3.0.1"
   },
   "devDependencies": {
