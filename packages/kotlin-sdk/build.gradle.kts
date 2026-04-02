@@ -50,8 +50,8 @@ dependencies {
     implementation("io.github.optimumcode:json-schema-validator:0.5.3")
 
     testImplementation(kotlin("test"))
-    testImplementation("org.junit.jupiter:junit-jupiter:6.0.1")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:6.0.1")
+    testImplementation("org.junit.jupiter:junit-jupiter:6.0.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:6.0.2")
 }
 
 // Copy schemas from root schemas/ directory to resources at build time
